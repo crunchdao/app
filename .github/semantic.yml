@@ -1,0 +1,7 @@
+# see https://github.com/Ezard/semantic-prs for more information
+
+enabled: true
+titleAndCommits: true
+anyCommit: false
+allowMergeCommits: false
+allowRevertCommits: false
