@@ -40,7 +40,7 @@ public class HeaderAuthenticationFilter extends OncePerRequestFilter {
 	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-		Authentication authentication = extractAuthentication(request);
+		Authentication authentication = authenticate(request);
 		
 		if (authentication != null) {
 			SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -49,7 +49,7 @@ public class HeaderAuthenticationFilter extends OncePerRequestFilter {
 		filterChain.doFilter(request, response);
 	}
 	
-	public Authentication extractAuthentication(HttpServletRequest request) {
+	public Authentication authenticate(HttpServletRequest request) {
 		AuthenticationType type = AuthenticationType.parse(request.getHeader(SecurityHttpHeaders.AUTHENTICATION_TYPE));
 		if (type == null) {
 			return null;
@@ -57,11 +57,11 @@ public class HeaderAuthenticationFilter extends OncePerRequestFilter {
 		
 		switch (type) {
 			case SERVICE: {
-				return extractServiceAuthenticationToken(request);
+				return authenticationService(request);
 			}
 			
 			case USER: {
-				return extractUserAuthenticationToken(request);
+				return authenticateUser(request);
 			}
 			
 			default: {
@@ -71,7 +71,7 @@ public class HeaderAuthenticationFilter extends OncePerRequestFilter {
 		}
 	}
 	
-	public ServiceAuthenticationToken extractServiceAuthenticationToken(HttpServletRequest request) {
+	public ServiceAuthenticationToken authenticationService(HttpServletRequest request) {
 		String rawUserId = request.getHeader(SecurityHttpHeaders.USER_ID);
 		String serviceName = request.getHeader(SecurityHttpHeaders.SERVICE_NAME);
 		
@@ -88,7 +88,7 @@ public class HeaderAuthenticationFilter extends OncePerRequestFilter {
 		return null;
 	}
 	
-	public static UserAuthenticationToken extractUserAuthenticationToken(HttpServletRequest request) {
+	public static UserAuthenticationToken authenticateUser(HttpServletRequest request) {
 		String rawUserId = request.getHeader(SecurityHttpHeaders.USER_ID);
 		String rawAuthorities = request.getHeader(SecurityHttpHeaders.AUTHORITIES);
 		

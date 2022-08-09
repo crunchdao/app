@@ -7,4 +7,6 @@ public interface SecurityHttpHeaders {
 	public static final String USER_ID = "X-User-ID";
 	public static final String AUTHORITIES = "X-Authorities";
 	
+	public static final String API_KEY_PREFIX = "API-Key";
+	
 }

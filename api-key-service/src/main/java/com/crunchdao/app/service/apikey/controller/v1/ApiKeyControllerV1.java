@@ -7,6 +7,7 @@ import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,6 +27,7 @@ import com.crunchdao.app.service.apikey.dto.ApiKeyDto;
 import com.crunchdao.app.service.apikey.exception.ApiKeyNotFoundException;
 import com.crunchdao.app.service.apikey.permission.CanRead;
 import com.crunchdao.app.service.apikey.permission.CanWrite;
+import com.crunchdao.app.service.apikey.plain.PlainApiKeyAuthenticationToken;
 import com.crunchdao.app.service.apikey.service.ApiKeyService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,9 +41,12 @@ import lombok.RequiredArgsConstructor;
 @Tag(name = "api-key", description = "API-Key related operations.")
 public class ApiKeyControllerV1 {
 	
-	public static final String BASE_ENDPOINT = "/v1/api-keys";
 	public static final String ID_VARIABLE = "{id}";
+	public static final String SELF_ID_VARIABLE = "@self";
+	
+	public static final String BASE_ENDPOINT = "/v1/api-keys";
 	public static final String ID_ENDPOINT = BASE_ENDPOINT + "/" + ID_VARIABLE;
+	public static final String SELF_ENDPOINT = BASE_ENDPOINT + "/" + SELF_ID_VARIABLE;
 	
 	private final ApiKeyService service;
 	
@@ -55,7 +60,7 @@ public class ApiKeyControllerV1 {
 		
 		throw new OnlyUserException();
 	}
-
+	
 	@ResponseStatus(HttpStatus.CREATED)
 	@PutMapping
 	@CanWrite
@@ -89,6 +94,16 @@ public class ApiKeyControllerV1 {
 		}
 		
 		throw new OnlyUserException();
+	}
+	
+	@PreAuthorize("authenticated")
+	@GetMapping(SELF_ID_VARIABLE)
+	public ApiKeyDto showSelf(Authentication authentication) {
+		if (authentication instanceof PlainApiKeyAuthenticationToken token) {
+			return token.getApiKey();
+		}
+		
+		throw new ForbiddenException();
 	}
 	
 	@ResponseStatus(HttpStatus.NO_CONTENT)
