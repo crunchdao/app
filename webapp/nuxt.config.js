@@ -26,9 +26,23 @@ export default {
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 
+  publicRuntimeConfig: {
+    axios: {
+      browserBaseURL: "/api/"
+    }
+  },
+
+  privateRuntimeConfig: {
+    axios: {
+      // TODO Change
+      baseURL: "http://localhost:8000/"
+    }
+  },
+
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     // https://go.nuxtjs.dev/typescript
+    '@nuxtjs/composition-api/module',
     '@nuxt/typescript-build',
     // https://go.nuxtjs.dev/stylelint
     '@nuxtjs/stylelint-module',
@@ -40,6 +54,8 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/auth-next',
+    '@nuxtjs/proxy'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -55,9 +71,18 @@ export default {
       dark: true,
       themes: {
         dark: {
-          primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
+          primary: '#f76a49',
+          accent: '#ff4081',
           secondary: colors.amber.darken3,
+          info: colors.teal.lighten1,
+          warning: colors.amber.base,
+          error: colors.deepOrange.accent4,
+          success: colors.green.accent3,
+        },
+        light: {
+          primary: '#f76a49',
+          accent: '#ff4081',
+          secondary: colors.amber.lighten3,
           info: colors.teal.lighten1,
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
@@ -68,5 +93,65 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    transpile: ['claygl', 'echarts', 'zrender']
+  },
+
+  auth: {
+    redirect: {
+      login: '/',
+      logout: '/',
+      callback: '/auth/callback',
+    },
+    localStorage: false,
+    sessionStorage: false,
+    cookie: {
+      prefix: "auth",
+      options: {
+        path: "/",
+      },
+    },
+    defaultStrategy: "keycloak",
+    strategies: {
+      local: false,
+      keycloak: {
+        name: "keycloak",
+        scheme: "openIDConnect",
+        enabled: true,
+        endpoints: {
+          // TODO Change
+          configuration: 'http://localhost:9800/realms/App/.well-known/openid-configuration',
+        },
+        token: {
+          property: "access_token",
+          type: "Bearer",
+          name: "Authorization",
+          maxAge: 300,
+        },
+        refreshToken: {
+          property: "refresh_token",
+          maxAge: 60 * 60 * 24 * 30,
+        },
+        idToken: {
+          property: "id_token"
+        },
+        responseType: "code",
+        grantType: "authorization_code",
+        clientId: "frontend",
+        scope: ["openid", "profile", "email"],
+        codeChallengeMethod: "S256",
+        acrValues: "0",
+      },
+    },
+    watchLoggedIn: true,
+    rewriteRedirects: true,
+  },
+
+  proxy: {
+    '/api/': {
+      changeOrigin: false,
+      pathRewrite: { '^/api/': '/' },
+      target: 'http://localhost:8000/',
+    },
+  },
 }
