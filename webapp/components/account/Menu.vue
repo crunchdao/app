@@ -19,16 +19,16 @@
     </template>
     <v-list class="py-0">
       <v-list-item v-for="link in links" :key="link.to" :to="link.to">
-        <v-list-item-icon>
+        <v-list-item-avatar>
           <v-icon> {{ link.icon }} </v-icon>
-        </v-list-item-icon>
+        </v-list-item-avatar>
         <v-list-item-title> {{ link.title }} </v-list-item-title>
       </v-list-item>
       <v-divider />
       <v-list-item to="/auth/logout">
-        <v-list-item-icon>
+        <v-list-item-avatar>
           <v-icon> mdi-logout </v-icon>
-        </v-list-item-icon>
+        </v-list-item-avatar>
         <v-list-item-title> Log-out </v-list-item-title>
       </v-list-item>
     </v-list>

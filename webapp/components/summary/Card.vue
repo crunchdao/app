@@ -6,9 +6,9 @@
         <v-list-item-subtitle> {{ title }} </v-list-item-subtitle>
       </v-list-item-content>
       <v-list-item-action-text style="width: 220px; height: 75px">
-        <no-ssr>
+        <client-only>
           <v-chart :option="option" />
-        </no-ssr>
+        </client-only>
       </v-list-item-action-text>
     </v-list-item>
   </v-card>
