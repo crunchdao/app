@@ -37,3 +37,8 @@ spring:
           - OPTIONS
           exceptions:
           - java.net.ConnectException
+      routes:
+        - id: api-keys-service
+          uri: lb://api-key-service
+          predicates:
+            - Path=/v1/api-keys, /v1/api-keys/**
