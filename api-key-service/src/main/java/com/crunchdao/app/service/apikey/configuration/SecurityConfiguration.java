@@ -11,8 +11,8 @@ import org.springframework.security.core.authority.AuthorityUtils;
 
 import com.crunchdao.app.common.security.configuration.BaseApplicationSecurity;
 import com.crunchdao.app.common.security.filter.HeaderAuthenticationFilter;
-import com.crunchdao.app.service.apikey.Scopes;
 import com.crunchdao.app.service.apikey.plain.PlainApiKeyAuthenticationFilter;
+import com.crunchdao.app.service.apikey.role.Scopes;
 import com.crunchdao.app.service.apikey.service.ApiKeyService;
 
 import lombok.RequiredArgsConstructor;

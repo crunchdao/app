@@ -1,4 +1,4 @@
-package com.crunchdao.app.service.apikey;
+package com.crunchdao.app.service.apikey.role;
 
 public interface Scopes {
 	
