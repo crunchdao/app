@@ -1,0 +1,21 @@
+server:
+  port: ${PORT:8001}
+spring:
+  application:
+    name: api-key-service
+  config:
+    import: "consul:"
+  cloud:
+    loadbalancer:
+      enabled: false
+    consul:
+      host: ${CONSUL_HOST:localhost}
+      port: ${CONSUL_PORT:8500}
+      config:
+        enabled: true
+        format: YAML
+      discovery:
+        enabled: true
+        prefer-ip-address: true
+        health-check-path: /actuator/health
+        instance-id: ${spring.application.name}-${random.uuid}

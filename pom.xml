@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.crunchdao.app</groupId>
 	<artifactId>parent</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>latest</version>
 	<packaging>pom</packaging>
 	<name>crunchdao-parent</name>
 
@@ -14,22 +14,84 @@
 	</parent>
 
 	<properties>
+		<version>latest</version>
+
 		<java.version>17</java.version>
 		<spring-cloud.version>2021.0.3</spring-cloud.version>
+		<testcontainers.version>1.17.3</testcontainers.version>
 
 		<error-handling-spring-boot-starter.version>3.1.0</error-handling-spring-boot-starter.version>
+		<commons-net.version>3.8.0</commons-net.version>
+		<commons-lang3.version>3.12.0</commons-lang3.version>
+		<springdoc-openapi.version>1.6.9</springdoc-openapi.version>
 	</properties>
 
 	<modules>
 		<module>gateway</module>
+		<module>api-key-service</module>
+		<module>web-common</module>
+		<module>security-common</module>
+		<module>security-common-test</module>
 	</modules>
 
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
+				<groupId>com.crunchdao.app</groupId>
+				<artifactId>web-common</artifactId>
+				<version>${version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.crunchdao.app</groupId>
+				<artifactId>security-common</artifactId>
+				<version>${version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.crunchdao.app</groupId>
+				<artifactId>security-common-test</artifactId>
+				<version>${version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springdoc</groupId>
+				<artifactId>springdoc-openapi-data-rest</artifactId>
+				<version>${springdoc-openapi.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springdoc</groupId>
+				<artifactId>springdoc-openapi-ui</artifactId>
+				<version>${springdoc-openapi.version}</version>
+			</dependency>
+
+			<dependency>
 				<groupId>io.github.wimdeblauwe</groupId>
 				<artifactId>error-handling-spring-boot-starter</artifactId>
 				<version>${error-handling-spring-boot-starter.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-net</groupId>
+				<artifactId>commons-net</artifactId>
+				<version>${commons-net.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>${commons-lang3.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.testcontainers</groupId>
+				<artifactId>testcontainers-bom</artifactId>
+				<version>${testcontainers.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
