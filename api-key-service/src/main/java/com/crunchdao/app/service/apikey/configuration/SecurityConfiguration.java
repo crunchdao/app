@@ -29,7 +29,7 @@ public class SecurityConfiguration extends BaseApplicationSecurity {
 	protected void configure(HttpSecurity http) throws Exception {
 		super.configure(http);
 		
-		http.authorizeHttpRequests().anyRequest().authenticated();
+		http.authorizeHttpRequests().antMatchers("/v*/**").authenticated();
 	}
 	
 	@Override
