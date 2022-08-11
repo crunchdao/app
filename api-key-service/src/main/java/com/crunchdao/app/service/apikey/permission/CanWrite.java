@@ -16,6 +16,6 @@ import com.crunchdao.app.service.apikey.role.Scopes;
 @Retention(RUNTIME)
 @Target({ TYPE, METHOD })
 @Inherited
-@PreAuthorize("hasRole('" + CommonRoles.USER + "') or hasAuthority('" + Scopes.WRITE + "')")
+@PreAuthorize("hasRole('" + CommonRoles.Name.USER + "') or hasAuthority('" + Scopes.WRITE + "')")
 public @interface CanWrite {
 }

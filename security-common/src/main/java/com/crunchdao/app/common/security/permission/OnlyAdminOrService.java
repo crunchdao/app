@@ -1,4 +1,4 @@
-package com.crunchdao.app.service.apikey.permission;
+package com.crunchdao.app.common.security.permission;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
@@ -11,11 +11,10 @@ import java.lang.annotation.Target;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.crunchdao.app.common.security.role.CommonRoles;
-import com.crunchdao.app.service.apikey.role.Scopes;
 
 @Retention(RUNTIME)
 @Target({ TYPE, METHOD })
 @Inherited
-@PreAuthorize("hasRole('" + CommonRoles.Name.USER + "') or hasAuthority('" + Scopes.READ + "')")
-public @interface CanRead {
+@PreAuthorize("hasRole('" + CommonRoles.Name.ADMIN + "') or hasRole('" + CommonRoles.Name.SERVICE + "')")
+public @interface OnlyAdminOrService {
 }

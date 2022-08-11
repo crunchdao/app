@@ -37,9 +37,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Validated
 @RestController
-@RequestMapping(path = ApiKeyControllerV1.BASE_ENDPOINT, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = ApiKeyRestControllerV1.BASE_ENDPOINT, produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "api-key", description = "API-Key related operations.")
-public class ApiKeyControllerV1 {
+public class ApiKeyRestControllerV1 {
 	
 	public static final String ID_VARIABLE = "{id}";
 	public static final String SELF_ID_VARIABLE = "@self";

@@ -3,28 +3,25 @@ package com.crunchdao.app.common.security.token;
 import java.util.Collection;
 import java.util.UUID;
 
-import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
 import lombok.Getter;
 
 @Getter
-public class ServiceAuthenticationToken extends AbstractAuthenticationToken {
+public class ServiceAuthenticationToken extends BaseUserAuthenticationToken {
 	
 	private static final long serialVersionUID = 1L;
 	
 	private final String serviceName;
-	private final UUID userId;
 	
 	public ServiceAuthenticationToken(String serviceName, Collection<? extends GrantedAuthority> authorities) {
 		this(serviceName, null, authorities);
 	}
 	
 	public ServiceAuthenticationToken(String serviceName, UUID userId, Collection<? extends GrantedAuthority> authorities) {
-		super(authorities);
+		super(userId, authorities);
 		
 		this.serviceName = serviceName;
-		this.userId = userId;
 		
 		super.setAuthenticated(true);
 	}
@@ -37,14 +34,14 @@ public class ServiceAuthenticationToken extends AbstractAuthenticationToken {
 	@Override
 	public Object getPrincipal() {
 		if (hasUser()) {
-			return userId;
+			return getUserId();
 		} else {
 			return serviceName;
 		}
 	}
 	
 	public boolean hasUser() {
-		return userId != null;
+		return getUserId() != null;
 	}
 	
 }

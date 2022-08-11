@@ -1,0 +1,13 @@
+server:
+  port: ${PORT:8003}
+spring:
+  application:
+    name: user-service
+  cloud:
+    loadbalancer:
+      enabled: false
+    consul:
+      enabled: false
+  data:
+    mongodb:
+      auto-index-creation: true

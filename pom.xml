@@ -24,11 +24,13 @@
 		<commons-net.version>3.8.0</commons-net.version>
 		<commons-lang3.version>3.12.0</commons-lang3.version>
 		<springdoc-openapi.version>1.6.9</springdoc-openapi.version>
+		<javafaker.version>1.0.2</javafaker.version>
 	</properties>
 
 	<modules>
 		<module>gateway</module>
 		<module>api-key-service</module>
+		<module>user-service</module>
 		<module>web-common</module>
 		<module>security-common</module>
 		<module>security-common-test</module>
@@ -77,6 +79,11 @@
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-lang3</artifactId>
 				<version>${commons-lang3.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.javafaker</groupId>
+				<artifactId>javafaker</artifactId>
+				<version>${javafaker.version}</version>
 			</dependency>
 
 			<dependency>

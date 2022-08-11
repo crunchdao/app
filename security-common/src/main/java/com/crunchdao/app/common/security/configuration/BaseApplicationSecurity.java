@@ -44,9 +44,9 @@ public class BaseApplicationSecurity extends WebSecurityConfigurerAdapter {
 	protected HeaderAuthenticationFilter createHeaderAuthenticationFilter() {
 		Collection<? extends GrantedAuthority> authorities = getServiceAuthorities();
 		
-		if (!authorities.contains(CommonRoles.SERVICE_AUTHORITY)) {
+		if (!authorities.contains(CommonRoles.Authority.SERVICE)) {
 			List<GrantedAuthority> authoritiesWithRole = new ArrayList<>(authorities);
-			authoritiesWithRole.add(CommonRoles.SERVICE_AUTHORITY);
+			authoritiesWithRole.add(CommonRoles.Authority.SERVICE);
 			
 			authorities = authoritiesWithRole;
 		}
