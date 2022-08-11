@@ -1,4 +1,4 @@
-package com.crunchdao.app.user.exception;
+package com.crunchdao.app.service.user.exception;
 
 import java.util.UUID;
 

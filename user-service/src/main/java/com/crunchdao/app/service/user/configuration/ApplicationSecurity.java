@@ -1,4 +1,4 @@
-package com.crunchdao.app.user.configuration;
+package com.crunchdao.app.service.user.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -7,7 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 import com.crunchdao.app.common.security.configuration.BaseApplicationSecurity;
-import com.crunchdao.app.user.controller.v1.UserRestControllerV1;
+import com.crunchdao.app.service.user.controller.v1.UserRestControllerV1;
 
 import lombok.RequiredArgsConstructor;
 

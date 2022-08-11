@@ -1,4 +1,4 @@
-package com.crunchdao.app.user.controller.v1;
+package com.crunchdao.app.service.user.controller.v1;
 
 import java.util.UUID;
 
@@ -22,10 +22,10 @@ import com.crunchdao.app.common.security.permission.OnlyAdminOrService;
 import com.crunchdao.app.common.security.token.BaseUserAuthenticationToken;
 import com.crunchdao.app.common.web.exception.ForbiddenException;
 import com.crunchdao.app.common.web.model.PageResponse;
-import com.crunchdao.app.user.dto.UserDto;
-import com.crunchdao.app.user.dto.UserWithIdDto;
-import com.crunchdao.app.user.exception.UserNotFoundException;
-import com.crunchdao.app.user.service.UserService;
+import com.crunchdao.app.service.user.dto.UserDto;
+import com.crunchdao.app.service.user.dto.UserWithIdDto;
+import com.crunchdao.app.service.user.exception.UserNotFoundException;
+import com.crunchdao.app.service.user.service.UserService;
 
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;

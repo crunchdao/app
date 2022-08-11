@@ -1,4 +1,4 @@
-package com.crunchdao.app.user.service;
+package com.crunchdao.app.service.user.service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -10,12 +10,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.crunchdao.app.common.web.model.PageResponse;
-import com.crunchdao.app.user.dto.UserDto;
-import com.crunchdao.app.user.dto.UserWithIdDto;
-import com.crunchdao.app.user.entity.User;
-import com.crunchdao.app.user.exception.DuplicateUsernameException;
-import com.crunchdao.app.user.exception.UserNotFoundException;
-import com.crunchdao.app.user.repository.UserRepository;
+import com.crunchdao.app.service.user.dto.UserDto;
+import com.crunchdao.app.service.user.dto.UserWithIdDto;
+import com.crunchdao.app.service.user.entity.User;
+import com.crunchdao.app.service.user.exception.DuplicateUsernameException;
+import com.crunchdao.app.service.user.exception.UserNotFoundException;
+import com.crunchdao.app.service.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

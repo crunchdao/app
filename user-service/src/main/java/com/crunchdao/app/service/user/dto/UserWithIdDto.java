@@ -1,4 +1,4 @@
-package com.crunchdao.app.user.dto;
+package com.crunchdao.app.service.user.dto;
 
 import java.util.UUID;
 

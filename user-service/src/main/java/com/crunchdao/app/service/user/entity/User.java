@@ -1,4 +1,4 @@
-package com.crunchdao.app.user.entity;
+package com.crunchdao.app.service.user.entity;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import com.crunchdao.app.user.dto.UserDto;
+import com.crunchdao.app.service.user.dto.UserDto;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
