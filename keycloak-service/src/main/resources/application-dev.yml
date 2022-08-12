@@ -1,0 +1,9 @@
+keycloak:
+  realm: App
+  server-url: http://localhost:9800/
+  client-id: backend
+  client-secret: DzoGN4Jt6JFil7D3ZcyhlscvqinaLJN2
+#debug: true
+#logger:
+#  level:
+#    org.springframework.security: TRACE

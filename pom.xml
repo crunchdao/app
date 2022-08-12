@@ -25,12 +25,14 @@
 		<commons-lang3.version>3.12.0</commons-lang3.version>
 		<springdoc-openapi.version>1.6.9</springdoc-openapi.version>
 		<javafaker.version>1.0.2</javafaker.version>
+		<keycloak-admin-client.version>19.0.1</keycloak-admin-client.version>
 	</properties>
 
 	<modules>
 		<module>gateway</module>
 		<module>api-key-service</module>
 		<module>user-service</module>
+		<module>keycloak-service</module>
 		<module>web-common</module>
 		<module>security-common</module>
 		<module>security-common-test</module>
@@ -52,6 +54,12 @@
 				<groupId>com.crunchdao.app</groupId>
 				<artifactId>security-common-test</artifactId>
 				<version>${version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.keycloak</groupId>
+				<artifactId>keycloak-admin-client</artifactId>
+				<version>${keycloak-admin-client.version}</version>
 			</dependency>
 
 			<dependency>
@@ -85,7 +93,12 @@
 				<artifactId>javafaker</artifactId>
 				<version>${javafaker.version}</version>
 			</dependency>
-
+			
+			<dependency>
+				<groupId>com.github.dasniko</groupId>
+				<artifactId>testcontainers-keycloak</artifactId>
+				<version>2.3.0</version>
+			</dependency>
 			<dependency>
 				<groupId>org.testcontainers</groupId>
 				<artifactId>testcontainers-bom</artifactId>

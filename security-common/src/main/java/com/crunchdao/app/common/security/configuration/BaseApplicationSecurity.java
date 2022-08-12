@@ -32,9 +32,14 @@ public class BaseApplicationSecurity extends WebSecurityConfigurerAdapter {
 		http.headers().frameOptions().disable();
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.exceptionHandling().authenticationEntryPoint(unauthorizedEntryPoint);
-		http.authorizeHttpRequests().antMatchers("/swagger-ui/**").permitAll();
 		
+		configureAuthorizeHttpRequests(http);
 		configureFilters(http);
+	}
+	
+	protected void configureAuthorizeHttpRequests(HttpSecurity http) throws Exception {
+		http.authorizeHttpRequests().antMatchers("/swagger-ui/**").permitAll();
+		http.authorizeHttpRequests().antMatchers("/actuator/**").authenticated();
 	}
 	
 	protected void configureFilters(HttpSecurity http) {
