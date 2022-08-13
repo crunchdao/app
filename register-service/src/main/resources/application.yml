@@ -1,0 +1,13 @@
+server:
+  port: ${PORT:8005}
+spring:
+  application:
+    name: register-service
+  cloud:
+    consul:
+      enabled: false
+  sleuth:
+    feign:
+      enabled: true
+      processor:
+        enabled: true

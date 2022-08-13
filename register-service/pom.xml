@@ -6,19 +6,14 @@
 		<artifactId>parent</artifactId>
 		<version>latest</version>
 	</parent>
-	<artifactId>keycloak-service</artifactId>
-	<name>crunchdao-keycloak-service</name>
+	<artifactId>register-service</artifactId>
+	<name>crunchdao-register-service</name>
 	<dependencies>
-		<dependency>
-			<groupId>org.keycloak</groupId>
-			<artifactId>keycloak-admin-client</artifactId>
-		</dependency>
-
 		<dependency>
 			<groupId>io.github.wimdeblauwe</groupId>
 			<artifactId>error-handling-spring-boot-starter</artifactId>
 		</dependency>
-
+		
 		<dependency>
 			<groupId>com.crunchdao.app</groupId>
 			<artifactId>web-common</artifactId>
@@ -30,10 +25,9 @@
 		<dependency>
 			<groupId>com.crunchdao.app</groupId>
 			<artifactId>security-common-test</artifactId>
-			<scope>test</scope>
 		</dependency>
 
-		<dependency>
+			<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
@@ -55,6 +49,14 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-loadbalancer</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-sleuth-zipkin</artifactId>
 		</dependency>
 		<dependency>
@@ -68,14 +70,6 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-sleuth</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-openfeign</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-loadbalancer</artifactId>
 		</dependency>
 
 		<dependency>
@@ -102,21 +96,6 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.github.javafaker</groupId>
-			<artifactId>javafaker</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.testcontainers</groupId>
-			<artifactId>junit-jupiter</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.github.dasniko</groupId>
-			<artifactId>testcontainers-keycloak</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

@@ -39,7 +39,7 @@ public class BaseApplicationSecurity extends WebSecurityConfigurerAdapter {
 	
 	protected void configureAuthorizeHttpRequests(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests().antMatchers("/swagger-ui/**").permitAll();
-		http.authorizeHttpRequests().antMatchers("/actuator/**").authenticated();
+		http.authorizeHttpRequests().antMatchers("/actuator/**").permitAll();
 	}
 	
 	protected void configureFilters(HttpSecurity http) {

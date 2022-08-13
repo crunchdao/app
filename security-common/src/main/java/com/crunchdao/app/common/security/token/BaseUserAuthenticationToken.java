@@ -16,7 +16,7 @@ public class BaseUserAuthenticationToken extends AbstractAuthenticationToken {
 	
 	private final UUID userId;
 	
-	public BaseUserAuthenticationToken(UUID userId, Collection<? extends GrantedAuthority> authorities) {
+	protected BaseUserAuthenticationToken(UUID userId, Collection<? extends GrantedAuthority> authorities) {
 		super(authorities);
 		
 		this.userId = userId;

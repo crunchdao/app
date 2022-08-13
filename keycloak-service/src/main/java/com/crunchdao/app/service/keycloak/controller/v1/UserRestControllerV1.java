@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Supplier;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.NotAuthorizedException;
@@ -63,7 +64,7 @@ public class UserRestControllerV1 {
 	}
 	
 	@GetMapping
-	public PageResponse<UserDto> list(Pageable pageable) {
+	public PageResponse<UserDto> list(Pageable pageable, HttpServletRequest request) {
 		return run(() -> {
 			long total = usersResource.count();
 			List<UserRepresentation> content = usersResource.list((int) pageable.getOffset(), pageable.getPageSize());

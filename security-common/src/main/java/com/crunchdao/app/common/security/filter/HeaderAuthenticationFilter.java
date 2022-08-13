@@ -72,20 +72,15 @@ public class HeaderAuthenticationFilter extends OncePerRequestFilter {
 	}
 	
 	public ServiceAuthenticationToken authenticationService(HttpServletRequest request) {
-		String rawUserId = request.getHeader(SecurityHttpHeaders.USER_ID);
 		String serviceName = request.getHeader(SecurityHttpHeaders.SERVICE_NAME);
-		
-		try {
-			UUID userId = UUID.fromString(rawUserId);
-			
-			if (StringUtils.hasText(serviceName)) {
-				return new ServiceAuthenticationToken(serviceName, userId, serviceAuthorities);
-			}
-		} catch (Exception exception) {
+		if (!StringUtils.hasText(serviceName)) {
 			return null;
 		}
 		
-		return null;
+		String rawUserId = request.getHeader(SecurityHttpHeaders.USER_ID);
+		UUID userId = parseId(rawUserId);
+		
+		return new ServiceAuthenticationToken(serviceName, userId, serviceAuthorities);
 	}
 	
 	public static UserAuthenticationToken authenticateUser(HttpServletRequest request) {
@@ -104,6 +99,14 @@ public class HeaderAuthenticationFilter extends OncePerRequestFilter {
 	
 	public static AuthenticationType extractAuthenticationType(HttpServletRequest request) {
 		return AuthenticationType.parse(request.getHeader(SecurityHttpHeaders.AUTHENTICATION_TYPE));
+	}
+	
+	public static UUID parseId(String input) {
+		try {
+			return UUID.fromString(input);
+		} catch (Exception exception) {
+			return null;
+		}
 	}
 	
 }
