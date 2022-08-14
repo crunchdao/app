@@ -1,5 +1,6 @@
 package com.crunchdao.app.service.apikey.controller.v1;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -41,10 +42,12 @@ import lombok.RequiredArgsConstructor;
 @Tag(name = "api-key", description = "API-Key related operations.")
 public class ApiKeyRestControllerV1 {
 	
+	public static final String SCOPES_PATH = "scopes";
 	public static final String ID_VARIABLE = "{id}";
 	public static final String SELF_ID_VARIABLE = "@self";
 	
 	public static final String BASE_ENDPOINT = "/v1/api-keys";
+	public static final String SCOPES_ENDPOINT = BASE_ENDPOINT + "/" + SCOPES_PATH;
 	public static final String ID_ENDPOINT = BASE_ENDPOINT + "/" + ID_VARIABLE;
 	public static final String SELF_ENDPOINT = BASE_ENDPOINT + "/" + SELF_ID_VARIABLE;
 	
@@ -83,6 +86,12 @@ public class ApiKeyRestControllerV1 {
 		} else {
 			throw new OnlyUserException();
 		}
+	}
+	
+	@GetMapping(SCOPES_PATH)
+	@Operation(summary = "Show allowed scopes.")
+	public List<String> showScopes() {
+		return service.getAllowedScopes();
 	}
 	
 	@GetMapping(ID_VARIABLE)

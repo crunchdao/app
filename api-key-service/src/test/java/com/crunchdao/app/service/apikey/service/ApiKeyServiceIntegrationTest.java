@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 import java.util.function.Supplier;
 
@@ -20,6 +21,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.crunchdao.app.common.web.model.PageResponse;
 import com.crunchdao.app.service.apikey.BaseMongoTest;
+import com.crunchdao.app.service.apikey.configuration.ApiKeyConfigurationProperties;
 import com.crunchdao.app.service.apikey.dto.ApiKeyDto;
 import com.crunchdao.app.service.apikey.entity.ApiKey;
 import com.crunchdao.app.service.apikey.repository.ApiKeyRepository;
@@ -29,14 +31,17 @@ import com.crunchdao.app.service.apikey.repository.ApiKeyRepository;
 class ApiKeyServiceIntegrationTest extends BaseMongoTest {
 	
 	public static final Pageable PAGEABLE = PageRequest.of(0, 10);
+	public static final List<String> ALLOWED_SCOPES = Arrays.asList("a", "b");
 	
 	ApiKeyRepository repository;
+	ApiKeyConfigurationProperties properties;
 	ApiKeyService service;
 	
 	@BeforeEach
 	void setUp(@Autowired ApiKeyRepository repository) {
 		this.repository = repository;
-		this.service = new ApiKeyService(repository);
+		this.properties = new ApiKeyConfigurationProperties().setAllowedScopes(ALLOWED_SCOPES);
+		this.service = new ApiKeyService(repository, properties);
 	}
 	
 	@Test

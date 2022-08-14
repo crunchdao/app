@@ -11,6 +11,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 
 import com.crunchdao.app.common.security.configuration.BaseApplicationSecurity;
 import com.crunchdao.app.common.security.filter.HeaderAuthenticationFilter;
+import com.crunchdao.app.service.apikey.controller.v1.ApiKeyRestControllerV1;
 import com.crunchdao.app.service.apikey.plain.PlainApiKeyAuthenticationFilter;
 import com.crunchdao.app.service.apikey.role.Scopes;
 import com.crunchdao.app.service.apikey.service.ApiKeyService;
@@ -29,6 +30,7 @@ public class SecurityConfiguration extends BaseApplicationSecurity {
 	protected void configure(HttpSecurity http) throws Exception {
 		super.configure(http);
 		
+		http.authorizeHttpRequests().antMatchers(ApiKeyRestControllerV1.SCOPES_ENDPOINT).permitAll();
 		http.authorizeHttpRequests().antMatchers("/v*/**").authenticated();
 	}
 	

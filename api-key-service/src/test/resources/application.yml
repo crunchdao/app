@@ -1,8 +1,3 @@
-logging:
-  level:
-    org.apache.http: WARN
-    com.github.dockerjava: WARN
-    org.zeroturnaround.exec: WARN
 spring:
   config:
     enabled: false
@@ -13,3 +8,7 @@ spring:
     enabled: false
   zipkin:
     enabled: false
+api-key:
+  allowed-scopes:
+    - a
+    - b

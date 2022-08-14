@@ -11,3 +11,7 @@ spring:
   data:
     mongodb:
       auto-index-creation: true
+api-key:
+  allowed-scopes:
+    - api-key.read
+    - api-key.write
