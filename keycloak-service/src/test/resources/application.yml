@@ -1,0 +1,15 @@
+spring:
+  config:
+    enabled: false
+  cloud:
+    consul:
+      enabled: false
+  sleuth:
+    enabled: false
+  zipkin:
+    enabled: false
+keycloak:
+  realm: App
+  server-url: http://localhost:9800/
+  client-id: backend
+  client-secret: "**********"
