@@ -14,8 +14,10 @@ import com.crunchdao.app.common.security.authentication.AuthenticationType;
 import com.crunchdao.app.gateway.api.auth.AuthenticatedUserDto;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
+@Slf4j
 @RequiredArgsConstructor
 public class AuthenticationWebFilter implements WebFilter {
 	
@@ -28,7 +30,11 @@ public class AuthenticationWebFilter implements WebFilter {
 			.flatMap((authorization) -> webClient.get()
 				.uri(authenticateEndpoint)
 				.header(HttpHeaders.AUTHORIZATION, authorization)
-				.exchangeToMono(this::handleResponse))
+				.exchangeToMono(this::handleResponse)
+				.onErrorResume((error) -> {
+					log.warn("Could not authenticate", error);
+					return Mono.empty();
+				}))
 			.map((authenticatedUser) -> applyHeaders(exchange, authenticatedUser))
 			.switchIfEmpty(Mono.defer(() -> Mono.just(exchange)))
 			.map(AuthenticationWebFilter::removeOtherHeaders)
