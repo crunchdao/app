@@ -6,3 +6,7 @@ spring:
       enabled: false
   zipkin:
     enabled: false
+recaptcha:
+  validation:
+    # https://developers.google.com/recaptcha/docs/faq
+    secret-key: 6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe

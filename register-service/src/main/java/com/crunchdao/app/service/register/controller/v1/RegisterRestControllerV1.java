@@ -15,7 +15,11 @@ import com.crunchdao.app.service.register.api.keycloak.KeycloakServiceClient;
 import com.crunchdao.app.service.register.api.keycloak.KeycloakUserDto;
 import com.crunchdao.app.service.register.api.user.UserDto;
 import com.crunchdao.app.service.register.api.user.UserServiceClient;
+import com.crunchdao.app.service.register.exception.InvalidRecaptchaException;
 import com.crunchdao.app.service.register.model.RegisterForm;
+import com.github.mkopylec.recaptcha.validation.RecaptchaValidationException;
+import com.github.mkopylec.recaptcha.validation.RecaptchaValidator;
+import com.github.mkopylec.recaptcha.validation.ValidationResult;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,12 +33,15 @@ public class RegisterRestControllerV1 {
 	
 	public static final String BASE_ENDPOINT = "/v1/register";
 	
+	private final RecaptchaValidator recaptchaValidator;
 	private final KeycloakServiceClient keycloakServiceClient;
 	private final UserServiceClient userServiceClient;
 	
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping
 	public UserDto create(@Validated @RequestBody RegisterForm body, HttpServletRequest request) {
+		validateRecaptcha(body, request);
+		
 		KeycloakUserDto keycloakUser = keycloakServiceClient.create(new KeycloakUserDto()
 			.setUsername(body.getUsername())
 			.setEmail(body.getEmail())
@@ -55,6 +62,17 @@ public class RegisterRestControllerV1 {
 			}
 			
 			throw exception;
+		}
+	}
+	
+	public void validateRecaptcha(RegisterForm body, HttpServletRequest request) {
+		try {
+			ValidationResult validationResult = recaptchaValidator.validate(body.getRecaptchaResponse(), request);
+			if (validationResult.isFailure()) {
+				throw new InvalidRecaptchaException(validationResult);
+			}
+		} catch (RecaptchaValidationException exception) {
+			throw new InvalidRecaptchaException(exception.getMessage(), exception.getCause());
 		}
 	}
 	

@@ -6,8 +6,3 @@ spring:
   cloud:
     consul:
       enabled: false
-  sleuth:
-    feign:
-      enabled: true
-      processor:
-        enabled: true

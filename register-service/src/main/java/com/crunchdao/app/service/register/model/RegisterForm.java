@@ -45,6 +45,9 @@ public class RegisterForm {
 	@NotBlank
 	@JsonDeserialize(using = WhiteSpaceRemovalDeserializer.class)
 	private String confirmPassword;
+
+	@JsonDeserialize(using = WhiteSpaceRemovalDeserializer.class)
+	private String recaptchaResponse;
 	
 	@AssertTrue(message = "password not matching")
 	public boolean isConfirmPassword() {

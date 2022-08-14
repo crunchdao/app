@@ -13,7 +13,11 @@
 			<groupId>io.github.wimdeblauwe</groupId>
 			<artifactId>error-handling-spring-boot-starter</artifactId>
 		</dependency>
-		
+		<dependency>
+			<groupId>com.github.mkopylec</groupId>
+			<artifactId>recaptcha-spring-boot-starter</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>com.crunchdao.app</groupId>
 			<artifactId>web-common</artifactId>
@@ -27,7 +31,7 @@
 			<artifactId>security-common-test</artifactId>
 		</dependency>
 
-			<dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
