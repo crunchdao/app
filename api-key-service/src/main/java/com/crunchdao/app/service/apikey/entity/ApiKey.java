@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -35,6 +36,7 @@ public class ApiKey {
 	private String plain;
 	
 	@Field
+	@Indexed(unique = true)
 	private String hash;
 	
 	@Field

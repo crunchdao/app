@@ -8,3 +8,6 @@ spring:
       enabled: false
     consul:
       enabled: false
+  data:
+    mongodb:
+      auto-index-creation: true

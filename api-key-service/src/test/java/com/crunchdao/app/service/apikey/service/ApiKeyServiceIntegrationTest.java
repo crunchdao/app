@@ -2,9 +2,11 @@ package com.crunchdao.app.service.apikey.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Arrays;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -94,6 +96,23 @@ class ApiKeyServiceIntegrationTest extends BaseMongoTest {
 		assertThat(apiKey.getPlain()).startsWith(apiKey.getTruncated());
 		
 		assertThat(service.findById(apiKey.getId())).isPresent();
+	}
+	
+	@Test
+	void create_collision() {
+		final UUID userId = UUID.randomUUID();
+		final ApiKeyDto body = new ApiKeyDto()
+			.setName("hello")
+			.setDescription("world")
+			.setScopes(Arrays.asList("a", "b"));
+		
+		Supplier<String> generator = () -> "static";
+		
+		service.create(body, userId, generator);
+		
+		assertThrows(IllegalStateException.class, () -> {
+			service.create(body, userId, generator);
+		});
 	}
 	
 	@Test
