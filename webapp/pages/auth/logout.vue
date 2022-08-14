@@ -6,6 +6,7 @@
 import { defineComponent, useContext, useRouter } from '@nuxtjs/composition-api'
 
 export default defineComponent({
+  layout: 'empty',
   setup() {
     const { $auth } = useContext()
 
