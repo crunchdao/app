@@ -2,7 +2,7 @@
   <v-main class="background">
     <v-row class="fill-height" align="center" justify="center">
       <v-col align="center">
-        <v-card width="600">
+        <v-card width="600" class="ma-4">
           <v-card-title class="text-h2">
             <v-spacer />
             WELCOME
@@ -66,6 +66,18 @@
                   type="password"
                   :error-messages="validation.confirmPassword"
                 />
+                <client-only>
+                  <vue-recaptcha
+                    class="mb-4"
+                    ref="captcha"
+                    :loadRecaptchaScript="true"
+                    :sitekey="recaptcha.siteKey"
+                    @verify="recaptcha.onVerify"
+                    @expired="recaptcha.onExpired"
+                    @render="recaptcha.onRenderMethod"
+                    @error="recaptcha.onRenderError"
+                  />
+                </client-only>
                 <v-btn large color="primary" block type="submit">
                   Register
                 </v-btn>
@@ -84,6 +96,7 @@
 </template>
 
 <script lang="ts">
+import VueRecaptcha from 'vue-recaptcha'
 import {
   defineComponent,
   reactive,
@@ -95,12 +108,14 @@ import {
 import { ApiError, User } from '~/models'
 
 export default defineComponent({
+  components: { VueRecaptcha },
   layout: 'empty',
   setup() {
-    const { $axios } = useContext()
+    const { $axios, $dialog } = useContext()
     const router = useRouter()
 
     const user = ref() as Ref<User>
+    const captcha = ref(null) as Ref<any>
 
     const inputs = reactive({
       firstName: null as string | null,
@@ -109,6 +124,7 @@ export default defineComponent({
       email: null as string | null,
       password: null as string | null,
       confirmPassword: null as string | null,
+      recaptchaResponse: null as string | null,
     })
 
     const errorMessage = ref() as Ref<string | null>
@@ -160,9 +176,32 @@ export default defineComponent({
           errorMessage.value =
             error?.message || String(error) || 'An error occured'
         }
+
+        resetCaptcha()
       } finally {
         loading.value = false
       }
+    }
+
+    const recaptcha = {
+      siteKey: process.env.recaptchaSiteKey,
+      onVerify(response: string) {
+        inputs.recaptchaResponse = response
+      },
+      onExpired() {
+        inputs.recaptchaResponse = null
+      },
+      onRenderMethod() {
+        inputs.recaptchaResponse = null
+      },
+      onRenderError(error: Error | any) {
+        inputs.recaptchaResponse = null
+        $dialog.notify.error(`Recaptcha: ${error}`)
+      },
+    }
+
+    const resetCaptcha = () => {
+      captcha.value!.reset()
     }
 
     return {
@@ -171,7 +210,9 @@ export default defineComponent({
       errorMessage,
       validation,
       loading,
+      captcha,
       submit,
+      recaptcha,
     }
   },
 })
