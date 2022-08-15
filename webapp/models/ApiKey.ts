@@ -11,3 +11,8 @@ export interface ApiKey extends Entity<UUID> {
   updatedAt: LocalDateTime
   scopes: Array<string>
 }
+
+export interface Scope {
+  name: string
+  description: string
+}

@@ -1,14 +1,17 @@
 <template>
   <client-only>
-    <v-list-item>
+    <v-list-item link>
       <v-list-item-icon>
         <v-icon>mdi-key</v-icon>
       </v-list-item-icon>
       <v-list-item-content>
         <v-list-item-title>
-          ID: <code>{{ apiKey.id }}</code>
+          {{ apiKey.name }}
         </v-list-item-title>
         <v-list-item-subtitle>
+          <template v-if="apiKey.description">
+            {{ apiKey.description }} <br />
+          </template>
           <v-chip v-for="scope in apiKey.scopes" :key="scope" x-small>
             {{ scope }}
           </v-chip>
@@ -35,7 +38,8 @@
               <v-icon>mdi-dots-vertical</v-icon>
             </v-btn>
           </template>
-          <v-list>
+          <v-list dense>
+            <api-keys-button-copy-id :api-key="apiKey" />
             <api-keys-button-delete :api-key="apiKey" @delete="onDelete" />
           </v-list>
         </v-menu>
@@ -62,7 +66,7 @@ export default defineComponent({
 
     const onDelete = () => emit('delete')
 
-    return { apiKey }
+    return { apiKey, onDelete }
   },
 })
 </script>

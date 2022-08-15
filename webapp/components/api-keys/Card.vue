@@ -7,6 +7,13 @@
       <v-btn icon :loading="fetchState.pending" @click="fetch">
         <v-icon>mdi-refresh</v-icon>
       </v-btn>
+      <api-keys-dialog-create @create="fetch">
+        <template #activator="{ on, attrs }">
+          <v-btn icon class="ml-2" v-bind="attrs" v-on="on">
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
+        </template>
+      </api-keys-dialog-create>
       <client-only>
         <v-menu offset-x right offset-y>
           <template #activator="{ on, attrs }">
