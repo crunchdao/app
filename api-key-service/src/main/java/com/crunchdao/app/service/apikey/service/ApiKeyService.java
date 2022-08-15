@@ -13,6 +13,7 @@ import java.util.function.Supplier;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,21 +25,21 @@ import com.crunchdao.app.service.apikey.dto.ApiKeyDto;
 import com.crunchdao.app.service.apikey.entity.ApiKey;
 import com.crunchdao.app.service.apikey.repository.ApiKeyRepository;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RequiredArgsConstructor
 @Service
 public class ApiKeyService {
 	
 	public static final int RETRY_COUNT = 5;
 	
 	private final ApiKeyRepository repository;
-	private final ApiKeyConfigurationProperties properties;
+	private final List<String> allowedScopes;
 	
-	public List<String> getAllowedScopes() {
-		return properties.getAllowedScopes();
+	@Autowired
+	public ApiKeyService(ApiKeyRepository repository, ApiKeyConfigurationProperties properties) {
+		this.repository = repository;
+		this.allowedScopes = properties.getAllowedScopesAsString();
 	}
 	
 	public Optional<ApiKeyDto> findById(UUID id) {
@@ -60,7 +61,7 @@ public class ApiKeyService {
 	}
 	
 	public ApiKeyDto create(ApiKeyDto body, UUID userId, Supplier<String> generator) {
-		List<String> scopes = sanitizeScopes(body.getScopes(), getAllowedScopes());
+		List<String> scopes = sanitizeScopes(body.getScopes(), allowedScopes);
 		
 		for (int n = 0; n < RETRY_COUNT; ++n) {
 			String plain = generator.get();

@@ -34,14 +34,12 @@ class ApiKeyServiceIntegrationTest extends BaseMongoTest {
 	public static final List<String> ALLOWED_SCOPES = Arrays.asList("a", "b");
 	
 	ApiKeyRepository repository;
-	ApiKeyConfigurationProperties properties;
 	ApiKeyService service;
 	
 	@BeforeEach
 	void setUp(@Autowired ApiKeyRepository repository) {
 		this.repository = repository;
-		this.properties = new ApiKeyConfigurationProperties().setAllowedScopes(ALLOWED_SCOPES);
-		this.service = new ApiKeyService(repository, properties);
+		this.service = new ApiKeyService(repository, new ApiKeyConfigurationProperties().setAllowedScopesFromString(ALLOWED_SCOPES));
 	}
 	
 	@Test

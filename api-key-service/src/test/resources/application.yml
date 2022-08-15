@@ -10,5 +10,5 @@ spring:
     enabled: false
 api-key:
   allowed-scopes:
-    - a
-    - b
+    - name: a
+    - name: b

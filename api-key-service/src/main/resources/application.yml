@@ -13,5 +13,7 @@ spring:
       auto-index-creation: true
 api-key:
   allowed-scopes:
-    - api-key.read
-    - api-key.write
+    - name: api-key.read
+      description: List API-Keys.
+    - name: api-key.write
+      description: Create or delete API-Keys.

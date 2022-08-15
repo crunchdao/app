@@ -24,7 +24,9 @@ import com.crunchdao.app.common.security.token.UserAuthenticationToken;
 import com.crunchdao.app.common.web.exception.ForbiddenException;
 import com.crunchdao.app.common.web.exception.OnlyUserException;
 import com.crunchdao.app.common.web.model.PageResponse;
+import com.crunchdao.app.service.apikey.configuration.ApiKeyConfigurationProperties;
 import com.crunchdao.app.service.apikey.dto.ApiKeyDto;
+import com.crunchdao.app.service.apikey.dto.ScopeDto;
 import com.crunchdao.app.service.apikey.exception.ApiKeyNotFoundException;
 import com.crunchdao.app.service.apikey.permission.CanRead;
 import com.crunchdao.app.service.apikey.permission.CanWrite;
@@ -52,6 +54,7 @@ public class ApiKeyRestControllerV1 {
 	public static final String SELF_ENDPOINT = BASE_ENDPOINT + "/" + SELF_ID_VARIABLE;
 	
 	private final ApiKeyService service;
+	private final ApiKeyConfigurationProperties properties;
 	
 	@GetMapping
 	@CanRead
@@ -89,9 +92,9 @@ public class ApiKeyRestControllerV1 {
 	}
 	
 	@GetMapping(SCOPES_PATH)
-	@Operation(summary = "Show allowed scopes.")
-	public List<String> showScopes() {
-		return service.getAllowedScopes();
+	@Operation(summary = "List allowed scopes.")
+	public List<ScopeDto> listScopes() {
+		return properties.getAllowedScopes();
 	}
 	
 	@GetMapping(ID_VARIABLE)
