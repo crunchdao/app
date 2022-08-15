@@ -4,7 +4,5 @@ spring:
   application:
     name: auth-service
   cloud:
-    loadbalancer:
-      enabled: false
     consul:
       enabled: false

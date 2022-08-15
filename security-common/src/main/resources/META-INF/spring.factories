@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+	com.crunchdao.app.common.security.autoconfigure.FeignExceptionAutoConfiguration,\
 	com.crunchdao.app.common.security.autoconfigure.FeignSecurityAutoConfiguration

@@ -6,9 +6,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.crunchdao.app.common.security.handler.FeignExceptionApiExceptionHandler;
-import com.crunchdao.app.common.security.interceptor.SecurityFeignRequestInterceptor;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.crunchdao.app.common.security.interceptor.authentication.SecurityFeignRequestInterceptor;
+import com.crunchdao.app.common.security.interceptor.authentication.ServiceSecurityFeignRequestInterceptor;
 
 import feign.Feign;
 
@@ -18,14 +17,8 @@ public class FeignSecurityAutoConfiguration {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	FeignExceptionApiExceptionHandler feignExceptionApiExceptionHandler(ObjectMapper objectMapper) {
-		return new FeignExceptionApiExceptionHandler(objectMapper);
-	}
-	
-	@Bean
-	@ConditionalOnMissingBean
 	SecurityFeignRequestInterceptor securityFeignRequestInterceptor(ApplicationContext applicationContext) {
-		return new SecurityFeignRequestInterceptor(applicationContext);
+		return new ServiceSecurityFeignRequestInterceptor(applicationContext);
 	}
 	
 }
