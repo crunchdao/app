@@ -27,10 +27,12 @@
 		<javafaker.version>1.0.2</javafaker.version>
 		<keycloak-admin-client.version>19.0.1</keycloak-admin-client.version>
 		<recaptcha-spring-boot-starter.version>2.3.1</recaptcha-spring-boot-starter.version>
+		<graphql-java-extended-scalars.version>2022-07-24T22-44-12-313b221</graphql-java-extended-scalars.version>
 	</properties>
 
 	<modules>
 		<module>gateway</module>
+		<module>graphql</module>
 		<module>api-key-service</module>
 		<module>user-service</module>
 		<module>keycloak-service</module>
@@ -61,6 +63,11 @@
 				<groupId>org.keycloak</groupId>
 				<artifactId>keycloak-admin-client</artifactId>
 				<version>${keycloak-admin-client.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.graphql-java</groupId>
+				<artifactId>graphql-java-extended-scalars</artifactId>
+				<version>${graphql-java-extended-scalars.version}</version>
 			</dependency>
 
 			<dependency>

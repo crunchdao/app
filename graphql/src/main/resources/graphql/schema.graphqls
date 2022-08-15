@@ -1,0 +1,43 @@
+scalar DateTime
+scalar UUID
+scalar JSON
+
+type Query {
+	apiKeys(page: Int, size: Int, sort: String): ApiKeyPageResponse
+	apiKeyById(id: UUID!): ApiKey
+	self: User!
+	userById(id: UUID!): User
+}
+
+type ApiKeyPageResponse {
+	content: [ApiKey]
+	pageNumber: Int
+	pageSize: Int
+	totalElements: Int
+	totalPages: Int
+	first: Boolean
+	last: Boolean
+}
+
+type ApiKey {
+    id: UUID!
+    userId: UUID!
+    user: User!
+    name: String!
+    description: String!
+    plain: String
+    truncated: String!
+    createdAt: String!
+    updatedAt: String!
+    scopes: [String]
+}
+
+type User {
+    id: UUID!
+    username: String!
+    firstName: String
+    lastName: String
+    email: String
+    createdAt: String!
+    updatedAt: String!
+}

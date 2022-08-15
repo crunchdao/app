@@ -50,3 +50,7 @@ spring:
           uri: lb://register-service
           predicates:
             - Path=/v1/register
+        - id: graphql
+          uri: lb://graphql
+          predicates:
+            - Path=/graphql,/graphiql

@@ -1,0 +1,20 @@
+server:
+  port: ${PORT:8007}
+  tomcat:
+    threads:
+      max: 4
+spring:
+  application:
+    name: graphql
+  cloud:
+    consul:
+      enabled: false
+  graphql:
+    graphiql:
+      enabled: true
+#  data:
+#    web:
+#      pageable: 
+graphiql:
+  cdn:
+    enabled: true
