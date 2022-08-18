@@ -1,0 +1,25 @@
+server:
+  port: ${PORT:8008}
+spring:
+  application:
+    name: segment-analytics-service
+  cloud:
+    consul:
+      enabled: false
+app:
+  messaging:
+    exchange:
+      user: "user"
+    queue:
+      user:
+        event:
+          created: "user.event.created.${spring.application.name}"
+          deleted: "user.event.deleted.${spring.application.name}"
+    routing-key:
+      user:
+        event:
+          created: "user.event.created"
+          deleted: "user.event.deleted"
+segment:
+  analytics:
+    writeKey: ${SEGMENT_WRITE_KEY:}

@@ -1,0 +1,25 @@
+spring:
+  cloud:
+    consul:
+      enabled: false
+  sleuth:
+    enabled: false
+  zipkin:
+    enabled: false
+app:
+  messaging:
+    exchange:
+      user: "user"
+    queue:
+      user:
+        event:
+          created: "user.event.created.app"
+          deleted: "user.event.deleted.app"
+    routing-key:
+      user:
+        event:
+          created: "user.event.created"
+          deleted: "user.event.deleted"
+segment:
+  analytics:
+    writeKey: "-"
