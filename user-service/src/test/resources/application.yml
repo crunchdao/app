@@ -8,3 +8,12 @@ spring:
     enabled: false
   zipkin:
     enabled: false
+app:
+  messaging:
+    exchange:
+      user: "user"
+    routing-key:
+      user:
+        event:
+          created: "user.event.created"
+          deleted: "user.event.deleted"

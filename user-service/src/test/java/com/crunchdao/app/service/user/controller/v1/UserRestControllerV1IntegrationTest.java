@@ -16,11 +16,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.testcontainers.containers.MongoDBContainer;
+import org.testcontainers.containers.RabbitMQContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import com.crunchdao.app.common.security.token.MockAuthenticationToken;
-import com.crunchdao.app.service.user.BaseMongoTest;
 import com.crunchdao.app.service.user.UserServiceApplication;
 import com.crunchdao.app.service.user.dto.UserDto;
 import com.crunchdao.app.service.user.dto.UserWithIdDto;
@@ -34,7 +39,24 @@ import com.github.javafaker.Faker;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = UserServiceApplication.class)
 @AutoConfigureMockMvc
-class UserRestControllerV1IntegrationTest extends BaseMongoTest {
+@Testcontainers
+class UserRestControllerV1IntegrationTest {
+	
+	@Container
+	static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:latest");
+	
+	@Container
+	static RabbitMQContainer rabbitMQContainer = new RabbitMQContainer("rabbitmq:3-management");
+	
+	@DynamicPropertySource
+	static void setProperties(DynamicPropertyRegistry registry) {
+		registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
+		registry.add("spring.data.mongodb.auto-index-creation", () -> true);
+		registry.add("spring.rabbitmq.host", rabbitMQContainer::getHost);
+		registry.add("spring.rabbitmq.port", rabbitMQContainer::getAmqpPort);
+		registry.add("spring.rabbitmq.username", rabbitMQContainer::getAdminUsername);
+		registry.add("spring.rabbitmq.password", rabbitMQContainer::getAdminPassword);
+	}
 	
 	public static final String ACCESS_DENIED = "Access is denied";
 	

@@ -4,10 +4,23 @@ spring:
   application:
     name: user-service
   cloud:
-    loadbalancer:
-      enabled: false
     consul:
       enabled: false
   data:
     mongodb:
       auto-index-creation: true
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+app:
+  messaging:
+    exchange:
+      user: "user"
+    routing-key:
+      user:
+        event:
+          created: "user.event.created"
+          deleted: "user.event.deleted"

@@ -26,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 public class UserService {
 	
 	private final UserRepository repository;
+	private final RabbitMQSender rabbitMQSender;
 	
 	public Optional<UserDto> findById(UUID id) {
 		return repository.findById(id).map(User::toDto);
@@ -39,7 +40,7 @@ public class UserService {
 	
 	public UserDto create(UserWithIdDto body) {
 		try {
-			return repository.save(new User()
+			UserDto dto = repository.save(new User()
 				.setId(body.getId())
 				.setFirstName(body.getFirstName())
 				.setLastName(body.getLastName())
@@ -47,6 +48,10 @@ public class UserService {
 				.setEmail(body.getEmail())
 				.setCreatedAt(LocalDateTime.now())
 				.setUpdatedAt(LocalDateTime.now())).toDto();
+			
+			rabbitMQSender.sendCreated(dto);
+			
+			return dto;
 		} catch (DuplicateKeyException exception) {
 			log.warn("Could not create user", exception);
 			
@@ -60,6 +65,7 @@ public class UserService {
 		}
 		
 		repository.deleteById(id);
+		rabbitMQSender.sendDeleted(id);
 	}
 	
 }

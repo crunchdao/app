@@ -3,6 +3,7 @@ package com.crunchdao.app.service.user.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
 
 import java.util.UUID;
 
@@ -30,12 +31,14 @@ public class UserServiceIntegrationTest extends BaseMongoTest {
 	public static final Pageable PAGEABLE = PageRequest.of(0, 10);
 	
 	UserRepository repository;
+	RabbitMQSender rabbitMQSender;
 	UserService service;
 	
 	@BeforeEach
 	void setUp(@Autowired UserRepository repository) {
 		this.repository = repository;
-		this.service = new UserService(repository);
+		this.rabbitMQSender = mock(RabbitMQSender.class);
+		this.service = new UserService(repository, rabbitMQSender);
 		
 		repository.deleteAll();
 	}
