@@ -160,10 +160,17 @@ class UserRestControllerV1IntegrationTest {
 		
 		@Test
 		void fromUser() throws Exception {
+			final UserWithIdDto body = new UserWithIdDto()
+				.setId(UUID.randomUUID())
+				.setUsername(Faker.instance().name().username())
+				.setFirstName(Faker.instance().name().firstName())
+				.setLastName(Faker.instance().name().lastName())
+				.setEmail(Faker.instance().internet().emailAddress());
+			
 			mockMvc
 				.perform(put(UserRestControllerV1.BASE_ENDPOINT)
 					.contentType(MediaType.APPLICATION_JSON)
-					.content("{}")
+					.content(objectMapper.writeValueAsString(body))
 					.with(MockAuthenticationToken.user()))
 				.andExpect(status().isForbidden())
 				.andExpect(jsonPath("$.message").value(ACCESS_DENIED));

@@ -59,11 +59,7 @@ public class UserRestControllerV1 {
 	@PutMapping
 	@OnlyAdminOrService
 	@Hidden
-	public UserDto create(@RequestBody UserWithIdDto body) {
-		return doCreate(body);
-	}
-	
-	private UserDto doCreate(@Validated UserWithIdDto body) {
+	public UserDto create(@Validated @RequestBody UserWithIdDto body) {
 		return service.create(body);
 	}
 	
