@@ -1,0 +1,98 @@
+package com.crunchdao.app.service.connection.service;
+
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import com.crunchdao.app.service.connection.exception.UnknownHandlerException;
+import com.crunchdao.app.service.connection.handler.ConnectionHandler;
+import com.crunchdao.app.service.connection.handler.ConnectionIdentity;
+import com.crunchdao.app.service.connection.handler.HandlerContext;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Service
+public class ConnectionHandlerService {
+	
+	private final Map<String, ConnectionHandler> handlers;
+	private final Map<String, String> redirectionUrls;
+	
+	public ConnectionHandlerService(List<ConnectionHandler> handlers, @Value("http://localhost:3000") String base) {
+		this.handlers = buildHandlersMap(handlers);
+		this.redirectionUrls = buildRedirectionUrlsMap(handlers, base);
+		
+		log.info("Using {} handler(s)", handlers.size());
+	}
+	
+	public String generateUrl(UUID userId, String type) {
+		HandlerContext context = createContext(userId, type);
+		ConnectionHandler handler = getHandler(type);
+		
+		return handler.generateUrl(context);
+	}
+	
+	public ConnectionIdentity fetchIdentity(UUID userId, String type, String code) throws Exception {
+		HandlerContext context = createContext(userId, type);
+		ConnectionHandler handler = getHandler(type);
+		
+		return handler.fetchIdentity(context, code);
+	}
+	
+	public HandlerContext createContext(UUID userId, String type) {
+		String redirectionUrl = getRedirectionUrls(type);
+		
+		return new SimpleHandlerContext(userId, redirectionUrl);
+	}
+	
+	public ConnectionHandler getHandler(String type) {
+		return get(handlers, type);
+	}
+	
+	public String getRedirectionUrls(String type) {
+		return get(redirectionUrls, type);
+	}
+	
+	public static String buildRedirectionUrl(String type, String base) {
+		return String.format("%s/callback/connections/%s", base, type.toLowerCase());
+	}
+	
+	public static Map<String, String> buildRedirectionUrlsMap(List<ConnectionHandler> handlers, String base) {
+		return handlers
+			.stream()
+			.collect(Collectors.toMap(ConnectionHandler::getType, (handler) -> buildRedirectionUrl(handler.getType(), base)));
+	}
+	
+	public static Map<String, ConnectionHandler> buildHandlersMap(List<ConnectionHandler> handlers) {
+		return handlers
+			.stream()
+			.collect(Collectors.toMap(ConnectionHandler::getType, Function.identity()));
+	}
+	
+	public static <V> V get(Map<String, V> map, String type) {
+		V value = map.get(type.toUpperCase());
+		
+		if (value == null) {
+			throw new UnknownHandlerException(type);
+		}
+		
+		return value;
+	}
+	
+	@Getter
+	@AllArgsConstructor
+	public static class SimpleHandlerContext implements HandlerContext {
+		
+		private final UUID userId;
+		private final String redirectionUrl;
+		
+	}
+	
+}

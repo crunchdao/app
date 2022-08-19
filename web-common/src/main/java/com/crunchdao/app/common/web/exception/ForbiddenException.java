@@ -13,4 +13,8 @@ public class ForbiddenException extends RuntimeException {
 		super(DEFAULT_MESSAGE);
 	}
 	
+	public ForbiddenException(String message) {
+		super(message);
+	}
+	
 }

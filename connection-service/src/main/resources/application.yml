@@ -1,0 +1,25 @@
+server:
+  port: ${PORT:8009}
+spring:
+  application:
+    name: connection-service
+  cloud:
+    consul:
+      enabled: false
+app:
+  messaging:
+    exchange:
+      user: "user"
+      connection: "connection"
+    queue:
+      user:
+        event:
+          deleted: "user.event.deleted.${spring.application.name}"
+    routing-key:
+      connection:
+        event:
+          created: "user.event.created"
+          deleted: "user.event.deleted"
+      user:
+        event:
+          deleted: "user.event.deleted"
