@@ -21,6 +21,7 @@ import com.crunchdao.app.common.web.exception.ForbiddenException;
 import com.crunchdao.app.common.web.exception.OnlyUserException;
 import com.crunchdao.app.common.web.model.PageResponse;
 import com.crunchdao.app.service.connection.dto.ConnectionDto;
+import com.crunchdao.app.service.connection.dto.RedirectDto;
 import com.crunchdao.app.service.connection.handler.ConnectionIdentity;
 import com.crunchdao.app.service.connection.service.ConnectionHandlerService;
 import com.crunchdao.app.service.connection.service.ConnectionService;
@@ -68,11 +69,11 @@ public class ConnectionRestControllerV1 {
 	@Authenticated
 	@PostMapping("{type}")
 	@Operation(summary = "Start a connection.")
-	public String connect(@PathVariable String type, Authentication authentication) {
+	public RedirectDto connect(@PathVariable String type, Authentication authentication) {
 		if (authentication instanceof UserAuthenticationToken token) {
 			String url = connectionHandlerService.generateUrl(token.getUserId(), type);
 			
-			return url;
+			return new RedirectDto(url);
 		}
 		
 		throw new OnlyUserException();
