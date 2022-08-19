@@ -1,0 +1,54 @@
+logging:
+  level:
+    org.mongodb.driver.cluster: WARN
+spring:
+  config:
+    enabled: false
+  cloud:
+    consul:
+      enabled: false
+  sleuth:
+    enabled: false
+  zipkin:
+    enabled: false
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ""
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+        enable_lazy_load_no_trans: true
+discord:
+  enabled: true
+  client-id: "123"
+  client-secret: "456"
+twitter:
+  enabled: true
+  client-id: "123"
+github:
+  enabled: true
+  client-id: "123"
+  client-secret: "456"
+app:
+  messaging:
+    exchange:
+      user: "user"
+      connection: "connection"
+    queue:
+      user:
+        event:
+          deleted: "user.event.deleted.app"
+    routing-key:
+      connection:
+        event:
+          created: "user.event.created"
+          deleted: "user.event.deleted"
+      user:
+        event:
+          deleted: "user.event.deleted"

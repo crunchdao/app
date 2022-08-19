@@ -21,6 +21,8 @@ public interface ConnectionRepository extends JpaRepository<Connection, Long> {
 	
 	long deleteByUserIdAndType(UUID userId, String type);
 	
-	void deleteAllByUserId(UUID userId);
+	long deleteAllByUserId(UUID userId);
+
+	long countByUserId(UUID userId);
 	
 }

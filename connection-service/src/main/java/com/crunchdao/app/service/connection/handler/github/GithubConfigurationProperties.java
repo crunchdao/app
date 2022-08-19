@@ -1,5 +1,7 @@
 package com.crunchdao.app.service.connection.handler.github;
 
+import java.util.Base64;
+
 import javax.validation.constraints.NotNull;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -16,12 +18,19 @@ import lombok.experimental.Accessors;
 public class GithubConfigurationProperties {
 	
 	public static final String PREFIX = "github";
-
+	
 	@NotNull
 	private String clientId;
-
+	
 	@NotNull
 	@ToString.Exclude
 	private String clientSecret;
+	
+	public String toBasic() {
+		String credentials = String.format("%s:%s", clientId, clientSecret);
+		String encoded = new String(Base64.getEncoder().encode(credentials.getBytes()));
+		
+		return String.format("Basic %s", encoded);
+	}
 	
 }

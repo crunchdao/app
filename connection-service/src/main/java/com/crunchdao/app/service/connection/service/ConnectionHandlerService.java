@@ -2,6 +2,7 @@ package com.crunchdao.app.service.connection.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -33,15 +34,15 @@ public class ConnectionHandlerService {
 	}
 	
 	public String generateUrl(UUID userId, String type) {
-		HandlerContext context = createContext(userId, type);
 		ConnectionHandler handler = getHandler(type);
+		HandlerContext context = createContext(userId, type);
 		
 		return handler.generateUrl(context);
 	}
 	
 	public ConnectionIdentity fetchIdentity(UUID userId, String type, String code) throws Exception {
-		HandlerContext context = createContext(userId, type);
 		ConnectionHandler handler = getHandler(type);
+		HandlerContext context = createContext(userId, type);
 		
 		return handler.fetchIdentity(context, code);
 	}
@@ -61,23 +62,23 @@ public class ConnectionHandlerService {
 	}
 	
 	public static String buildRedirectionUrl(String type, String base) {
-		return String.format("%s/callback/connections/%s", base, type.toLowerCase());
+		return String.format("%s/auth/callback/connections/%s", base, type.toLowerCase());
 	}
 	
 	public static Map<String, String> buildRedirectionUrlsMap(List<ConnectionHandler> handlers, String base) {
 		return handlers
 			.stream()
-			.collect(Collectors.toMap(ConnectionHandler::getType, (handler) -> buildRedirectionUrl(handler.getType(), base)));
+			.collect(Collectors.toMap(ConnectionHandler::getType, (handler) -> buildRedirectionUrl(handler.getType(), base), (a, b) -> a, () -> new TreeMap<>(String.CASE_INSENSITIVE_ORDER)));
 	}
 	
 	public static Map<String, ConnectionHandler> buildHandlersMap(List<ConnectionHandler> handlers) {
 		return handlers
 			.stream()
-			.collect(Collectors.toMap(ConnectionHandler::getType, Function.identity()));
+			.collect(Collectors.toMap(ConnectionHandler::getType, Function.identity(), (a, b) -> a, () -> new TreeMap<>(String.CASE_INSENSITIVE_ORDER)));
 	}
 	
 	public static <V> V get(Map<String, V> map, String type) {
-		V value = map.get(type.toUpperCase());
+		V value = map.get(type);
 		
 		if (value == null) {
 			throw new UnknownHandlerException(type);

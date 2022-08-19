@@ -2,7 +2,6 @@ package com.crunchdao.app.service.connection.handler.github;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Base64;
 import java.util.Collections;
 import java.util.Map;
 
@@ -131,7 +130,7 @@ public class GithubConnectionHandler extends AbstractConnectionHandler {
 		Request request = new Request.Builder()
 			.delete(RequestBody.create(json, MediaType.parse("application/json")))
 			.header(HttpHeaders.ACCEPT, "application/vnd.github.v3+json")
-			.header(HttpHeaders.AUTHORIZATION, toBasic(properties))
+			.header(HttpHeaders.AUTHORIZATION, properties.toBasic())
 			.url(HttpUrl.parse(APPLICATIONS_ENDPOINT)
 				.newBuilder()
 				.addPathSegment(properties.getClientId())
@@ -162,17 +161,10 @@ public class GithubConnectionHandler extends AbstractConnectionHandler {
 			.profileUrl(htmlUrl)
 			.build();
 	}
-
+	
 	@Override
 	public String getType() {
 		return NAME;
-	}
-	
-	public static String toBasic(GithubConfigurationProperties github) {
-		String credentials = String.format("%s:%s", github.getClientId(), github.getClientSecret());
-		String encoded = new String(Base64.getEncoder().encode(credentials.getBytes()));
-		
-		return String.format("Basic %s", encoded);
 	}
 	
 }

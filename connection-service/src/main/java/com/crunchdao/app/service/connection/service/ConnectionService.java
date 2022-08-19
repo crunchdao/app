@@ -32,10 +32,13 @@ public class ConnectionService {
 	}
 	
 	public ConnectionDto connect(UUID userId, String type, ConnectionIdentity identity) {
+		type = type.toUpperCase();
+		
+		final String finalType = type;
 		ConnectionDto connection = repository.save(repository.findByUserIdAndType(userId, type)
 			.orElseGet(() -> new Connection()
 				.setUserId(userId)
-				.setType(type))
+				.setType(finalType))
 			.mergeIdentity(identity)).toDto();
 		
 		rabbitMQSender.sendCreated(connection);
@@ -45,6 +48,8 @@ public class ConnectionService {
 	
 	@Transactional
 	public void disconnect(UUID userId, String type) {
+		type = type.toUpperCase();
+		
 		if (repository.deleteByUserIdAndType(userId, type) == 0) {
 			throw new ConnectionNotFoundException(userId, type);
 		}
@@ -53,8 +58,8 @@ public class ConnectionService {
 	}
 	
 	@Transactional
-	public void deleteAllByUser(UUID userId) {
-		repository.deleteAllByUserId(userId);
+	public long deleteAllByUserId(UUID userId) {
+		return repository.deleteAllByUserId(userId);
 	}
 	
 }

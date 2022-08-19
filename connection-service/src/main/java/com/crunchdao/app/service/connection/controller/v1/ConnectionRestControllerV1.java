@@ -2,6 +2,7 @@ package com.crunchdao.app.service.connection.controller.v1;
 
 import java.util.UUID;
 
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -20,7 +21,6 @@ import com.crunchdao.app.common.web.exception.ForbiddenException;
 import com.crunchdao.app.common.web.exception.OnlyUserException;
 import com.crunchdao.app.common.web.model.PageResponse;
 import com.crunchdao.app.service.connection.dto.ConnectionDto;
-import com.crunchdao.app.service.connection.dto.RedirectDto;
 import com.crunchdao.app.service.connection.handler.ConnectionIdentity;
 import com.crunchdao.app.service.connection.service.ConnectionHandlerService;
 import com.crunchdao.app.service.connection.service.ConnectionService;
@@ -41,7 +41,7 @@ public class ConnectionRestControllerV1 {
 	
 	@GetMapping
 	@Operation(summary = "List connections.")
-	public PageResponse<ConnectionDto> list(@RequestParam(name = "user", required = false) UUID userId, Pageable pageable, Authentication authentication) {
+	public PageResponse<ConnectionDto> list(@RequestParam(name = "user", required = false) UUID userId, @ParameterObject Pageable pageable, Authentication authentication) {
 		if (userId != null) {
 			return connectionService.listPublicForUserId(userId, pageable);
 		}
@@ -68,11 +68,11 @@ public class ConnectionRestControllerV1 {
 	@Authenticated
 	@PostMapping("{type}")
 	@Operation(summary = "Start a connection.")
-	public RedirectDto connect(@PathVariable String type, Authentication authentication) {
+	public String connect(@PathVariable String type, Authentication authentication) {
 		if (authentication instanceof UserAuthenticationToken token) {
 			String url = connectionHandlerService.generateUrl(token.getUserId(), type);
 			
-			return new RedirectDto(url);
+			return url;
 		}
 		
 		throw new OnlyUserException();
