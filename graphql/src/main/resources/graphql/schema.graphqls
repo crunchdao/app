@@ -4,9 +4,9 @@ scalar JSON
 
 type Query {
 	apiKeys(page: Int, size: Int, sort: String): ApiKeyPageResponse
-	apiKeyById(id: UUID!): ApiKey
+	apiKey(id: UUID!): ApiKey
 	self: User!
-	userById(id: UUID!): User
+	user(id: UUID!): User
 	connections(user: UUID, page: Int, size: Int, sort: String): ConnectionPageResponse
 }
 
