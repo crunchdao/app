@@ -7,6 +7,7 @@ type Query {
 	apiKeyById(id: UUID!): ApiKey
 	self: User!
 	userById(id: UUID!): User
+	connections(user: UUID, page: Int, size: Int, sort: String): ConnectionPageResponse
 }
 
 type ApiKeyPageResponse {
@@ -30,6 +31,28 @@ type ApiKey {
     createdAt: String!
     updatedAt: String!
     scopes: [String]
+}
+
+type ConnectionPageResponse {
+	content: [Connection]
+	pageNumber: Int
+	pageSize: Int
+	totalElements: Int
+	totalPages: Int
+	first: Boolean
+	last: Boolean
+}
+
+type Connection {
+    userId: UUID!
+    user: User!
+    type: String!
+    handle: String!
+    username: String!
+    profileUrl: String
+    public: Boolean!
+    createdAt: String!
+    updatedAt: String!
 }
 
 type User {
