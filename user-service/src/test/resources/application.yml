@@ -1,3 +1,6 @@
+logging:
+  level:
+    org.mongodb.driver.cluster: WARN
 spring:
   config:
     enabled: false
