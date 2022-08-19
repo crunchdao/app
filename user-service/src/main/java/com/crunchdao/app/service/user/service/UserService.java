@@ -8,6 +8,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.crunchdao.app.common.web.model.PageResponse;
 import com.crunchdao.app.service.user.dto.UserDto;
@@ -59,12 +60,12 @@ public class UserService {
 		}
 	}
 	
+	@Transactional
 	public void delete(UUID id) {
-		if (!repository.existsById(id)) {
+		if (repository.removeById(id) == 0) {
 			throw new UserNotFoundException(id);
 		}
 		
-		repository.deleteById(id);
 		rabbitMQSender.sendDeleted(id);
 	}
 	

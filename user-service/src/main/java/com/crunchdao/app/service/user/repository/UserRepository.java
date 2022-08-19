@@ -8,4 +8,6 @@ import com.crunchdao.app.service.user.entity.User;
 
 public interface UserRepository extends MongoRepository<User, UUID> {
 	
+	long removeById(UUID id);
+	
 }
