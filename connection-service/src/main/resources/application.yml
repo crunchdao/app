@@ -18,8 +18,8 @@ app:
     routing-key:
       connection:
         event:
-          created: "user.event.created"
-          deleted: "user.event.deleted"
+          created: "connection.event.created"
+          deleted: "connection.event.deleted"
       user:
         event:
           deleted: "user.event.deleted"

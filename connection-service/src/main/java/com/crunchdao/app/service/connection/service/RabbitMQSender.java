@@ -36,7 +36,7 @@ public class RabbitMQSender {
 	}
 	
 	public String getConnectionExchange() {
-		return properties.getExchange().getUser();
+		return properties.getExchange().getConnection();
 	}
 	
 	@AllArgsConstructor
