@@ -21,6 +21,7 @@ public class MessagingConfigurationProperties {
 	public static class Exchange {
 		
 		private String user;
+		private String connection;
 		
 	}
 	
@@ -29,10 +30,28 @@ public class MessagingConfigurationProperties {
 	public static class RoutingKey {
 		
 		private User user;
+		private Connection connection;
 		
 		@Data
 		@Accessors(chain = true)
 		public static class User {
+			
+			private Event event;
+			
+			@Data
+			@Accessors(chain = true)
+			public static class Event {
+				
+				private String created;
+				private String deleted;
+				
+			}
+			
+		}
+		
+		@Data
+		@Accessors(chain = true)
+		public static class Connection {
 			
 			private Event event;
 			
@@ -54,10 +73,28 @@ public class MessagingConfigurationProperties {
 	public static class Queue {
 		
 		private User user;
+		private Connection connection;
 		
 		@Data
 		@Accessors(chain = true)
 		public static class User {
+			
+			private Event event;
+			
+			@Data
+			@Accessors(chain = true)
+			public static class Event {
+				
+				private String created;
+				private String deleted;
+				
+			}
+			
+		}
+		
+		@Data
+		@Accessors(chain = true)
+		public static class Connection {
 			
 			private Event event;
 			
