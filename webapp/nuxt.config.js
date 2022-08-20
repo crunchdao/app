@@ -109,7 +109,7 @@ export default {
     redirect: {
       login: '/',
       logout: '/',
-      callback: '/auth/callback',
+      callback: '/auth/callback/keycloak',
     },
     localStorage: false,
     sessionStorage: false,
