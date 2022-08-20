@@ -1,56 +1,42 @@
 <template>
-  <client-only>
-    <v-list-item link>
-      <v-list-item-icon>
-        <v-icon>mdi-key</v-icon>
-      </v-list-item-icon>
-      <v-list-item-content>
-        <v-list-item-title>
-          {{ apiKey.name }}
-        </v-list-item-title>
-        <v-list-item-subtitle>
-          <template v-if="apiKey.description">
-            {{ apiKey.description }} <br />
-          </template>
-          <v-chip v-for="scope in apiKey.scopes" :key="scope" x-small>
-            {{ scope }}
-          </v-chip>
-        </v-list-item-subtitle>
-      </v-list-item-content>
-      <v-list-item-action-text>
-        <v-hover v-slot="{ hover }">
-          <v-text-field
-            class="d-inline-block"
-            dense
-            hide-details
-            readonly
-            outlined
-            style="font-family: monospace; width: 100px"
-            label="hint"
-            :value="(hover ? apiKey.truncated : '••••') + '••••'"
-          />
-        </v-hover>
-      </v-list-item-action-text>
-      <v-list-item-action>
-        <v-menu offset-x right offset-y>
-          <template #activator="{ on, attrs }">
-            <v-btn icon v-bind="attrs" v-on="on">
-              <v-icon>mdi-dots-vertical</v-icon>
-            </v-btn>
-          </template>
-          <v-list dense>
-            <api-keys-button-copy-id :api-key="apiKey" />
-            <api-keys-button-delete :api-key="apiKey" @delete="onDelete" />
-          </v-list>
-        </v-menu>
-      </v-list-item-action>
-    </v-list-item>
-  </client-only>
+  <v-list-item :to="to">
+    <v-list-item-avatar>
+      <v-icon>mdi-key</v-icon>
+    </v-list-item-avatar>
+    <v-list-item-content>
+      <v-list-item-title>
+        {{ apiKey.name }}
+      </v-list-item-title>
+      <v-list-item-subtitle>
+        <template v-if="apiKey.description">
+          {{ apiKey.description }}
+        </template>
+      </v-list-item-subtitle>
+    </v-list-item-content>
+    <v-list-item-action-text>
+      <v-hover v-slot="{ hover }">
+        <v-text-field
+          class="d-inline-block"
+          dense
+          hide-details
+          readonly
+          outlined
+          style="font-family: monospace; width: 100px"
+          label="hint"
+          :value="(hover ? apiKey.truncated : '••••') + '••••'"
+        />
+      </v-hover>
+    </v-list-item-action-text>
+    <v-list-item-action>
+      <api-keys-button-revoke :api-key="apiKey" @delete="onDelete" />
+    </v-list-item-action>
+  </v-list-item>
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
 import { ApiKey } from '@/models'
+import { fixedComputed } from '~/composables/hack'
 
 export default defineComponent({
   props: {
@@ -64,9 +50,13 @@ export default defineComponent({
   setup(props, { emit }) {
     const { apiKey } = props
 
-    const onDelete = () => emit('delete')
+    const onDelete = async () => {
+      emit('delete')
+    }
 
-    return { apiKey, onDelete }
+    const to = fixedComputed(() => `/settings/api-keys/${apiKey!.id}`)
+
+    return { apiKey, onDelete, to }
   },
 })
 </script>

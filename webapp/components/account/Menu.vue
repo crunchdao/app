@@ -55,7 +55,7 @@ export default defineComponent({
   setup() {
     const { $auth } = useContext()
 
-    const username = $auth.user?.name
+    const username = $auth.user?.username
 
     return { username, links }
   },

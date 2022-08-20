@@ -1,14 +1,19 @@
 <template>
-  <v-dialog v-model="dialog" width="500" scrollable>
-    <template #activator="{ on, attrs }">
-      <slot name="activator" :on="on" :attrs="attrs" />
-    </template>
-    <v-card :loading="loading">
-      <v-card-title class="text-h5"> Create an API Keys </v-card-title>
-      <v-card-text class="py-2">
-        <v-alert v-if="errorMessage" type="error">
-          {{ errorMessage }}
-        </v-alert>
+  <div>
+    <v-card-title>
+      Create an API Keys
+      <v-spacer />
+      <v-btn style="visibility: hidden" />
+    </v-card-title>
+    <v-divider />
+    <v-card-subtitle>
+      API Keys can be used to authenticate to the CrunchDAO API.
+    </v-card-subtitle>
+    <v-alert v-if="errorMessage" type="error">
+      {{ errorMessage }}
+    </v-alert>
+    <v-card outlined>
+      <v-card-text>
         <v-form id="form-api-key-create" @submit.prevent="submit">
           <v-text-field
             v-model="inputs.name"
@@ -42,46 +47,40 @@
         </v-form>
       </v-card-text>
       <v-card-actions>
-        <v-btn
-          large
-          color="primary"
-          block
-          type="submit"
-          form="form-api-key-create"
-        >
+        <v-btn color="success" type="submit" form="form-api-key-create">
           Create
         </v-btn>
+        <v-btn text to="/settings/api-keys" exact> Cancel </v-btn>
       </v-card-actions>
-      <v-dialog
-        v-if="value"
-        :value="true"
-        width="650"
-        scrollable
-        @click:outside="onClose"
-      >
-        <v-card>
-          <v-card-title class="text-h5"> {{ value.name }} </v-card-title>
-          <v-card-subtitle>
-            Make sure to copy your API Key now. You won’t be able to see it
-            again!
-          </v-card-subtitle>
-          <v-card-text style="font-family: monospace">
-            <v-text-field
-              :value="value.plain"
-              readonly
-              outlined
-              hide-details
-              append-icon="mdi-content-copy"
-              @click:append="onCopy"
-            />
-          </v-card-text>
-          <v-card-actions>
-            <v-btn large color="primary" block @click="onClose"> Close </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
     </v-card>
-  </v-dialog>
+    <v-dialog
+      v-if="value"
+      :value="true"
+      width="650"
+      scrollable
+      @click:outside="onClose"
+    >
+      <v-card>
+        <v-card-title class="text-h5"> {{ value.name }} </v-card-title>
+        <v-card-subtitle>
+          Make sure to copy your API Key now. You won’t be able to see it again!
+        </v-card-subtitle>
+        <v-card-text style="font-family: monospace">
+          <v-text-field
+            :value="value.plain"
+            readonly
+            outlined
+            hide-details
+            append-icon="mdi-content-copy"
+            @click:append="onCopy"
+          />
+        </v-card-text>
+        <v-card-actions>
+          <v-btn large color="primary" block @click="onClose"> Close </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </div>
 </template>
 
 <script lang="ts">
@@ -90,6 +89,7 @@ import {
   ref,
   useContext,
   useFetch,
+  useRouter,
   watch,
 } from '@nuxtjs/composition-api'
 import { fixedComputed } from '~/composables/hack'
@@ -98,11 +98,13 @@ import { createPendingRequest } from '~/composables/request'
 import { ApiKey, Scope } from '~/models'
 
 export default defineComponent({
+  layout: 'settings',
   emits: {
     create: (_apiKey: ApiKey) => true,
   },
   setup(_, { emit }) {
     const { $axios, $dialog } = useContext()
+    const router = useRouter()
 
     const dialog = ref(false)
 
@@ -142,6 +144,10 @@ export default defineComponent({
     const onClose = () => {
       create.resetAll()
       dialog.value = false
+
+      router.push({
+        path: '/settings/api-keys',
+      })
     }
 
     const onCopy = () => {
@@ -154,9 +160,3 @@ export default defineComponent({
   },
 })
 </script>
-
-<style scoped>
-.centered-input ::v-deep(input) {
-  text-align: center;
-}
-</style>

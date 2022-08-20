@@ -1,19 +1,12 @@
 <template>
-  <v-list-item @click="prompt">
-    <v-list-item-avatar>
-      <v-icon color="error">mdi-delete</v-icon>
-    </v-list-item-avatar>
-    <v-list-item-content>
-      <v-list-item-title class="error--text"> Delete All </v-list-item-title>
-      <v-list-item-subtitle class="error--text">
-        All automation(s) might break
-      </v-list-item-subtitle>
-    </v-list-item-content>
-  </v-list-item>
+  <v-btn color="error" text outlined :loading="loading" @click="prompt">
+    <v-icon left>mdi-delete</v-icon>
+    Revoke All
+  </v-btn>
 </template>
 
 <script lang="ts">
-import { defineComponent, useContext } from '@nuxtjs/composition-api'
+import { defineComponent, ref, useContext } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   emits: {
@@ -22,6 +15,7 @@ export default defineComponent({
   setup(_, { emit }) {
     const { $axios, $dialog } = useContext()
 
+    const loading = ref(false)
     const prompt = async () => {
       const response = await $dialog.confirm({
         type: 'error',
@@ -31,6 +25,8 @@ export default defineComponent({
 
       if (response) {
         try {
+          loading.value = true
+
           await $axios.delete(`/v1/api-keys`)
 
           $dialog.notify.success(`All API Keys deleted!`)
@@ -39,11 +35,13 @@ export default defineComponent({
           const message =
             error?.response?.data?.message || error?.message || String(error)
           $dialog.notify.error(`Could not delete: ${message}`)
+        } finally {
+          loading.value = false
         }
       }
     }
 
-    return { prompt }
+    return { prompt, loading }
   },
 })
 </script>

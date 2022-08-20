@@ -27,7 +27,7 @@ export default {
   components: true,
 
   publicRuntimeConfig: {
-    axios: {
+    axios: {  
       browserBaseURL: "/api/"
     }
   },
@@ -42,6 +42,10 @@ export default {
   env: {
     // https://developers.google.com/recaptcha/docs/faq
     recaptchaSiteKey: process.env.RECAPTCHA_SITE_KEY || '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
+  },
+
+  server: {
+    host: "0.0.0.0"
   },
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
@@ -125,6 +129,7 @@ export default {
         endpoints: {
           // TODO Change
           configuration: 'http://localhost:9800/realms/App/.well-known/openid-configuration',
+          userInfo: '/v1/users/@self'
         },
         token: {
           property: "access_token",
@@ -136,9 +141,13 @@ export default {
           property: "refresh_token",
           maxAge: 60 * 60 * 24 * 30,
         },
-        idToken: {
-          property: "id_token"
+        user: {
+          autoFetch: true
         },
+        idToken: false,
+        // idToken: {
+        //   property: "id_token"
+        // },
         responseType: "code",
         grantType: "authorization_code",
         clientId: "frontend",
