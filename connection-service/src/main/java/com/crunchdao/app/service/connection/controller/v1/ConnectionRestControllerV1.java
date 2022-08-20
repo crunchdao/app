@@ -1,5 +1,6 @@
 package com.crunchdao.app.service.connection.controller.v1;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springdoc.api.annotations.ParameterObject;
@@ -56,6 +57,23 @@ public class ConnectionRestControllerV1 {
 		}
 		
 		throw new OnlyUserException();
+	}
+	
+	@Authenticated
+	@DeleteMapping
+	@Operation(summary = "Remove a connection.")
+	public void disconnectAll(Authentication authentication) {
+		if (authentication instanceof UserAuthenticationToken token) {
+			connectionService.disconnectAll(token.getUserId());
+		} else {
+			throw new OnlyUserException();
+		}
+	}
+	
+	@GetMapping("handlers")
+	@Operation(summary = "List available handlers.")
+	public List<String> listHandlers() {
+		return connectionHandlerService.getHandlerTypes();
 	}
 	
 	// @PatchMapping("{type}")

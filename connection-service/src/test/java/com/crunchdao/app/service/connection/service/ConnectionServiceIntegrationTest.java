@@ -115,7 +115,7 @@ class ConnectionServiceIntegrationTest {
 		final ConnectionIdentity identity = ConnectionIdentityTest.createRandom();
 		
 		service.connect(userId, "discord", identity);
-		service.deleteAllByUserId(userId);
+		service.disconnectAll(userId);
 		
 		assertEquals(0l, repository.countByUserId(userId));
 	}

@@ -83,6 +83,10 @@ public class TwitterConnectionHandler extends AbstractConnectionHandler {
 	public String fetchAccessToken(HandlerContext context, String code) throws IOException {
 		String verifier = challengeStore.getVerifier(context.getUserId());
 		
+		if (verifier == null) {
+			throw BadInputException.invalidCode();
+		}
+		
 		Request request = new Request.Builder()
 			.post(new FormBody.Builder()
 				.add("code", code)
@@ -166,7 +170,7 @@ public class TwitterConnectionHandler extends AbstractConnectionHandler {
 			.profileUrl(toProfileUrl(username))
 			.build();
 	}
-
+	
 	@Override
 	public String getType() {
 		return NAME;

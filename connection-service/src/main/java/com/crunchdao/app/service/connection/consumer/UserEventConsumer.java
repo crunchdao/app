@@ -21,7 +21,7 @@ public class UserEventConsumer {
 	public void onUserDeleted(UUID id) {
 		log.info("UserEventConsumer.onUserDeleted({})", id);
 		
-		connectionService.deleteAllByUserId(id);
+		connectionService.disconnectAll(id);
 	}
 	
 }

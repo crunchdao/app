@@ -1,5 +1,6 @@
 package com.crunchdao.app.service.connection.repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -12,6 +13,8 @@ import com.crunchdao.app.service.connection.entity.Connection;
 
 @Repository
 public interface ConnectionRepository extends JpaRepository<Connection, Long> {
+	
+	List<Connection> findAllByUserId(UUID userId);
 	
 	Page<Connection> findAllByUserId(UUID userId, Pageable pageable);
 	

@@ -1,5 +1,6 @@
 package com.crunchdao.app.service.connection.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -59,6 +60,10 @@ public class ConnectionHandlerService {
 	
 	public String getRedirectionUrls(String type) {
 		return get(redirectionUrls, type);
+	}
+
+	public List<String> getHandlerTypes() {
+		return new ArrayList<>(handlers.keySet());
 	}
 	
 	public static String buildRedirectionUrl(String type, String base) {

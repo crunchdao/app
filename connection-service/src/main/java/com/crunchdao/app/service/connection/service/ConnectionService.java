@@ -1,5 +1,6 @@
 package com.crunchdao.app.service.connection.service;
 
+import java.util.List;
 import java.util.UUID;
 
 import javax.transaction.Transactional;
@@ -11,6 +12,7 @@ import com.crunchdao.app.common.web.model.PageResponse;
 import com.crunchdao.app.service.connection.dto.ConnectionDto;
 import com.crunchdao.app.service.connection.entity.Connection;
 import com.crunchdao.app.service.connection.exception.ConnectionNotFoundException;
+import com.crunchdao.app.service.connection.exception.NoConnectionFoundException;
 import com.crunchdao.app.service.connection.handler.ConnectionIdentity;
 import com.crunchdao.app.service.connection.repository.ConnectionRepository;
 
@@ -58,8 +60,16 @@ public class ConnectionService {
 	}
 	
 	@Transactional
-	public long deleteAllByUserId(UUID userId) {
-		return repository.deleteAllByUserId(userId);
+	public void disconnectAll(UUID userId) {
+		List<Connection> connections = repository.findAllByUserId(userId);
+		
+		if (repository.deleteAllByUserId(userId) == 0) {
+			throw new NoConnectionFoundException(userId);
+		}
+		
+		connections.forEach((connection) -> {
+			rabbitMQSender.sendDeleted(userId, connection.getType());
+		});
 	}
 	
 }

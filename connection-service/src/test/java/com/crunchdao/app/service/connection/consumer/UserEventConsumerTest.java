@@ -1,10 +1,10 @@
 package com.crunchdao.app.service.connection.consumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import java.util.UUID;
 
@@ -30,12 +30,12 @@ class UserEventConsumerTest {
 		final UUID userId = UUID.randomUUID();
 		
 		ArgumentCaptor<UUID> captor = ArgumentCaptor.forClass(UUID.class);
-		when(connectionService.deleteAllByUserId(captor.capture())).thenReturn(0l);
+		doNothing().when(connectionService).disconnectAll(captor.capture());
 		
 		userEventConsumer.onUserDeleted(userId);
 		
 		assertEquals(userId, captor.getValue());
-		verify(connectionService, times(1)).deleteAllByUserId(userId);
+		verify(connectionService, times(1)).disconnectAll(userId);
 	}
 	
 }
