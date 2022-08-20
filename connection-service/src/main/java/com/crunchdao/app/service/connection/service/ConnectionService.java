@@ -6,10 +6,8 @@ import java.util.UUID;
 
 import javax.transaction.Transactional;
 
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.crunchdao.app.common.web.model.PageResponse;
 import com.crunchdao.app.service.connection.dto.ConnectionDto;
 import com.crunchdao.app.service.connection.dto.ConnectionUpdateForm;
 import com.crunchdao.app.service.connection.entity.Connection;
@@ -31,12 +29,12 @@ public class ConnectionService {
 		return repository.findByUserIdAndType(userId, type).map(Connection::toDto);
 	}
 	
-	public PageResponse<ConnectionDto> listForUserId(UUID userId, Pageable pageable) {
-		return new PageResponse<>(repository.findAllByUserId(userId, pageable), Connection::toDto);
+	public List<ConnectionDto> listForUserId(UUID userId) {
+		return toDtos(repository.findAllByUserId(userId));
 	}
 	
-	public PageResponse<ConnectionDto> listPublicForUserId(UUID userId, Pageable pageable) {
-		return new PageResponse<>(repository.findAllByUserIdAndIsPublicTrue(userId, pageable), Connection::toDto);
+	public List<ConnectionDto> listPublicForUserId(UUID userId) {
+		return toDtos(repository.findAllByUserIdAndIsPublicTrue(userId));
 	}
 	
 	public ConnectionDto update(UUID userId, String type, ConnectionUpdateForm body) {
@@ -86,6 +84,10 @@ public class ConnectionService {
 		connections.forEach((connection) -> {
 			rabbitMQSender.sendDeleted(userId, connection.getType());
 		});
+	}
+	
+	public static List<ConnectionDto> toDtos(List<Connection> connections) {
+		return connections.stream().map(Connection::toDto).toList();
 	}
 	
 }

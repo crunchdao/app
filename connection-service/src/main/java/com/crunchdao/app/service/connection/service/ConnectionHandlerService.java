@@ -27,6 +27,7 @@ public class ConnectionHandlerService {
 	private final Map<String, ConnectionHandler> handlers;
 	private final Map<String, String> redirectionUrls;
 	
+	// TODO Use a real value
 	public ConnectionHandlerService(List<ConnectionHandler> handlers, @Value("http://localhost:3000") String base) {
 		this.handlers = buildHandlersMap(handlers);
 		this.redirectionUrls = buildRedirectionUrlsMap(handlers, base);

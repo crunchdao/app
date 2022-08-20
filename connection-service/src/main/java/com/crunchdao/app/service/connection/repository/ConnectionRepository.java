@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,9 +14,7 @@ public interface ConnectionRepository extends JpaRepository<Connection, Long> {
 	
 	List<Connection> findAllByUserId(UUID userId);
 	
-	Page<Connection> findAllByUserId(UUID userId, Pageable pageable);
-	
-	Page<Connection> findAllByUserIdAndIsPublicTrue(UUID userId, Pageable pageable);
+	List<Connection> findAllByUserIdAndIsPublicTrue(UUID userId);
 	
 	Optional<Connection> findByUserIdAndType(UUID userId, String type);
 	

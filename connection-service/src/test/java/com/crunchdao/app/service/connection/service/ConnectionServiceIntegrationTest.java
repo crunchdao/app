@@ -14,8 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.crunchdao.app.service.connection.dto.ConnectionDto;
@@ -27,8 +25,6 @@ import com.crunchdao.app.service.connection.repository.ConnectionRepository;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 class ConnectionServiceIntegrationTest {
-	
-	public static final Pageable PAGEABLE = PageRequest.of(0, 10);
 	
 	ConnectionRepository repository;
 	RabbitMQSender rabbitMQSender;
@@ -47,20 +43,20 @@ class ConnectionServiceIntegrationTest {
 	void listForUserId() {
 		final UUID userId = UUID.randomUUID();
 		
-		assertThat(service.listForUserId(userId, PAGEABLE).getContent()).isEmpty();
+		assertThat(service.listForUserId(userId)).isEmpty();
 		
 		service.connect(userId, "discord", ConnectionIdentityTest.createRandom());
-		assertThat(service.listForUserId(userId, PAGEABLE).getContent()).hasSize(1);
+		assertThat(service.listForUserId(userId)).hasSize(1);
 	}
 	
 	@Test
 	void listPublicForUserId() {
 		final UUID userId = UUID.randomUUID();
 		
-		assertThat(service.listPublicForUserId(userId, PAGEABLE).getContent()).isEmpty();
+		assertThat(service.listPublicForUserId(userId)).isEmpty();
 		
 		service.connect(userId, "discord", ConnectionIdentityTest.createRandom());
-		assertThat(service.listPublicForUserId(userId, PAGEABLE).getContent()).isEmpty();
+		assertThat(service.listPublicForUserId(userId)).isEmpty();
 	}
 	
 	@Test

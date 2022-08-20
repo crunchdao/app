@@ -3,8 +3,6 @@ package com.crunchdao.app.service.connection.controller.v1;
 import java.util.List;
 import java.util.UUID;
 
-import org.springdoc.api.annotations.ParameterObject;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
@@ -22,7 +20,6 @@ import com.crunchdao.app.common.security.permission.Authenticated;
 import com.crunchdao.app.common.security.token.UserAuthenticationToken;
 import com.crunchdao.app.common.web.exception.ForbiddenException;
 import com.crunchdao.app.common.web.exception.OnlyUserException;
-import com.crunchdao.app.common.web.model.PageResponse;
 import com.crunchdao.app.service.connection.dto.ConnectionDto;
 import com.crunchdao.app.service.connection.dto.ConnectionUpdateForm;
 import com.crunchdao.app.service.connection.dto.RedirectDto;
@@ -46,9 +43,9 @@ public class ConnectionRestControllerV1 {
 	
 	@GetMapping
 	@Operation(summary = "List connections.")
-	public PageResponse<ConnectionDto> list(@RequestParam(name = "user", required = false) UUID userId, @ParameterObject Pageable pageable, Authentication authentication) {
+	public List<ConnectionDto> list(@RequestParam(name = "user", required = false) UUID userId, Authentication authentication) {
 		if (userId != null) {
-			return connectionService.listPublicForUserId(userId, pageable);
+			return connectionService.listPublicForUserId(userId);
 		}
 		
 		if (authentication == null) {
@@ -56,7 +53,7 @@ public class ConnectionRestControllerV1 {
 		}
 		
 		if (authentication instanceof UserAuthenticationToken token) {
-			return connectionService.listForUserId(token.getUserId(), pageable);
+			return connectionService.listForUserId(token.getUserId());
 		}
 		
 		throw new OnlyUserException();
