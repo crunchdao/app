@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 
@@ -56,7 +56,7 @@ public class ApiKeyDto {
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private LocalDateTime updatedAt;
 	
-	@NotEmpty
+	@NotNull
 	private List<@NotBlank String> scopes;
 	
 }
