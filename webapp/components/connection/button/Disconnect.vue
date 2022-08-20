@@ -1,5 +1,11 @@
 <template>
-  <v-btn :loading="loading" color="error" text outlined @click="onClick">
+  <v-btn
+    :loading="loading"
+    color="error"
+    text
+    outlined
+    @click.prevent="onClick"
+  >
     <v-icon left>mdi-close</v-icon>
     Disconnect
   </v-btn>

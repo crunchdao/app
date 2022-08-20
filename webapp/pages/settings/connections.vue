@@ -27,54 +27,18 @@
         type="list-item-avatar-two-line@3"
       />
       <template v-else-if="connections.length">
-        <v-list-item v-for="connection in connections" :key="connection.type">
-          <v-list-item-avatar tile>
-            <v-img
-              :src="
-                require(`@/assets/connection/${connection.type.toLowerCase()}.svg`)
-              "
-              max-height="32"
-              max-width="32"
-            />
-          </v-list-item-avatar>
-          <v-list-item-content>
-            <v-list-item-title>
-              {{ connection.type }}
-            </v-list-item-title>
-            <v-list-item-subtitle>
-              <span>{{ connection.username }}</span> <br />
-              <code>{{ connection.handle }}</code>
-            </v-list-item-subtitle>
-          </v-list-item-content>
-          <v-list-item-action>
-            <v-btn v-if="connection.public" text outlined>
-              <v-icon left>mdi-eye-off</v-icon>
-              Hide off profile
-            </v-btn>
-            <v-btn v-else text outlined>
-              <v-icon left>mdi-eye</v-icon>
-              Display on profile
-            </v-btn>
-          </v-list-item-action>
-          <v-list-item-action>
-            <connection-button-disconnect
-              :connection="connection"
-              @disconnect="fetch"
-            />
-          </v-list-item-action>
-        </v-list-item>
+        <connection-item
+          v-for="connection in connections"
+          :key="connection.type"
+          :connection="connection"
+          @update="onUpdate"
+          @disconnect="fetch"
+        />
       </template>
       <v-card-subtitle v-else class="text-center">
         No connection found.
       </v-card-subtitle>
     </v-card>
-    <v-pagination
-      v-model="page"
-      :length="totalPages"
-      :total-visible="7"
-      :disabled="fetchState.pending"
-      class="mt-2"
-    />
   </div>
 </template>
 
@@ -83,7 +47,6 @@ import {
   defineComponent,
   Ref,
   ref,
-  useAsync,
   useContext,
   useFetch,
   watch,
@@ -96,30 +59,15 @@ export default defineComponent({
   setup() {
     const { $axios } = useContext()
 
-    const handlers = ref([] as Array<string>)
+    const handlers = ref<Array<string>>([])
+    const connections = ref<Array<Connection>>([])
 
-    const page = ref(1)
-    const response = ref() as Ref<PageResponse<Connection>>
-
-    const { fetch, fetchState } = useFetch(async () => {
+    useFetch(async () => {
       handlers.value = await $axios.$get('/v1/connections/handlers')
-      response.value = await $axios.$get('/v1/connections', {
-        params: {
-          page: page.value - 1,
-          size: 8,
-          sort: 'createdAt,desc',
-        },
-      })
     })
 
-    const connections = fixedComputed(() => response.value?.content || [])
-    const totalPages = fixedComputed(() => response.value?.totalPages || 1)
-    const totalElements = fixedComputed(
-      () => response.value?.totalElements || 0
-    )
-
-    watch(page, () => {
-      fetch()
+    const { fetch, fetchState } = useFetch(async () => {
+      connections.value = await $axios.$get('/v1/connections')
     })
 
     const availableHandlers = fixedComputed(() => {
@@ -128,14 +76,22 @@ export default defineComponent({
       return handlers.value.filter((type) => !connected.includes(type)).sort()
     })
 
+    const onUpdate = (connection: Connection) => {
+      const target = connections.value.find(
+        ({ type }) => type === connection.type
+      )
+
+      if (target) {
+        Object.assign(target, connection)
+      }
+    }
+
     return {
       availableHandlers,
       connections,
-      page,
-      totalPages,
-      totalElements,
       fetch,
       fetchState,
+      onUpdate,
     }
   },
 })
