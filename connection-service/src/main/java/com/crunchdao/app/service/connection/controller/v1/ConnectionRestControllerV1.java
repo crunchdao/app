@@ -10,8 +10,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +24,7 @@ import com.crunchdao.app.common.web.exception.ForbiddenException;
 import com.crunchdao.app.common.web.exception.OnlyUserException;
 import com.crunchdao.app.common.web.model.PageResponse;
 import com.crunchdao.app.service.connection.dto.ConnectionDto;
+import com.crunchdao.app.service.connection.dto.ConnectionUpdateForm;
 import com.crunchdao.app.service.connection.dto.RedirectDto;
 import com.crunchdao.app.service.connection.handler.ConnectionIdentity;
 import com.crunchdao.app.service.connection.service.ConnectionHandlerService;
@@ -76,13 +79,15 @@ public class ConnectionRestControllerV1 {
 		return connectionHandlerService.getHandlerTypes();
 	}
 	
-	// @PatchMapping("{type}")
-	// @Operation(summary = "Update a connection.")
-	// public Connection update(@PathVariable String type, @RequestBody ConnectionUpdateRequest body, @CurrentUser User currentUser) {
-	// Connection connection = connectionService.byUserAndSite(currentUser, type);
-	//
-	// return connectionService.update(connection, body);
-	// }
+	@PatchMapping("{type}")
+	@Operation(summary = "Update a connection.")
+	public ConnectionDto update(@PathVariable String type, @RequestBody @Validated ConnectionUpdateForm body, Authentication authentication) {
+		if (authentication instanceof UserAuthenticationToken token) {
+			return connectionService.update(token.getUserId(), type, body);
+		}
+		
+		throw new OnlyUserException();
+	}
 	
 	@Authenticated
 	@PostMapping("{type}")
