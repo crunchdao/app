@@ -46,6 +46,10 @@ spring:
           uri: lb://user-service
           predicates:
             - Path=/v1/users, /v1/users/**
+        - id: connection-service-v1
+          uri: lb://connection-service
+          predicates:
+            - Path=/v1/connections, /v1/connections/**
         - id: register-service-v1
           uri: lb://register-service
           predicates:
