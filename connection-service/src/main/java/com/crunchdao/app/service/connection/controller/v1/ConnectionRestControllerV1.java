@@ -34,16 +34,27 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @Validated
 @RestController
-@RequestMapping(path = "/v1/connections", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = ConnectionRestControllerV1.BASE_ENDPOINT, produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "connection", description = "Connection related operations.")
 public class ConnectionRestControllerV1 {
+	
+	public static final String PATH_HANDLERS = "handlers";
+	public static final String TYPE_VARIABLE = "{type}";
+	public static final String PATH_CALLBACK = "{type}/callback";
+	
+	public static final String BASE_ENDPOINT = "/v1/connections";
+	public static final String TYPE_ENDPOINT = BASE_ENDPOINT + "/" + TYPE_VARIABLE;
+	public static final String HANDLERS_ENDPOINT = BASE_ENDPOINT + "/" + PATH_HANDLERS;
+	public static final String CALLBACK_ENDPOINT = BASE_ENDPOINT + "/" + PATH_CALLBACK;
+	
+	public static final String PARAMETER_USER = "user";
 	
 	private final ConnectionService connectionService;
 	private final ConnectionHandlerService connectionHandlerService;
 	
 	@GetMapping
 	@Operation(summary = "List connections.")
-	public List<ConnectionDto> list(@RequestParam(name = "user", required = false) UUID userId, Authentication authentication) {
+	public List<ConnectionDto> list(@RequestParam(name = PARAMETER_USER, required = false) UUID userId, Authentication authentication) {
 		if (userId != null) {
 			return connectionService.listPublicForUserId(userId);
 		}
@@ -70,13 +81,13 @@ public class ConnectionRestControllerV1 {
 		}
 	}
 	
-	@GetMapping("handlers")
+	@GetMapping(PATH_HANDLERS)
 	@Operation(summary = "List available handlers.")
 	public List<String> listHandlers() {
 		return connectionHandlerService.getHandlerTypes();
 	}
 	
-	@PatchMapping("{type}")
+	@PatchMapping(TYPE_VARIABLE)
 	@Operation(summary = "Update a connection.")
 	public ConnectionDto update(@PathVariable String type, @RequestBody @Validated ConnectionUpdateForm body, Authentication authentication) {
 		if (authentication instanceof UserAuthenticationToken token) {
@@ -87,7 +98,7 @@ public class ConnectionRestControllerV1 {
 	}
 	
 	@Authenticated
-	@PostMapping("{type}")
+	@PostMapping(TYPE_VARIABLE)
 	@Operation(summary = "Start a connection.")
 	public RedirectDto connect(@PathVariable String type, Authentication authentication) {
 		if (authentication instanceof UserAuthenticationToken token) {
@@ -100,7 +111,7 @@ public class ConnectionRestControllerV1 {
 	}
 	
 	@Authenticated
-	@PostMapping("{type}/callback")
+	@PostMapping(PATH_CALLBACK)
 	@Operation(summary = "OAuth callback.")
 	public ConnectionDto connectCallback(@PathVariable String type, @RequestParam String code, Authentication authentication) throws Exception {
 		if (authentication instanceof UserAuthenticationToken token) {
@@ -113,7 +124,7 @@ public class ConnectionRestControllerV1 {
 	}
 	
 	@Authenticated
-	@DeleteMapping("{type}")
+	@DeleteMapping(TYPE_VARIABLE)
 	@Operation(summary = "Remove a connection.")
 	public void disconnect(@PathVariable String type, Authentication authentication) {
 		if (authentication instanceof UserAuthenticationToken token) {
