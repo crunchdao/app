@@ -54,6 +54,7 @@ public class ConnectionService {
 		
 		ConnectionDto connection = repository.save(repository.findByUserIdAndType(userId, upperCaseType)
 			.orElseGet(() -> new Connection()
+				.setPublic(true)
 				.setUserId(userId)
 				.setType(upperCaseType))
 			.mergeIdentity(identity)).toDto();
