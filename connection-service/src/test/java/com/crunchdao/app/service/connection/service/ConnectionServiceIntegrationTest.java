@@ -3,8 +3,8 @@ package com.crunchdao.app.service.connection.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
 import java.util.UUID;
@@ -17,6 +17,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.crunchdao.app.service.connection.dto.ConnectionDto;
+import com.crunchdao.app.service.connection.dto.ConnectionUpdateForm;
 import com.crunchdao.app.service.connection.exception.ConnectionNotFoundException;
 import com.crunchdao.app.service.connection.handler.ConnectionIdentity;
 import com.crunchdao.app.service.connection.handler.ConnectionIdentityTest;
@@ -56,6 +57,7 @@ class ConnectionServiceIntegrationTest {
 		assertThat(service.listPublicForUserId(userId)).isEmpty();
 		
 		service.connect(userId, "discord", ConnectionIdentityTest.createRandom());
+		service.update(userId, "discord", new ConnectionUpdateForm().setIsPublic(false));
 		assertThat(service.listPublicForUserId(userId)).isEmpty();
 	}
 	
@@ -71,7 +73,7 @@ class ConnectionServiceIntegrationTest {
 		assertEquals(identity.getHandle(), connection.getHandle());
 		assertEquals(identity.getUsername(), connection.getUsername());
 		assertEquals(identity.getProfileUrl(), connection.getProfileUrl());
-		assertFalse(connection.getIsPublic());
+		assertTrue(connection.getIsPublic());
 		assertNotNull(connection.getCreatedAt());
 		assertNotNull(connection.getUpdatedAt());
 	}

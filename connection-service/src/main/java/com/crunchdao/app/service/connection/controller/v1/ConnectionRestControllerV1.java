@@ -3,6 +3,7 @@ package com.crunchdao.app.service.connection.controller.v1;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.crunchdao.app.common.security.permission.Authenticated;
+import com.crunchdao.app.common.security.token.BaseUserAuthenticationToken;
 import com.crunchdao.app.common.security.token.UserAuthenticationToken;
 import com.crunchdao.app.common.web.exception.ForbiddenException;
 import com.crunchdao.app.common.web.exception.OnlyUserException;
@@ -63,15 +66,16 @@ public class ConnectionRestControllerV1 {
 			throw new ForbiddenException("`user` is not specified");
 		}
 		
-		if (authentication instanceof UserAuthenticationToken token) {
+		if (authentication instanceof BaseUserAuthenticationToken token) {
 			return connectionService.listForUserId(token.getUserId());
 		}
 		
-		throw new OnlyUserException();
+		throw new ForbiddenException();
 	}
 	
 	@Authenticated
 	@DeleteMapping
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@Operation(summary = "Remove a connection.")
 	public void disconnectAll(Authentication authentication) {
 		if (authentication instanceof UserAuthenticationToken token) {
@@ -99,6 +103,7 @@ public class ConnectionRestControllerV1 {
 	
 	@Authenticated
 	@PostMapping(TYPE_VARIABLE)
+	@ResponseStatus(HttpStatus.CREATED)
 	@Operation(summary = "Start a connection.")
 	public RedirectDto connect(@PathVariable String type, Authentication authentication) {
 		if (authentication instanceof UserAuthenticationToken token) {
@@ -125,6 +130,7 @@ public class ConnectionRestControllerV1 {
 	
 	@Authenticated
 	@DeleteMapping(TYPE_VARIABLE)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@Operation(summary = "Remove a connection.")
 	public void disconnect(@PathVariable String type, Authentication authentication) {
 		if (authentication instanceof UserAuthenticationToken token) {
