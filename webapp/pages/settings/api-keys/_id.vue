@@ -40,8 +40,9 @@
               :label="scope.name"
               dense
               v-model="inputs.scopes"
-              hide-details
               class="my-1"
+              :hint="scope.description"
+              persistent-hint
             />
           </v-radio-group>
         </v-form>
