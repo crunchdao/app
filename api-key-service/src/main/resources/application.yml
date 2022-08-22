@@ -16,4 +16,6 @@ api-key:
     - name: api-key.read
       description: List API-Keys.
     - name: api-key.write
-      description: Create or delete API-Keys.
+      description: Create, update or delete API-Keys.
+    - name: connection.write
+      description: Connect, update or delete connections.
