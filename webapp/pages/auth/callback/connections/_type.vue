@@ -35,19 +35,12 @@ export default defineComponent({
 
     const type = fixedComputed(() => route.value.params.type)
     const code = fixedComputed(() => route.value.query.code)
+    const error = fixedComputed<string | null>(
+      () => route.value.query.error_description as string
+    )
 
-    const errorMessage = ref<string>()
+    const errorMessage = ref<string | null>(error.value)
     const connection = ref<Connection>()
-    // const connection = ref<Connection>({
-    //   userId: 'f4a62560-e335-4e85-9707-a65af42fcc2c',
-    //   type: 'DISCORD',
-    //   handle: 'Enzo - (っ◔◡◔)っ#4224',
-    //   username: 'Enzo - (っ◔◡◔)っ',
-    //   profileUrl: null,
-    //   createdAt: '2022-08-20T20:59:22.7558393',
-    //   updatedAt: '2022-08-20T20:59:22.7568388',
-    //   public: false,
-    // })
 
     const redirect = () => {
       router.replace('/settings/connections')
@@ -60,18 +53,20 @@ export default defineComponent({
     })
 
     onMounted(async () => {
-      try {
-        connection.value = await $axios.$post(
-          `/v1/connections/${type.value}/callback`,
-          {},
-          {
-            params: {
-              code: code.value,
-            },
-          }
-        )
-      } catch (error) {
-        errorMessage.value = extractMessage(error)
+      if (!error) {
+        try {
+          connection.value = await $axios.$post(
+            `/v1/connections/${type.value}/callback`,
+            {},
+            {
+              params: {
+                code: code.value,
+              },
+            }
+          )
+        } catch (error) {
+          errorMessage.value = extractMessage(error)
+        }
       }
 
       setTimeout(redirect, 1500)
