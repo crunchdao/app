@@ -1,5 +1,5 @@
 <template>
-  <v-btn :loading="loading" text outlined @click.prevent="onClick">
+  <v-btn :loading="loading" text outlined @click.stop.prevent="onClick">
     <v-icon left>{{ textAndIcon.icon }}</v-icon>
     {{ textAndIcon.text }}
   </v-btn>

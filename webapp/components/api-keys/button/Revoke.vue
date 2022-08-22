@@ -1,5 +1,5 @@
 <template>
-  <v-btn :loading="loading" color="error" text outlined @click.prevent="prompt">
+  <v-btn :loading="loading" color="error" text outlined @click.stop.prevent="prompt">
     <v-icon left>mdi-delete</v-icon>
     Revoke
   </v-btn>

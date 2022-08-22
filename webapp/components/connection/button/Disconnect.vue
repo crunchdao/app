@@ -4,7 +4,7 @@
     color="error"
     text
     outlined
-    @click.prevent="onClick"
+    @click.stop.prevent="onClick"
   >
     <v-icon left>mdi-close</v-icon>
     Disconnect

@@ -17,18 +17,7 @@
       </v-list-item-subtitle>
     </v-list-item-content>
     <v-list-item-action-text>
-      <v-hover v-slot="{ hover }">
-        <v-text-field
-          class="d-inline-block"
-          dense
-          hide-details
-          readonly
-          outlined
-          style="font-family: monospace; width: 100px"
-          label="hint"
-          :value="(hover ? apiKey.truncated : '••••') + '••••'"
-        />
-      </v-hover>
+      <api-keys-field-hint :api-key="apiKey" />
     </v-list-item-action-text>
     <v-list-item-action>
       <api-keys-button-revoke :api-key="apiKey" @delete="onDelete" />
