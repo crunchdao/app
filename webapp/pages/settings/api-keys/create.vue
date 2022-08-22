@@ -28,22 +28,10 @@
             :error-messages="validations.description"
             rows="3"
           />
-          <v-radio-group
-            label="Scopes"
+          <api-keys-field-scopes
+            v-model="inputs.scopes"
             :error-messages="validations.scopes"
-            class="pt-0 mt-0"
-          >
-            <v-checkbox
-              v-for="scope in scopes"
-              :key="scope.name"
-              :value="scope.name"
-              :label="scope.name"
-              dense
-              v-model="inputs.scopes"
-              hide-details
-              class="my-1"
-            />
-          </v-radio-group>
+          />
         </v-form>
       </v-card-text>
       <v-card-actions>
@@ -88,14 +76,13 @@ import {
   defineComponent,
   ref,
   useContext,
-  useFetch,
   useRouter,
   watch,
 } from '@nuxtjs/composition-api'
 import { fixedComputed } from '~/composables/hack'
 import copyToClipboard from 'copy-to-clipboard'
 import { createPendingRequest } from '~/composables/request'
-import { ApiKey, Scope } from '~/models'
+import { ApiKey } from '~/models'
 
 export default defineComponent({
   layout: 'settings',
@@ -103,15 +90,10 @@ export default defineComponent({
     create: (_apiKey: ApiKey) => true,
   },
   setup(_, { emit }) {
-    const { $axios, $dialog } = useContext()
+    const { $dialog } = useContext()
     const router = useRouter()
 
     const dialog = ref(false)
-
-    const scopes = ref([] as Array<Scope>)
-    const { fetch, fetchState } = useFetch(async () => {
-      scopes.value = await $axios.$get('/v1/api-keys/scopes')
-    })
 
     const create = createPendingRequest<ApiKey>({
       url: '/v1/api-keys',
@@ -129,14 +111,10 @@ export default defineComponent({
       },
     })
 
-    const loading = fixedComputed(
-      () => create.loading.value || fetchState.pending
-    )
+    const loading = fixedComputed(() => create.loading.value)
 
     watch(dialog, (dialog) => {
-      if (dialog) {
-        fetch()
-      } else {
+      if (!dialog) {
         create.resetAll()
       }
     })
@@ -156,7 +134,7 @@ export default defineComponent({
       $dialog.notify.success(`Copied!`)
     }
 
-    return { dialog, ...create, scopes, loading, onClose, onCopy }
+    return { dialog, ...create, loading, onClose, onCopy }
   },
 })
 </script>

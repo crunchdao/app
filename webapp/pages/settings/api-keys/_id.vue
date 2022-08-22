@@ -28,23 +28,10 @@
             :error-messages="validations.description"
             rows="3"
           />
-          <v-radio-group
-            label="Scopes"
+          <api-keys-field-scopes
+            v-model="inputs.scopes"
             :error-messages="validations.scopes"
-            class="pt-0 mt-0"
-          >
-            <v-checkbox
-              v-for="scope in scopes"
-              :key="scope.name"
-              :value="scope.name"
-              :label="scope.name"
-              dense
-              v-model="inputs.scopes"
-              class="my-1"
-              :hint="scope.description"
-              persistent-hint
-            />
-          </v-radio-group>
+          />
         </v-form>
       </v-card-text>
       <v-card-actions>
@@ -65,11 +52,10 @@ import {
   useFetch,
   useRoute,
   useRouter,
-  watch,
 } from '@nuxtjs/composition-api'
 import { fixedComputed } from '~/composables/hack'
 import { createPendingRequest } from '~/composables/request'
-import { ApiKey, Scope } from '~/models'
+import { ApiKey } from '~/models'
 import { extractMessage } from '~/utilities/error'
 
 export default defineComponent({
@@ -104,11 +90,6 @@ export default defineComponent({
       update.updateInputs(apiKey)
     })
 
-    const scopes = ref<Array<Scope>>([])
-    useFetch(async () => {
-      scopes.value = await $axios.$get('/v1/api-keys/scopes')
-    })
-
     const loading = fixedComputed(
       () => update.loading.value || fetchState.pending
     )
@@ -117,7 +98,9 @@ export default defineComponent({
       () => update.errorMessage.value || extractMessage(fetchState.error)
     )
 
-    return { ...update, scopes, loading, errorMessage }
+    const x = ref([])
+
+    return { ...update, loading, errorMessage, x }
   },
 })
 </script>

@@ -25,7 +25,7 @@ export function createPendingRequest<T extends { [key: string]: any }>(
   const loading = ref(false)
   const value = ref(options.defaultValue ?? null) as Ref<T | null>
 
-  const inputs = reactive(cloneDeep(options.inputs)) as T
+  const inputs = reactive(cloneDeep(options.inputs) as T)
 
   const keys = Object.keys(options.inputs)
 
