@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.crunchdao.app.common.security.permission.Authenticated;
 import com.crunchdao.app.common.security.token.BaseUserAuthenticationToken;
 import com.crunchdao.app.common.security.token.UserAuthenticationToken;
 import com.crunchdao.app.common.web.exception.ForbiddenException;
@@ -27,6 +26,7 @@ import com.crunchdao.app.service.connection.dto.ConnectionDto;
 import com.crunchdao.app.service.connection.dto.ConnectionUpdateForm;
 import com.crunchdao.app.service.connection.dto.RedirectDto;
 import com.crunchdao.app.service.connection.handler.ConnectionIdentity;
+import com.crunchdao.app.service.connection.permission.CanWrite;
 import com.crunchdao.app.service.connection.service.ConnectionHandlerService;
 import com.crunchdao.app.service.connection.service.ConnectionService;
 
@@ -73,7 +73,7 @@ public class ConnectionRestControllerV1 {
 		throw new ForbiddenException();
 	}
 	
-	@Authenticated
+	@CanWrite
 	@DeleteMapping
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@Operation(summary = "Remove a connection.")
@@ -90,7 +90,8 @@ public class ConnectionRestControllerV1 {
 	public List<String> listHandlers() {
 		return connectionHandlerService.getHandlerTypes();
 	}
-	
+
+	@CanWrite
 	@PatchMapping(TYPE_VARIABLE)
 	@Operation(summary = "Update a connection.")
 	public ConnectionDto update(@PathVariable String type, @RequestBody @Validated ConnectionUpdateForm body, Authentication authentication) {
@@ -101,7 +102,7 @@ public class ConnectionRestControllerV1 {
 		throw new OnlyUserException();
 	}
 	
-	@Authenticated
+	@CanWrite
 	@PostMapping(TYPE_VARIABLE)
 	@ResponseStatus(HttpStatus.CREATED)
 	@Operation(summary = "Start a connection.")
@@ -114,8 +115,8 @@ public class ConnectionRestControllerV1 {
 		
 		throw new OnlyUserException();
 	}
-	
-	@Authenticated
+
+	@CanWrite
 	@PostMapping(PATH_CALLBACK)
 	@Operation(summary = "OAuth callback.")
 	public ConnectionDto connectCallback(@PathVariable String type, @RequestParam String code, Authentication authentication) throws Exception {
@@ -127,8 +128,8 @@ public class ConnectionRestControllerV1 {
 		
 		throw new OnlyUserException();
 	}
-	
-	@Authenticated
+
+	@CanWrite
 	@DeleteMapping(TYPE_VARIABLE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@Operation(summary = "Remove a connection.")
