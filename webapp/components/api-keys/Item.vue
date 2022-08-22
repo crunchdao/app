@@ -6,6 +6,9 @@
     <v-list-item-content>
       <v-list-item-title>
         {{ apiKey.name }}
+        <small class="text--secondary">
+          {{ scopeCount }}
+        </small>
       </v-list-item-title>
       <v-list-item-subtitle>
         <template v-if="apiKey.description">
@@ -55,8 +58,17 @@ export default defineComponent({
     }
 
     const to = fixedComputed(() => `/settings/api-keys/${apiKey!.id}`)
+    const scopeCount = fixedComputed(() => {
+      const { scopes } = apiKey!
 
-    return { apiKey, onDelete, to }
+      if (scopes.length) {
+        return `(${scopes.length} scope${scopes.length > 1 ? 's' : ''})`
+      }
+
+      return '(no scope)'
+    })
+
+    return { apiKey, onDelete, to, scopeCount }
   },
 })
 </script>

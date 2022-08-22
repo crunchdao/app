@@ -19,18 +19,7 @@ export interface Options<T> extends AxiosRequestConfig {
 
 export function createPendingRequest<T extends { [key: string]: any }>(
   options: Options<T>
-): {
-  loading: Ref<boolean>
-  inputs: T
-  value: Ref<T | null>
-  errorMessage: Ref<string | null>
-  validations: { [key: string]: Array<string> }
-  resetInputs: () => void
-  resetValue: () => void
-  resetErrors: () => void
-  resetAll: () => void
-  submit: () => Promise<Ref<T | null>>
-} {
+) {
   const { $axios } = useContext()
 
   const loading = ref(false)
@@ -71,6 +60,14 @@ export function createPendingRequest<T extends { [key: string]: any }>(
     resetInputs()
     resetValue()
     resetErrors()
+  }
+
+  const updateInputs = (object: Partial<T>) => {
+    for (const key of Object.keys(inputs)) {
+      if (key in object) {
+        inputs[key as keyof T] = object[key]!
+      }
+    }
   }
 
   const submit = async (): Promise<Ref<T | null>> => {
@@ -127,6 +124,7 @@ export function createPendingRequest<T extends { [key: string]: any }>(
     resetValue,
     resetErrors,
     resetAll,
+    updateInputs,
     submit,
   }
 }
