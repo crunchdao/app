@@ -36,7 +36,9 @@ export default defineComponent({
     const type = fixedComputed(() => route.value.params.type)
     const code = fixedComputed(() => route.value.query.code)
     const error = fixedComputed<string | null>(
-      () => route.value.query.error_description as string
+      () =>
+        (route.value.query.error_description ||
+          route.value.query.error) as string
     )
 
     const errorMessage = ref<string | null>(error.value)
@@ -53,7 +55,7 @@ export default defineComponent({
     })
 
     onMounted(async () => {
-      if (!error) {
+      if (!error.value) {
         try {
           connection.value = await $axios.$post(
             `/v1/connections/${type.value}/callback`,
