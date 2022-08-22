@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +27,7 @@ import com.crunchdao.app.common.web.exception.OnlyUserException;
 import com.crunchdao.app.common.web.model.PageResponse;
 import com.crunchdao.app.service.apikey.configuration.ApiKeyConfigurationProperties;
 import com.crunchdao.app.service.apikey.dto.ApiKeyDto;
+import com.crunchdao.app.service.apikey.dto.ApiKeyUpdateForm;
 import com.crunchdao.app.service.apikey.dto.ScopeDto;
 import com.crunchdao.app.service.apikey.exception.ApiKeyNotFoundException;
 import com.crunchdao.app.service.apikey.permission.CanRead;
@@ -116,6 +118,19 @@ public class ApiKeyRestControllerV1 {
 		}
 		
 		throw new ForbiddenException();
+	}
+	
+	@PatchMapping(ID_VARIABLE)
+	@CanWrite
+	@Operation(summary = "Update an API-Key.")
+	public ApiKeyDto update(@PathVariable UUID id, @RequestBody @Validated ApiKeyUpdateForm body, Authentication authentication) {
+		if (authentication instanceof UserAuthenticationToken token) {
+			ApiKeyDto apiKey = getApiKey(id, token);
+			
+			return service.update(apiKey.getId(), body);
+		}
+		
+		throw new OnlyUserException();
 	}
 	
 	@ResponseStatus(HttpStatus.NO_CONTENT)

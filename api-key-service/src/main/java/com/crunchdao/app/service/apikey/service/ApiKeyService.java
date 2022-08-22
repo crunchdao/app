@@ -22,7 +22,9 @@ import org.springframework.stereotype.Service;
 import com.crunchdao.app.common.web.model.PageResponse;
 import com.crunchdao.app.service.apikey.configuration.ApiKeyConfigurationProperties;
 import com.crunchdao.app.service.apikey.dto.ApiKeyDto;
+import com.crunchdao.app.service.apikey.dto.ApiKeyUpdateForm;
 import com.crunchdao.app.service.apikey.entity.ApiKey;
+import com.crunchdao.app.service.apikey.exception.ApiKeyNotFoundException;
 import com.crunchdao.app.service.apikey.repository.ApiKeyRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -85,6 +87,24 @@ public class ApiKeyService {
 		}
 		
 		throw new IllegalStateException("too much collision in a row");
+	}
+	
+	public ApiKeyDto update(UUID id, ApiKeyUpdateForm body) {
+		ApiKey apiKey = repository.findById(id).orElseThrow(() -> new ApiKeyNotFoundException(id));
+		
+		if (body.getName() != null) {
+			apiKey.setName(body.getName());
+		}
+		
+		if (body.getDescription() != null) {
+			apiKey.setDescription(body.getDescription());
+		}
+		
+		if (body.getScopes() != null) {
+			apiKey.setScopes(sanitizeScopes(body.getScopes(), allowedScopes));
+		}
+		
+		return repository.save(apiKey).toDto();
 	}
 	
 	public void delete(UUID id) {
