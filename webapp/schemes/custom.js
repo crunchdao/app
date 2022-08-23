@@ -24,4 +24,12 @@ export default class CustomScheme extends OpenIDConnectScheme {
     this.$auth.setUser({});
   }
 
+  // window.crypto is not available on the server side
+  generateRandomString() {
+    return Array(28)
+      .fill(0)
+      .map(() => ('0' + parseInt(Math.random() * 100000000000000).toString(16)).substr(-2))
+      .join('');
+  }
+
 }
