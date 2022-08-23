@@ -27,7 +27,7 @@ export default {
   components: true,
 
   publicRuntimeConfig: {
-    axios: {  
+    axios: {
       browserBaseURL: "/api/"
     }
   },
@@ -113,18 +113,12 @@ export default {
     },
     localStorage: false,
     sessionStorage: false,
-    cookie: {
-      prefix: "auth",
-      options: {
-        path: "/",
-      },
-    },
     defaultStrategy: "keycloak",
     strategies: {
       local: false,
       keycloak: {
         name: "keycloak",
-        scheme: "openIDConnect",
+        scheme: "~/schemes/custom.js",
         enabled: true,
         endpoints: {
           // TODO Change
@@ -144,10 +138,9 @@ export default {
         user: {
           autoFetch: true
         },
-        idToken: false,
-        // idToken: {
-        //   property: "id_token"
-        // },
+        idToken: {
+          property: "id_token"
+        },
         responseType: "code",
         grantType: "authorization_code",
         clientId: "frontend",
