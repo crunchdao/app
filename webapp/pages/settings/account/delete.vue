@@ -73,6 +73,9 @@ import { createPendingAction } from '~/composables/action'
 export default defineComponent({
   components: { VueRecaptcha },
   layout: 'settings',
+  head: {
+    title: 'Account Deletion',
+  },
   setup() {
     const { $dialog, $axios, $auth } = useContext()
     const router = useRouter()

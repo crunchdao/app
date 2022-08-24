@@ -7,6 +7,9 @@ import { defineComponent, useContext, useRouter } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   layout: 'loading',
+  head: {
+    title: 'Keycloak Callback',
+  },
   setup() {
     const { $auth } = useContext()
 

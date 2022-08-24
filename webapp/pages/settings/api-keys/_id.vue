@@ -55,6 +55,9 @@ import { extractMessage } from '~/utilities/error'
 
 export default defineComponent({
   layout: 'settings',
+  head: {
+    title: 'Edit API Keys',
+  },
   setup() {
     const { $axios, $dialog } = useContext()
     const router = useRouter()

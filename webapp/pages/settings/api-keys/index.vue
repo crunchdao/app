@@ -55,6 +55,9 @@ import { ApiKey, PageResponse } from '@/models'
 
 export default defineComponent({
   layout: 'settings',
+  head: {
+    title: 'API Keys',
+  },
   setup() {
     const { $axios } = useContext()
     const router = useRouter()

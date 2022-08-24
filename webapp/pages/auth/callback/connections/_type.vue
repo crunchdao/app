@@ -20,7 +20,6 @@ import {
   useRoute,
   useRouter,
   onBeforeMount,
-  Ref,
 } from '@nuxtjs/composition-api'
 import { fixedComputed } from '~/composables/hack'
 import { Connection } from '~/models'
@@ -28,6 +27,9 @@ import { extractMessage } from '~/utilities/error'
 
 export default defineComponent({
   layout: 'empty',
+  head: {
+    title: 'OAuth Callback',
+  },
   setup() {
     const { $axios } = useContext()
     const router = useRouter()

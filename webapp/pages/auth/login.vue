@@ -7,6 +7,9 @@ import { defineComponent, useContext, useRoute } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   layout: 'loading',
+  head: {
+    title: 'Logging-in',
+  },
   setup() {
     const { $auth } = useContext()
     const route = useRoute()

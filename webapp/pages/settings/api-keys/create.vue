@@ -81,6 +81,9 @@ import { ApiKey } from '~/models'
 
 export default defineComponent({
   layout: 'settings',
+  head: {
+    title: 'Create API Key',
+  },
   emits: {
     create: (_apiKey: ApiKey) => true,
   },

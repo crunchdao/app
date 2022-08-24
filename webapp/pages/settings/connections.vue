@@ -53,6 +53,9 @@ import { Connection, PageResponse } from '@/models'
 
 export default defineComponent({
   layout: 'settings',
+  head: {
+    title: 'Connections',
+  },
   setup() {
     const { $axios } = useContext()
 

@@ -9,5 +9,8 @@ import { defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   layout: 'settings',
+  head: {
+    title: 'Notifications Settings',
+  },
 })
 </script>

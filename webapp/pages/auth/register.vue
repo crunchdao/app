@@ -110,6 +110,9 @@ import { ApiError, User } from '~/models'
 export default defineComponent({
   components: { VueRecaptcha },
   layout: 'empty',
+  head: {
+    title: 'Register',
+  },
   setup() {
     const { $axios, $dialog } = useContext()
     const router = useRouter()

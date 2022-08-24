@@ -17,6 +17,9 @@
 import { defineComponent, useContext } from '@nuxtjs/composition-api'
 
 export default defineComponent({
+  head: {
+    title: 'Account',
+  },
   setup() {
     const { user } = useContext().$auth
 
