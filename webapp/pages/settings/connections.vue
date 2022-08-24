@@ -42,14 +42,12 @@
 <script lang="ts">
 import {
   defineComponent,
-  Ref,
   ref,
   useContext,
   useFetch,
-  watch,
 } from '@nuxtjs/composition-api'
 import { fixedComputed } from '@/composables/hack'
-import { Connection, PageResponse } from '@/models'
+import { Connection } from '@/models'
 
 export default defineComponent({
   layout: 'settings',
@@ -62,11 +60,8 @@ export default defineComponent({
     const handlers = ref<Array<string>>([])
     const connections = ref<Array<Connection>>([])
 
-    useFetch(async () => {
-      handlers.value = await $axios.$get('/v1/connections/handlers')
-    })
-
     const { fetch, fetchState } = useFetch(async () => {
+      handlers.value = await $axios.$get('/v1/connections/handlers')
       connections.value = await $axios.$get('/v1/connections')
     })
 
