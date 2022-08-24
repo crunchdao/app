@@ -12,7 +12,6 @@ import com.crunchdao.app.service.connection.dto.ConnectionDto;
 import com.crunchdao.app.service.connection.dto.ConnectionUpdateForm;
 import com.crunchdao.app.service.connection.entity.Connection;
 import com.crunchdao.app.service.connection.exception.ConnectionNotFoundException;
-import com.crunchdao.app.service.connection.exception.NoConnectionFoundException;
 import com.crunchdao.app.service.connection.handler.ConnectionIdentity;
 import com.crunchdao.app.service.connection.repository.ConnectionRepository;
 
@@ -79,13 +78,11 @@ public class ConnectionService {
 	public void disconnectAll(UUID userId) {
 		List<Connection> connections = repository.findAllByUserId(userId);
 		
-		if (repository.deleteAllByUserId(userId) == 0) {
-			throw new NoConnectionFoundException(userId);
+		if (repository.deleteAllByUserId(userId) != 0) {
+			connections.forEach((connection) -> {
+				rabbitMQSender.sendDeleted(userId, connection.getType());
+			});
 		}
-		
-		connections.forEach((connection) -> {
-			rabbitMQSender.sendDeleted(userId, connection.getType());
-		});
 	}
 	
 	public static List<ConnectionDto> toDtos(List<Connection> connections) {

@@ -29,7 +29,6 @@ import com.crunchdao.app.common.security.token.MockAuthenticationToken;
 import com.crunchdao.app.service.connection.dto.ConnectionDto;
 import com.crunchdao.app.service.connection.dto.ConnectionUpdateForm;
 import com.crunchdao.app.service.connection.exception.ConnectionNotFoundException;
-import com.crunchdao.app.service.connection.exception.NoConnectionFoundException;
 import com.crunchdao.app.service.connection.handler.ConnectionIdentityTest;
 import com.crunchdao.app.service.connection.repository.ConnectionRepository;
 import com.crunchdao.app.service.connection.service.ConnectionService;
@@ -199,18 +198,6 @@ class ConnectionRestControllerV1IntegrationTest {
 				.andExpect(status().isNoContent());
 			
 			assertEquals(0, repository.countByUserId(userId));
-		}
-		
-		@Test
-		void notConnected() throws Exception {
-			final UUID userId = UUID.randomUUID();
-			
-			mockMvc
-				.perform(delete(ConnectionRestControllerV1.BASE_ENDPOINT)
-					.with(MockAuthenticationToken.user(userId)))
-				.andExpect(status().isNotFound())
-				.andExpect(jsonPath("$.message").value(NoConnectionFoundException.DEFAULT_MESSAGE))
-				.andExpect(jsonPath("$.userId").value(userId.toString()));
 		}
 		
 	}
