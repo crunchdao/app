@@ -15,11 +15,8 @@ import com.crunchdao.app.service.registration.api.keycloak.KeycloakServiceClient
 import com.crunchdao.app.service.registration.api.keycloak.KeycloakUserDto;
 import com.crunchdao.app.service.registration.api.user.UserDto;
 import com.crunchdao.app.service.registration.api.user.UserServiceClient;
-import com.crunchdao.app.service.registration.exception.InvalidRecaptchaException;
 import com.crunchdao.app.service.registration.model.RegisterForm;
-import com.github.mkopylec.recaptcha.validation.RecaptchaValidationException;
-import com.github.mkopylec.recaptcha.validation.RecaptchaValidator;
-import com.github.mkopylec.recaptcha.validation.ValidationResult;
+import com.crunchdao.app.service.registration.service.RecaptchaService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,14 +30,14 @@ public class RegisterRestControllerV1 {
 	
 	public static final String BASE_ENDPOINT = "/v1/registration";
 	
-	private final RecaptchaValidator recaptchaValidator;
+	private final RecaptchaService recaptchaService;
 	private final KeycloakServiceClient keycloakServiceClient;
 	private final UserServiceClient userServiceClient;
 	
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping
 	public UserDto create(@Validated @RequestBody RegisterForm body, HttpServletRequest request) {
-		validateRecaptcha(body, request);
+		recaptchaService.validate(body.getRecaptchaResponse(), request);
 		
 		KeycloakUserDto keycloakUser = keycloakServiceClient.create(new KeycloakUserDto()
 			.setUsername(body.getUsername())
@@ -60,19 +57,9 @@ public class RegisterRestControllerV1 {
 			} catch (Throwable exception2) {
 				log.error("Could not delete keycloak user", exception2);
 			}
-			
+
+			// TODO Send an event
 			throw exception;
-		}
-	}
-	
-	public void validateRecaptcha(RegisterForm body, HttpServletRequest request) {
-		try {
-			ValidationResult validationResult = recaptchaValidator.validate(body.getRecaptchaResponse(), request);
-			if (validationResult.isFailure()) {
-				throw new InvalidRecaptchaException(validationResult);
-			}
-		} catch (RecaptchaValidationException exception) {
-			throw new InvalidRecaptchaException(exception.getMessage(), exception.getCause());
 		}
 	}
 	

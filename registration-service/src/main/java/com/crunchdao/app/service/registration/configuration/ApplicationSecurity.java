@@ -1,6 +1,7 @@
 package com.crunchdao.app.service.registration.configuration;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,7 +20,8 @@ public class ApplicationSecurity extends BaseApplicationSecurity {
 	protected void configureAuthorizeHttpRequests(HttpSecurity http) throws Exception {
 		super.configureAuthorizeHttpRequests(http);
 		
-		http.authorizeHttpRequests().antMatchers("/v*/**").permitAll();
+		http.authorizeHttpRequests().antMatchers(HttpMethod.GET).permitAll();
+		http.authorizeHttpRequests().antMatchers(HttpMethod.DELETE).authenticated();
 	}
 	
 }
