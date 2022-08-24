@@ -1,11 +1,6 @@
 <template>
   <div>
-    <v-card-title>
-      Public profile
-      <v-spacer />
-      <v-btn style="visibility: hidden" />
-    </v-card-title>
-    <v-divider />
+    <settings-title title="Public profile" />
   </div>
 </template>
 

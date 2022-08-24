@@ -1,7 +1,6 @@
 <template>
   <div>
-    <v-card-title class="error--text">Delete account</v-card-title>
-    <v-divider />
+    <settings-title title="Delete account" class="error--text" />
     <v-card-subtitle>This action cannot be undone.</v-card-subtitle>
     <v-card-text>
       <table class="table">

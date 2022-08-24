@@ -1,11 +1,8 @@
 <template>
   <div>
-    <v-card-title>
-      Connections
-      <v-spacer />
+    <settings-title title="Connections">
       <connection-button-disconnect-all @disconnect="fetch" />
-    </v-card-title>
-    <v-divider />
+    </settings-title>
     <v-card-subtitle>
       Connect accounts to your CrunchDAO account.
     </v-card-subtitle>

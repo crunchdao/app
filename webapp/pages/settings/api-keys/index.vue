@@ -1,15 +1,12 @@
 <template>
   <div>
-    <v-card-title>
-      API Keys
-      <v-spacer />
+    <settings-title title="API Keys">
       <v-btn class="mr-2" text outlined to="/settings/api-keys/create">
         <v-icon left>mdi-plus</v-icon>
         Add API-Key
       </v-btn>
       <api-keys-button-revoke-all @delete="fetch" />
-    </v-card-title>
-    <v-divider />
+    </settings-title>
     <v-card-subtitle>
       API Key you have generated that can be used to access the CrunchDAO API.
     </v-card-subtitle>

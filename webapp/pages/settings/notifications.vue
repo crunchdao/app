@@ -1,11 +1,6 @@
 <template>
   <div>
-    <v-card-title>
-      Notifications
-      <v-spacer />
-      <v-btn style="visibility: hidden" />
-    </v-card-title>
-    <v-divider />
+    <settings-title title="Notifications" />
   </div>
 </template>
 

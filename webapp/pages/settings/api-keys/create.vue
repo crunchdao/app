@@ -1,11 +1,6 @@
 <template>
   <div>
-    <v-card-title>
-      Create an API Keys
-      <v-spacer />
-      <v-btn style="visibility: hidden" />
-    </v-card-title>
-    <v-divider />
+    <settings-title title="Create an API Keys" />
     <v-card-subtitle>
       API Keys can be used to authenticate to the CrunchDAO API.
     </v-card-subtitle>
