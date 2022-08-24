@@ -26,6 +26,7 @@ export default defineComponent({
       if (response) {
         await $axios.$delete(`/v1/connections`)
 
+        $dialog.notify.success('All Connections disconnected!')
         emit('disconnect')
       }
     })

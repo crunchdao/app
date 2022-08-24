@@ -36,7 +36,7 @@ export default defineComponent({
 
           await $axios.delete(`/v1/api-keys/${apiKey!.id}`)
 
-          $dialog.notify.success(`API Key deleted!`)
+          $dialog.notify.success(`API Key revoked!`)
           emit('delete')
         } catch (error: Error | any) {
           const message =

@@ -40,6 +40,7 @@ export default defineComponent({
       if (response) {
         await $axios.$delete(`/v1/connections/${connection.type}`)
 
+        $dialog.notify.success('Connection disconnected!')
         emit('disconnect')
       }
     })
