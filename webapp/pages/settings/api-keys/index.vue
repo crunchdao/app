@@ -1,12 +1,15 @@
 <template>
   <div>
-    <settings-title title="API Keys">
+    <v-card-title>
+      API Keys
+      <v-spacer />
       <v-btn class="mr-2" text outlined to="/settings/api-keys/create">
         <v-icon left>mdi-plus</v-icon>
         Add API-Key
       </v-btn>
       <api-keys-button-revoke-all @delete="fetch" />
-    </settings-title>
+    </v-card-title>
+    <v-divider />
     <v-card-subtitle>
       API Key you have generated that can be used to access the CrunchDAO API.
     </v-card-subtitle>
@@ -55,9 +58,6 @@ import { ApiKey, PageResponse } from '@/models'
 
 export default defineComponent({
   layout: 'settings',
-  head: {
-    title: 'API Keys',
-  },
   setup() {
     const { $axios } = useContext()
     const router = useRouter()
@@ -81,8 +81,8 @@ export default defineComponent({
         })
       },
     })
-    const response = ref() as Ref<PageResponse<ApiKey>>
 
+    const response = ref() as Ref<PageResponse<ApiKey>>
     const { fetch, fetchState } = useFetch(async () => {
       response.value = await $axios.$get('/v1/api-keys', {
         params: {
