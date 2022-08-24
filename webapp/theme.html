@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html class="">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="robots" content="noindex, nofollow">
+  <title>Sign in to App</title>
+  <link rel="icon" href="/resources/ear7c/login/base/img/favicon.ico" />
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    *,
+    ::before,
+    ::after {
+      background-repeat: no-repeat;
+      box-sizing: inherit;
+    }
+
+    a {
+      color: #f76a49;
+    }
+
+    html {
+      /* .v-application { */
+      font-family: "Roboto", sans-serif;
+      line-height: 1.5;
+      /* } */
+
+      /* .v-application { */
+      display: flex;
+      position: relative;
+      /* } */
+
+      /* .theme--dark.v-application { */
+      background: #121212;
+      color: #FFFFFF;
+      /* } */
+    }
+
+    body {
+      /* .v-application--wrap { */
+      flex: 1 1 auto;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      max-width: 100%;
+      position: relative;
+      /* } */
+    }
+
+    body>div {
+      /* .layout { */
+      display: flex;
+      flex: 1 1 auto;
+      flex-wrap: nowrap;
+      min-width: 0;
+      /* } */
+
+      /* .justify-center { */
+      justify-content: center !important;
+      /* } */
+
+      /* .align-center { */
+      align-items: center !important;
+      /* } */
+
+      /* .column { */
+      flex-direction: column;
+      /* } */
+    }
+
+    body>div>div {
+      /* .v-card { */
+      border-width: thin;
+      display: block;
+      max-width: 100%;
+      outline: none;
+      text-decoration: none;
+      transition-property: box-shadow, opacity;
+      word-wrap: break-word;
+      position: relative;
+      white-space: normal;
+      /* } */
+
+      /* .theme--dark.v-sheet { */
+      background-color: #1E1E1E;
+      border-color: #1E1E1E;
+      color: #FFFFFF;
+      /* } */
+
+      /* .v-sheet.v-card { */
+      border-radius: 4px;
+      /* } */
+
+      /* .v-sheet.v-card:not(.v-sheet--outlined) { */
+      box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+      /* } */
+
+      /* .v-application .ma-4 { */
+      margin: 16px !important;
+      /* } */
+
+      width: 600px;
+    }
+
+    body>div>div>header {
+      /* .v-card__title { */
+      padding: 16px;
+      /* } */
+
+      /* .v-card__title { */
+      align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      font-size: 1.25rem;
+      font-weight: 500;
+      letter-spacing: 0.0125em;
+      line-height: 2rem;
+      word-break: break-all;
+      /* } */
+    }
+
+    #kc-header {
+      display: none
+    }
+
+    #kc-page-title {
+      justify-items: center;
+    }
+
+    #kc-content {
+      /* .v-card__text { */
+      padding: 16px;
+      /* } */
+
+      /* .v-card__text { */
+      font-size: 0.875rem;
+      font-weight: 400;
+      line-height: 1.375rem;
+      letter-spacing: 0.0071428571em;
+      /* } */
+    }
+
+    input[type="submit"] {
+      /* .v-btn { */
+      align-items: center;
+      border-radius: 4px;
+      display: inline-flex;
+      flex: 0 0 auto;
+      font-weight: 500;
+      letter-spacing: 0.0892857143em;
+      justify-content: center;
+      outline: 0;
+      position: relative;
+      text-decoration: none;
+      text-indent: 0.0892857143em;
+      text-transform: uppercase;
+      transition-duration: 0.28s;
+      transition-property: box-shadow, transform, opacity;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+      vertical-align: middle;
+      white-space: nowrap;
+      /* } */
+
+      /* .v-btn--block { */
+      display: flex;
+      flex: 1 0 auto;
+      min-width: 100% !important;
+      max-width: none;
+      /* } */
+
+      /* .v-btn--is-elevated { */
+      box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+      /* } */
+
+      /* .primary { */
+      background-color: #f76a49 !important;
+      border-color: #f76a49 !important;
+      /* } */
+
+      /* .theme--dark.v-btn { */
+      color: #FFFFFF;
+      /* } */
+
+      /* .v-btn.v-size--large { */
+      font-size: 0.875rem;
+      /* } */
+
+      /* .v-btn:not(.v-btn--round).v-size--large { */
+      height: 44px;
+      min-width: 78px;
+      padding: 0 0px;
+      /* } */
+    }
+  </style>
+</head>
+
+<body class="">
+  <div class="">
+    <div id="kc-header" class="">
+      <div id="kc-header-wrapper" class="">App</div>
+    </div>
+    <div class="">
+      <header class="">
+        <h1 id="kc-page-title"> Sign in to your account
+        </h1>
+      </header>
+      <div id="kc-content">
+        <div id="kc-content-wrapper">
+          <div id="kc-form">
+            <div id="kc-form-wrapper">
+              <form id="kc-form-login" onsubmit="login.disabled = true; return true;"
+                action="http://localhost:9800/realms/App/login-actions/authenticate?session_code=fh5GSEA6euKRa3CwcTd0UAGAHiLlHtkXobkabuvPTg0&amp;execution=b8066c04-4b10-43d6-85e4-035ffdc9e13f&amp;client_id=frontend&amp;tab_id=yDm7UekM7Us"
+                method="post">
+                <div class="">
+                  <label for="username" class="">Username or email</label>
+                  <input tabindex="1" id="username" class="" name="username" value="" type="text" autofocus
+                    autocomplete="off" aria-invalid="" />
+                </div>
+                <div class="">
+                  <label for="password" class="">Password</label>
+                  <input tabindex="2" id="password" class="" name="password" type="password" autocomplete="off"
+                    aria-invalid="" />
+                </div>
+                <div class=" ">
+                  <div id="kc-form-options">
+                    <div class="checkbox">
+                      <label>
+                        <input tabindex="3" id="rememberMe" name="rememberMe" type="checkbox"> Remember me
+                      </label>
+                    </div>
+                  </div>
+                  <div class="">
+                    <span><a tabindex="5"
+                        href="/realms/App/login-actions/reset-credentials?client_id=frontend&amp;tab_id=yDm7UekM7Us">Forgot
+                        Password?</a></span>
+                  </div>
+                </div>
+                <div id="kc-form-buttons" class="">
+                  <input type="hidden" id="id-hidden-input" name="credentialId" />
+                  <input tabindex="4" class="   " name="login" id="kc-login" type="submit" value="Sign In" />
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
