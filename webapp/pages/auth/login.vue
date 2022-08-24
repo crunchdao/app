@@ -1,12 +1,12 @@
 <template>
-  <p>loading</p>
+  <div />
 </template>
 
 <script lang="ts">
 import { defineComponent, useContext, useRoute } from '@nuxtjs/composition-api'
 
 export default defineComponent({
-  layout: 'empty',
+  layout: 'loading',
   setup() {
     const { $auth } = useContext()
     const route = useRoute()
