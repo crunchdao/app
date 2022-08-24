@@ -6,8 +6,8 @@
 		<artifactId>parent</artifactId>
 		<version>latest</version>
 	</parent>
-	<artifactId>register-service</artifactId>
-	<name>crunchdao-register-service</name>
+	<artifactId>registration-service</artifactId>
+	<name>crunchdao-registration-service</name>
 	<dependencies>
 		<dependency>
 			<groupId>io.github.wimdeblauwe</groupId>

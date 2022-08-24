@@ -1,4 +1,4 @@
-package com.crunchdao.app.service.register.configuration;
+package com.crunchdao.app.service.registration.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;

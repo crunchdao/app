@@ -1,4 +1,4 @@
-package com.crunchdao.app.service.register.api.keycloak;
+package com.crunchdao.app.service.registration.api.keycloak;
 
 import java.util.UUID;
 

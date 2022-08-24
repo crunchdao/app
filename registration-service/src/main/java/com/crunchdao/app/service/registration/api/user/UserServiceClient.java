@@ -1,4 +1,4 @@
-package com.crunchdao.app.service.register.api.user;
+package com.crunchdao.app.service.registration.api.user;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PutMapping;

@@ -50,10 +50,10 @@ spring:
           uri: lb://connection-service
           predicates:
             - Path=/v1/connections, /v1/connections/**
-        - id: register-service-v1
-          uri: lb://register-service
+        - id: registration-service-v1
+          uri: lb://registration-service
           predicates:
-            - Path=/v1/register
+            - Path=/v1/registration,/v1/registration/**
         - id: graphql
           uri: lb://graphql
           predicates:

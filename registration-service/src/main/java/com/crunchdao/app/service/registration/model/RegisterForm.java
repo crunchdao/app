@@ -1,4 +1,4 @@
-package com.crunchdao.app.service.register.model;
+package com.crunchdao.app.service.registration.model;
 
 import java.util.Objects;
 

@@ -1,4 +1,4 @@
-package com.crunchdao.app.service.register;
+package com.crunchdao.app.service.registration;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
@@ -9,10 +9,10 @@ import org.springframework.cloud.sleuth.autoconfig.instrument.web.client.feign.T
 @EnableFeignClients
 @ImportAutoConfiguration({ TraceFeignClientAutoConfiguration.class })
 @SpringBootApplication
-public class RegisterServiceApplication {
+public class RegistrationServiceApplication {
 	
 	public static void main(String[] args) {
-		SpringApplication.run(RegisterServiceApplication.class, args);
+		SpringApplication.run(RegistrationServiceApplication.class, args);
 	}
 	
 }

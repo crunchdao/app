@@ -36,6 +36,7 @@
 		<module>api-key-service</module>
 		<module>user-service</module>
 		<module>keycloak-service</module>
+		<module>registration-service</module>
 		<module>web-common</module>
 		<module>security-common</module>
 		<module>security-common-test</module>

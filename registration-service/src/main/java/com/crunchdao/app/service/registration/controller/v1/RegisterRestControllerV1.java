@@ -1,4 +1,4 @@
-package com.crunchdao.app.service.register.controller.v1;
+package com.crunchdao.app.service.registration.controller.v1;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.crunchdao.app.service.register.api.keycloak.KeycloakServiceClient;
-import com.crunchdao.app.service.register.api.keycloak.KeycloakUserDto;
-import com.crunchdao.app.service.register.api.user.UserDto;
-import com.crunchdao.app.service.register.api.user.UserServiceClient;
-import com.crunchdao.app.service.register.exception.InvalidRecaptchaException;
-import com.crunchdao.app.service.register.model.RegisterForm;
+import com.crunchdao.app.service.registration.api.keycloak.KeycloakServiceClient;
+import com.crunchdao.app.service.registration.api.keycloak.KeycloakUserDto;
+import com.crunchdao.app.service.registration.api.user.UserDto;
+import com.crunchdao.app.service.registration.api.user.UserServiceClient;
+import com.crunchdao.app.service.registration.exception.InvalidRecaptchaException;
+import com.crunchdao.app.service.registration.model.RegisterForm;
 import com.github.mkopylec.recaptcha.validation.RecaptchaValidationException;
 import com.github.mkopylec.recaptcha.validation.RecaptchaValidator;
 import com.github.mkopylec.recaptcha.validation.ValidationResult;
@@ -31,7 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(path = RegisterRestControllerV1.BASE_ENDPOINT, produces = MediaType.APPLICATION_JSON_VALUE)
 public class RegisterRestControllerV1 {
 	
-	public static final String BASE_ENDPOINT = "/v1/register";
+	public static final String BASE_ENDPOINT = "/v1/registration";
 	
 	private final RecaptchaValidator recaptchaValidator;
 	private final KeycloakServiceClient keycloakServiceClient;

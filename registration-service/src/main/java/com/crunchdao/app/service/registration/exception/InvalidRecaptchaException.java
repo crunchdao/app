@@ -1,4 +1,4 @@
-package com.crunchdao.app.service.register.exception;
+package com.crunchdao.app.service.registration.exception;
 
 import java.util.Collections;
 import java.util.List;

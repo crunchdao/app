@@ -1,4 +1,4 @@
-package com.crunchdao.app.service.register.api.user;
+package com.crunchdao.app.service.registration.api.user;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

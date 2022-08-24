@@ -158,7 +158,7 @@ export default defineComponent({
           validation[key] = []
         }
 
-        user.value = await $axios.$post('/v1/register', inputs)
+        user.value = await $axios.$post('/v1/registration', inputs)
 
         redirect()
       } catch (error: Error | any) {
