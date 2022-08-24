@@ -1,11 +1,6 @@
 <template>
   <div>
-    <v-card-title>
-      Account
-      <v-spacer />
-      <v-btn style="visibility: hidden" />
-    </v-card-title>
-    <v-divider />
+    <settings-account-delete />
   </div>
 </template>
 
