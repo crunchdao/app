@@ -30,10 +30,8 @@ import {
   ref,
   useContext,
   useFetch,
-  watch,
 } from '@nuxtjs/composition-api'
 import { Scope } from '~/models'
-import isEqual from 'lodash.isequal'
 
 export default defineComponent({
   layout: 'settings',
