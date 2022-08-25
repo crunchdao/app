@@ -51,7 +51,7 @@ spring:
           predicates:
             - Path=/v1/connections, /v1/connections/**
         - id: game-service-v1
-          uri: lb://game-service
+          uri: lb://achievement-service
           predicates:
             - Path=/v1/achievements, /v1/achievements/**
         - id: registration-service-v1

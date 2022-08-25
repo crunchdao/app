@@ -8,10 +8,10 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
 
-import com.crunchdao.app.service.graphql.api.game.AchievementCategoryDto;
-import com.crunchdao.app.service.graphql.api.game.AchievementDto;
-import com.crunchdao.app.service.graphql.api.game.AchievementUserDto;
-import com.crunchdao.app.service.graphql.api.game.GameServiceClient;
+import com.crunchdao.app.service.graphql.api.achievement.AchievementCategoryDto;
+import com.crunchdao.app.service.graphql.api.achievement.AchievementDto;
+import com.crunchdao.app.service.graphql.api.achievement.AchievementServiceClient;
+import com.crunchdao.app.service.graphql.api.achievement.AchievementUserDto;
 import com.crunchdao.app.service.graphql.api.user.UserDto;
 import com.crunchdao.app.service.graphql.api.user.UserServiceClient;
 
@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @Controller
 class GameController {
 	
-	private final GameServiceClient gameServiceClient;
+	private final AchievementServiceClient gameServiceClient;
 	private final UserServiceClient userServiceClient;
 	
 	@QueryMapping
