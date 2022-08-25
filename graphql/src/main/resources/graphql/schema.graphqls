@@ -8,6 +8,11 @@ type Query {
 	self: User!
 	user(id: UUID!): User
 	connections(user: UUID): [Connection]
+	achievements(category: UUID): [Achievement]
+	achievement(id: UUID!): Achievement
+	achievementCategories: [AchievementCategory]
+	achievementCategory(id: UUID!): AchievementCategory
+	achievementUser(userId: UUID!): [AchievementUser]
 }
 
 type ApiKeyPageResponse {
@@ -43,6 +48,36 @@ type Connection {
     public: Boolean!
     createdAt: String!
     updatedAt: String!
+}
+
+type Achievement {
+    id: UUID!
+    name: String!
+    description: String!
+    percentage: Boolean!
+    max: Int!
+    hidden: Boolean!
+    categoryId: UUID!
+    category: AchievementCategory!
+}
+
+type AchievementCategory {
+    id: UUID!
+    name: String!
+    description: String!
+    color: String!
+}
+
+type AchievementUser {
+    id: UUID!
+    userId: UUID!
+    user: User!
+    achievementId: UUID!
+    achievement: Achievement!
+    progress: Int!
+    unlocked: Boolean!
+    unlockedAt: String
+    extra: JSON
 }
 
 type User {
