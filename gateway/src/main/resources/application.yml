@@ -50,6 +50,10 @@ spring:
           uri: lb://connection-service
           predicates:
             - Path=/v1/connections, /v1/connections/**
+        - id: game-service-v1
+          uri: lb://game-service
+          predicates:
+            - Path=/v1/achievements, /v1/achievements/**
         - id: registration-service-v1
           uri: lb://registration-service
           predicates:
