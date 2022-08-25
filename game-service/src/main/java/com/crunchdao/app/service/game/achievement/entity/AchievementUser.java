@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.AllArgsConstructor;
@@ -34,7 +35,7 @@ public class AchievementUser {
 	private UUID achievementId;
 	
 	@Field
-	private long value;
+	private long progress;
 	
 	@Field
 	private boolean unlocked;
@@ -46,6 +47,27 @@ public class AchievementUser {
 	@Field
 	@JsonInclude(JsonInclude.Include.NON_EMPTY)
 	private Map<String, Object> extra;
+	
+	@JsonIgnore
+	public AchievementUser increment(Achievement achievement, long of) {
+		this.progress = achievement.cap(progress + of);
+		
+		return this;
+	}
+	
+	public AchievementUser setValue(Achievement achievement, long value) {
+		this.progress = achievement.cap(value);
+		
+		return this;
+	}
+	
+	public AchievementUser setUnlockedAtIfNull(LocalDateTime at) {
+		if (at == null) {
+			at = LocalDateTime.now();
+		}
+		
+		return setUnlockedAt(at);
+	}
 	
 	public static class AchievementUserBuilder {
 		

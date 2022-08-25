@@ -40,9 +40,13 @@ public class Achievement implements HasId {
 	
 	@Field
 	private boolean hidden;
-
+	
 	@Field
 	private UUID categoryId;
+	
+	public long cap(long value) {
+		return Math.min(max, value);
+	}
 	
 	public static class AchievementBuilder {
 		

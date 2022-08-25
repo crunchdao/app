@@ -6,8 +6,8 @@ import java.util.UUID;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.crunchdao.app.service.game.achievement.entity.AchievementUser;
@@ -23,15 +23,15 @@ import lombok.RequiredArgsConstructor;
 @Tag(name = "achievement", description = "Achievement related operations.")
 public class AchievementUserRestControllerV1 {
 	
-	public static final String ID_VARIABLE = "{id}";
+	public static final String USER_ID_VARIABLE = "{userId}";
 	
 	public static final String BASE_ENDPOINT = "/v1/achievements/users";
-	public static final String ID_ENDPOINT = BASE_ENDPOINT + "/" + ID_VARIABLE;
+	public static final String ID_ENDPOINT = BASE_ENDPOINT + "/" + USER_ID_VARIABLE;
 	
 	private final AchievementUserService service;
 	
-	@GetMapping
-	public List<AchievementUser> list(@RequestParam(name = "user") UUID userId) {
+	@GetMapping(USER_ID_VARIABLE)
+	public List<AchievementUser> list(@PathVariable UUID userId) {
 		return service.listForUserId(userId);
 	}
 	
