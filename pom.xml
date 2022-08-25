@@ -33,15 +33,21 @@
 	<modules>
 		<module>gateway</module>
 		<module>graphql</module>
+		
+		<module>achievement-service</module>
 		<module>api-key-service</module>
-		<module>user-service</module>
+		<module>auth-service</module>
+		<module>connection-service</module>
 		<module>keycloak-service</module>
 		<module>registration-service</module>
+		<module>segment-analytics-service</module>
+		<module>user-service</module>
+		
 		<module>web-common</module>
 		<module>security-common</module>
 		<module>security-common-test</module>
 	</modules>
-
+	
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
