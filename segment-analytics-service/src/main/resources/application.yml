@@ -11,6 +11,7 @@ app:
     exchange:
       user: "user"
       connection: "connection"
+      achievement: "achievement"
     queue:
       user:
         event:
@@ -20,6 +21,9 @@ app:
         event:
           created: "connection.event.created.${spring.application.name}"
           deleted: "connection.event.deleted.${spring.application.name}"
+      achievement:
+        event:
+          unlocked: "achievement.event.unlocked.${spring.application.name}"
     routing-key:
       user:
         event:
@@ -29,6 +33,9 @@ app:
         event:
           created: "connection.event.created"
           deleted: "connection.event.deleted"
+      achievement:
+        event:
+          unlocked: "achievement.event.unlocked"
 segment:
   analytics:
     writeKey: ${SEGMENT_WRITE_KEY:}

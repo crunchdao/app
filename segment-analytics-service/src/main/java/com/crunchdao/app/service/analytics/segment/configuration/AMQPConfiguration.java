@@ -106,6 +106,35 @@ public class AMQPConfiguration {
 		
 	}
 	
+	@Configuration(proxyBeanMethods = false)
+	public static class AchievementAMQPConfiguration {
+		
+		@Bean
+		Exchange achievementExchange(MessagingConfigurationProperties properties) {
+			return ExchangeBuilder
+				.topicExchange(properties.getExchange().getAchievement())
+				.suppressDeclaration()
+				.build();
+		}
+		
+		@Bean
+		Queue achievementUnlockedEventQueue(MessagingConfigurationProperties properties) {
+			return QueueBuilder
+				.durable(properties.getQueue().getAchievement().getEvent().getUnlocked())
+				.build();
+		}
+		
+		@Bean
+		Binding achievementUnlockedEventBinding(Queue achievementUnlockedEventQueue, Exchange achievementExchange, MessagingConfigurationProperties properties) {
+			return BindingBuilder
+				.bind(achievementUnlockedEventQueue)
+				.to(achievementExchange)
+				.with(properties.getRoutingKey().getAchievement().getEvent().getUnlocked())
+				.noargs();
+		}
+		
+	}
+	
 	@Primary
 	@Bean
 	Jackson2JsonMessageConverter producerJackson2MessageConverter(ObjectMapper objectMapper) {
