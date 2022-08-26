@@ -34,7 +34,16 @@ public class MessagingConfigurationProperties {
 		@Accessors(chain = true)
 		public static class Achievement {
 			
+			private Event event;
 			private Command command;
+			
+			@Data
+			@Accessors(chain = true)
+			public static class Event {
+				
+				private String unlocked;
+				
+			}
 			
 			@Data
 			@Accessors(chain = true)

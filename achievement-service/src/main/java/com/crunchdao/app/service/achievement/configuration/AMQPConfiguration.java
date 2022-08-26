@@ -23,20 +23,30 @@ public class AMQPConfiguration {
 			.build();
 	}
 	
-	@Bean
-	Queue incrementCommandQueue(MessagingConfigurationProperties properties) {
-		return QueueBuilder
-			.durable(properties.getQueue().getAchievement().getCommand().getIncrement())
-			.build();
+	@Configuration(proxyBeanMethods = false)
+	public static class UserAMQPConfiguration {
+		
+		@Bean
+		Binding userCreatedEventBinding(Queue incrementCommandQueue, Exchange exchange, MessagingConfigurationProperties properties) {
+			return BindingBuilder
+				.bind(incrementCommandQueue)
+				.to(exchange)
+				.with(properties.getRoutingKey().getAchievement().getCommand().getIncrement())
+				.noargs();
+		}
+		
 	}
 	
-	@Bean
-	Binding userCreatedEventBinding(Queue incrementCommandQueue, Exchange exchange, MessagingConfigurationProperties properties) {
-		return BindingBuilder
-			.bind(incrementCommandQueue)
-			.to(exchange)
-			.with(properties.getRoutingKey().getAchievement().getCommand().getIncrement())
-			.noargs();
+	@Configuration(proxyBeanMethods = false)
+	public static class ConnectionAMQPConfiguration {
+		
+		@Bean
+		Queue incrementCommandQueue(MessagingConfigurationProperties properties) {
+			return QueueBuilder
+				.durable(properties.getQueue().getAchievement().getCommand().getIncrement())
+				.build();
+		}
+		
 	}
 	
 	@Primary

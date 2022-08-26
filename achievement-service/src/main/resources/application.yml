@@ -14,8 +14,6 @@ app:
       achievement:
         command:
           increment: "achievement.command.increment.${spring.application.name}"
-          set: "achievement.command.set.${spring.application.name}"
-          unlock: "achievement.command.unlock.${spring.application.name}"
     routing-key:
       user:
         event:
@@ -24,5 +22,7 @@ app:
         event:
           created: "connection.event.created"
       achievement:
+        event:
+          unlocked: "achievement.event.unlocked"
         command:
           increment: "achievement.command.increment"
