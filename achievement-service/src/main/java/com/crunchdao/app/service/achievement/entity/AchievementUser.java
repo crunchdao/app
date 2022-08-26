@@ -1,7 +1,6 @@
 package com.crunchdao.app.service.achievement.entity;
 
 import java.time.LocalDateTime;
-import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
@@ -26,6 +25,7 @@ import lombok.experimental.Accessors;
 public class AchievementUser {
 	
 	@Id
+	@JsonIgnore
 	private UUID id;
 	
 	@Field
@@ -43,10 +43,6 @@ public class AchievementUser {
 	@Field
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private LocalDateTime unlockedAt;
-	
-	@Field
-	@JsonInclude(JsonInclude.Include.NON_EMPTY)
-	private Map<String, Object> extra;
 	
 	@JsonIgnore
 	public AchievementUser increment(Achievement achievement, long of) {

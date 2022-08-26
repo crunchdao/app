@@ -27,6 +27,7 @@ public class AchievementUserService {
 	public AchievementUser getProgress(Achievement achievement, UUID userId) {
 		return repository.findByAchievementIdAndUserId(achievement.getId(), userId)
 			.orElseGet(() -> AchievementUser.builder()
+				.id(UUID.randomUUID())
 				.achievement(achievement)
 				.userId(userId)
 				.build());
@@ -53,7 +54,7 @@ public class AchievementUserService {
 	}
 	
 	// TODO synchronized will break in a microservice environnement
-	private synchronized AchievementUser increment(Achievement achievement, UUID user, long amount, LocalDateTime at) {
+	public synchronized AchievementUser increment(Achievement achievement, UUID user, long amount, LocalDateTime at) {
 		AchievementUser achievementUser = getProgress(achievement, user);
 		
 		if (achievementUser.isUnlocked()) {

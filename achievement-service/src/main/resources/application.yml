@@ -6,3 +6,23 @@ spring:
   cloud:
     consul:
       enabled: false
+app:
+  messaging:
+    exchange:
+      achievement: "achievement"
+    queue:
+      achievement:
+        command:
+          increment: "achievement.command.increment.${spring.application.name}"
+          set: "achievement.command.set.${spring.application.name}"
+          unlock: "achievement.command.unlock.${spring.application.name}"
+    routing-key:
+      user:
+        event:
+          created: "user.event.created"
+      connection:
+        event:
+          created: "connection.event.created"
+      achievement:
+        command:
+          increment: "achievement.command.increment"

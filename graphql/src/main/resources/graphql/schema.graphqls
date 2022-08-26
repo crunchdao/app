@@ -69,7 +69,6 @@ type AchievementCategory {
 }
 
 type AchievementUser {
-    id: UUID!
     userId: UUID!
     user: User!
     achievementId: UUID!
@@ -77,7 +76,6 @@ type AchievementUser {
     progress: Int!
     unlocked: Boolean!
     unlockedAt: String
-    extra: JSON
 }
 
 type User {
