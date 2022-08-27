@@ -33,6 +33,9 @@ public class AchievementCategory implements HasId {
 	private String description;
 	
 	@Field
+	private String iconUrl;
+	
+	@Field
 	private String color;
 	
 	public static class AchievementCategoryBuilder {
