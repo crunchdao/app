@@ -10,7 +10,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 public class BaseMongoTest {
 	
 	@Container
-	static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:latest");
+	static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:5");
 	
 	@DynamicPropertySource
 	static void setProperties(DynamicPropertyRegistry registry) {
