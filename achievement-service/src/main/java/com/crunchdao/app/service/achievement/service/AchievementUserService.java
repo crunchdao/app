@@ -33,8 +33,8 @@ public class AchievementUserService {
 	}
 	
 	// TODO synchronized will break in a microservice environnement
-	public synchronized AchievementUser increment(Achievement achievement, UUID user, long amount, LocalDateTime at) {
-		AchievementUser achievementUser = getProgress(achievement, user);
+	public synchronized AchievementUser increment(Achievement achievement, UUID userId, long amount, LocalDateTime at) {
+		AchievementUser achievementUser = getProgress(achievement, userId);
 		
 		if (achievementUser.isUnlocked()) {
 			return achievementUser;

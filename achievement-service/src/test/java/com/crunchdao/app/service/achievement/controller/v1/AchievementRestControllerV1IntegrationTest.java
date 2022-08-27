@@ -19,7 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.crunchdao.app.service.achievement.AchievementServiceApplication;
-import com.crunchdao.app.service.achievement.BaseMongoTest;
+import com.crunchdao.app.service.achievement.BaseIntegrationTest;
 import com.crunchdao.app.service.achievement.data.AchievementCategories;
 import com.crunchdao.app.service.achievement.data.Achievements;
 import com.crunchdao.app.service.achievement.entity.Achievement;
@@ -32,7 +32,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @SpringBootTest(classes = AchievementServiceApplication.class)
 @AutoConfigureMockMvc
 @DirtiesContext
-class AchievementRestControllerV1Test extends BaseMongoTest {
+class AchievementRestControllerV1IntegrationTest extends BaseIntegrationTest {
 	
 	@Autowired
 	MockMvc mockMvc;

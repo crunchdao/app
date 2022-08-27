@@ -11,6 +11,7 @@ import com.crunchdao.app.service.achievement.service.AchievementUserService;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
@@ -36,6 +37,7 @@ public class IncrementCommandHandler {
 	}
 	
 	@Data
+	@Accessors(chain = true)
 	public static class IncrementCommand {
 		
 		private UUID achievementId;

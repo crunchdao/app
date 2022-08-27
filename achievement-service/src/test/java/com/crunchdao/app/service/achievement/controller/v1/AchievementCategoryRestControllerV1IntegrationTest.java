@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.crunchdao.app.service.achievement.AchievementServiceApplication;
-import com.crunchdao.app.service.achievement.BaseMongoTest;
+import com.crunchdao.app.service.achievement.BaseIntegrationTest;
 import com.crunchdao.app.service.achievement.data.AchievementCategories;
 import com.crunchdao.app.service.achievement.entity.AchievementCategory;
 import com.crunchdao.app.service.achievement.exception.AchievementCategoryNotFoundException;
@@ -29,7 +29,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @SpringBootTest(classes = AchievementServiceApplication.class)
 @AutoConfigureMockMvc
 @DirtiesContext
-class AchievementCategoryRestControllerV1Test extends BaseMongoTest {
+class AchievementCategoryRestControllerV1IntegrationTest extends BaseIntegrationTest {
 	
 	@Autowired
 	MockMvc mockMvc;
