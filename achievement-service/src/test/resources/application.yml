@@ -11,3 +11,23 @@ spring:
     enabled: false
   zipkin:
     enabled: false
+app:
+  messaging:
+    exchange:
+      achievement: "achievement"
+    queue:
+      achievement:
+        command:
+          increment: "achievement.command.increment.app"
+    routing-key:
+      user:
+        event:
+          created: "user.event.created"
+      connection:
+        event:
+          created: "connection.event.created"
+      achievement:
+        event:
+          unlocked: "achievement.event.unlocked"
+        command:
+          increment: "achievement.command.increment"
