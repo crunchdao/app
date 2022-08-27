@@ -33,6 +33,9 @@ public class Achievement implements HasId {
 	private String description;
 	
 	@Field
+	private String iconUrl;
+	
+	@Field
 	private boolean percentage;
 	
 	@Field
