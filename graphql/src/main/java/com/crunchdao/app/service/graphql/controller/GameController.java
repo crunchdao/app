@@ -50,7 +50,7 @@ class GameController {
 	}
 	
 	@SchemaMapping(typeName = "Achievement")
-	AchievementCategoryDto user(AchievementDto achievement) {
+	AchievementCategoryDto category(AchievementDto achievement) {
 		return gameServiceClient.showAchievementCategory(achievement.getCategoryId());
 	}
 	
