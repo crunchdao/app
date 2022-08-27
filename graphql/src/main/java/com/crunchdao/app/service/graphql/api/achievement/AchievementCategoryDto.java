@@ -10,6 +10,7 @@ public class AchievementCategoryDto {
 	private UUID id;
 	private String name;
 	private String description;
+	private String iconUrl;
 	private String color;
 	
 }

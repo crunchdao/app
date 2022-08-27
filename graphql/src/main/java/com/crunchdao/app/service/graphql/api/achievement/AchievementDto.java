@@ -10,6 +10,7 @@ public class AchievementDto {
 	private UUID id;
 	private String name;
 	private String description;
+	private String iconUrl;
 	private boolean percentage;
 	private long max;
 	private boolean hidden;
