@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.util.unit.DataSize;
 
 import com.crunchdao.app.service.achievement.entity.Achievement;
+import com.crunchdao.app.service.achievement.entity.AchievementCategory;
 import com.crunchdao.app.service.achievement.util.ExtractionUtils;
 
 import lombok.experimental.UtilityClass;
@@ -273,6 +274,13 @@ public class Achievements {
 	
 	public static final List<Achievement> values() {
 		return ExtractionUtils.extract(Achievements.class);
+	}
+	
+	public static final List<Achievement> values(AchievementCategory category) {
+		return values()
+			.stream()
+			.filter((achievement) -> category.getId().equals(achievement.getCategoryId()))
+			.toList();
 	}
 	
 }

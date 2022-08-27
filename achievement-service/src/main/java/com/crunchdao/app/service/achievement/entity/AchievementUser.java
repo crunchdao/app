@@ -57,7 +57,7 @@ public class AchievementUser {
 		return this;
 	}
 	
-	public AchievementUser setUnlockedAtIfNull(LocalDateTime at) {
+	public AchievementUser setUnlockedAtOrNow(LocalDateTime at) {
 		if (at == null) {
 			at = LocalDateTime.now();
 		}

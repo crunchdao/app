@@ -43,7 +43,7 @@ public class AchievementUserService {
 		if (achievementUser.increment(achievement, amount).getProgress() == achievement.getMax()) {
 			achievementUser
 				.setUnlocked(true)
-				.setUnlockedAtIfNull(at);
+				.setUnlockedAtOrNow(at);
 		}
 		
 		repository.save(achievementUser);

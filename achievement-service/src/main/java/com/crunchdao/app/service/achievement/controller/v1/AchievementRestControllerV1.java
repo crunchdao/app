@@ -30,10 +30,12 @@ public class AchievementRestControllerV1 {
 	public static final String BASE_ENDPOINT = "/v1/achievements";
 	public static final String ID_ENDPOINT = BASE_ENDPOINT + "/" + ID_VARIABLE;
 	
+	public static final String CATEGORY_PARAMETER = "category";
+	
 	private final AchievementRepository repository;
 	
 	@GetMapping
-	public List<Achievement> list(@RequestParam(name = "category", required = false) UUID categoryId) {
+	public List<Achievement> list(@RequestParam(name = CATEGORY_PARAMETER, required = false) UUID categoryId) {
 		if (categoryId != null) {
 			return repository.findAllByCategoryId(categoryId);
 		}
