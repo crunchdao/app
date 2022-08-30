@@ -11,7 +11,6 @@ import java.lang.annotation.Target;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.crunchdao.app.common.security.role.CommonRoles;
-import com.crunchdao.app.service.apikey.role.Scopes;
 
 @Retention(RUNTIME)
 @Target({ TYPE, METHOD })
