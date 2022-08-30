@@ -10,16 +10,32 @@ app:
   messaging:
     exchange:
       user: "user"
+      connection: "connection"
+      achievement: "achievement"
     queue:
       user:
         event:
           created: "user.event.created.app"
           deleted: "user.event.deleted.app"
+      connection:
+        event:
+          created: "connection.event.created.app"
+          deleted: "connection.event.deleted.app"
+      achievement:
+        event:
+          unlocked: "achievement.event.unlocked.app"
     routing-key:
       user:
         event:
           created: "user.event.created"
           deleted: "user.event.deleted"
+      connection:
+        event:
+          created: "connection.event.created"
+          deleted: "connection.event.deleted"
+      achievement:
+        event:
+          unlocked: "achievement.event.unlocked"
 segment:
   analytics:
     writeKey: "-"
