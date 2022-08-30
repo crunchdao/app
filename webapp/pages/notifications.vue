@@ -11,13 +11,7 @@ export default defineComponent({
     title: 'Notifications',
   },
   setup() {
-    const { $axios } = useContext()
-
     const notificationStore = useNotificationStore()
-
-    const { fetch } = useFetch(async () => {
-      notificationStore.response = await $axios.$get(`/v1/notifications`)
-    })
 
     return {
       notifications: notificationStore.notifications,

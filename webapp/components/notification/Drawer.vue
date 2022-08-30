@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-btn icon class="mx-1" @click="drawer = true">
+    <v-btn icon class="mx-1" :loading="loading" @click="drawer = true">
       <v-icon>mdi-bell</v-icon>
     </v-btn>
     <v-navigation-drawer
@@ -14,12 +14,15 @@
       width="360"
     >
       <template #prepend>
-        <v-card-title> Notifications </v-card-title>
-        <v-card-actions class="pt-0">
-          <v-btn class="grow" outlined text color="primary" small>
-            <v-icon left>mdi-close</v-icon>
-            Read All
+        <v-card-title>
+          Notifications
+          <v-spacer />
+          <v-btn icon :loading="loading" @click="fetch">
+            <v-icon>mdi-refresh</v-icon>
           </v-btn>
+        </v-card-title>
+        <v-card-actions class="pt-0">
+          <notification-button-read-all class="grow" @read-all="fetch" />
           <v-btn
             class="grow"
             outlined
@@ -32,11 +35,15 @@
             Settings
           </v-btn>
         </v-card-actions>
-
         <v-divider />
       </template>
 
-      <v-list>
+      <v-skeleton-loader
+        v-if="loading"
+        type="list-item-avatar-two-line@3"
+        class="uncolored-bones"
+      />
+      <v-list v-else-if="notifications.length">
         <v-list-item
           v-for="notification in notifications"
           :key="notification.id"
@@ -49,17 +56,20 @@
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title>{{ notification.title }}</v-list-item-title>
-            <v-list-item-subtitle>{{
-              notification.subtitle
-            }}</v-list-item-subtitle>
+            <v-list-item-subtitle>
+              {{ notification.subtitle }}
+            </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </v-list>
+      <v-card-subtitle v-else class="text-center">
+        No new notification.
+      </v-card-subtitle>
 
       <template #append>
         <v-divider />
         <v-list-item>
-          <v-btn block to="/notifications"> All Notifications </v-btn>
+          <v-btn block to="/notifications" text> All Notifications </v-btn>
         </v-list-item>
       </template>
     </v-navigation-drawer>
@@ -70,40 +80,51 @@
 import {
   computed,
   defineComponent,
-  ref,
   useContext,
-  useFetch,
+  watch,
 } from '@nuxtjs/composition-api'
 import { useNotificationStore } from '~/store/notifications'
 import { handlers } from '@/utilities/notification'
+import { fixedComputed } from '~/composables/hack'
 
 export default defineComponent({
   setup() {
-    const { $axios } = useContext()
-
     const notificationStore = useNotificationStore()
 
-    const { fetch } = useFetch(async () => {
-      notificationStore.response = await $axios.$get(`/v1/notifications`)
+    const notifications = fixedComputed(() =>
+      notificationStore.notifications
+        .map((notification) => handlers[notification.type]?.(notification))
+        .filter((notification) => !!notification)
+    )
+
+    const drawer = computed<boolean>({
+      get() {
+        return notificationStore.drawer
+      },
+      set(value) {
+        notificationStore.drawer = value
+      },
     })
 
-    const notifications = notificationStore.notifications
-      .map((notification) => handlers[notification.type]?.(notification))
-      .filter((notification) => !!notification)
+    watch(drawer, (value) => {
+      if (value) {
+        notificationStore.fetch()
+      }
+    })
 
     return {
-      drawer: computed<boolean>({
-        get() {
-          return notificationStore.drawer
-        },
-        set(value) {
-          notificationStore.drawer = value
-        },
-      }),
+      drawer,
       notifications,
-      markAsRead: notificationStore.markAsRead,
-      fetch,
+      markAsRead: notificationStore.markAsRead.bind(notificationStore),
+      fetch: notificationStore.fetch.bind(notificationStore),
+      loading: computed(() => notificationStore.loading),
     }
   },
 })
 </script>
+
+<style>
+.uncolored-bones > .v-skeleton-loader__bone {
+  background: unset !important;
+}
+</style>

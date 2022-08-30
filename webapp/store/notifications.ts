@@ -9,10 +9,32 @@ export const useNotificationStore = defineStore('notification', () => {
 
   const drawer = ref(false)
   const response = ref<PageResponse<Notification>>()
-  const notifications = fixedComputed(() => response.value?.content || [])
+  const notifications = computed(() => response.value?.content || [])
+
+  const loadingCount = ref(0)
+  const loading = computed(() => loadingCount.value != 0)
+
+  const fetch = async () => {
+    try {
+      loadingCount.value++
+
+      response.value = await $axios.$get(`/v1/notifications`, {
+        params: {
+          onlyUnread: true,
+          sort: "createdAt,desc"
+        }
+      })
+    } catch (error: any) {
+      console.error("Could not fetch notifications", error)
+    } finally {
+      loadingCount.value--
+    }
+  }
 
   const markAsRead = async ({ id }: Notification) => {
     try {
+      loadingCount.value++
+
       const notification = await $axios.$delete(`/v1/notifications/${id}`)
 
       const index = notifications.value.findIndex(({ id: id_ }) => id_ == id)
@@ -21,13 +43,20 @@ export const useNotificationStore = defineStore('notification', () => {
       }
     } catch (error: any) {
       console.error("Could not mark as read", error)
+    } finally {
+      loadingCount.value--
     }
+  }
+
+  if (process.client) {
+    setInterval(fetch, 30_000)
   }
 
   return {
     drawer,
-    response,
+    loading,
     notifications,
+    fetch,
     markAsRead,
   }
 })
