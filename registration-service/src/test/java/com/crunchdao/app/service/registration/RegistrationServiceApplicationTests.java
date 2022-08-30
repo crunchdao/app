@@ -1,10 +1,10 @@
-package com.crunchdao.app.service.register;
+package com.crunchdao.app.service.registration;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class RegisterServiceApplicationTests {
+class RegistrationServiceApplicationTests {
 
 	@Test
 	void contextLoads() {
