@@ -48,6 +48,17 @@ export const useNotificationStore = defineStore('notification', () => {
     }
   }
 
+  const hasMore = fixedComputed(() => (response.value?.totalElements || 0) !== 0)
+  const hasMoreText = fixedComputed(() => {
+    let text = (response.value?.totalElements || 0).toString()
+
+    if (response.value?.last === false) {
+      text += "+"
+    }
+
+    return text
+  });
+
   if (process.client) {
     setInterval(fetch, 30_000)
   }
@@ -58,5 +69,7 @@ export const useNotificationStore = defineStore('notification', () => {
     notifications,
     fetch,
     markAsRead,
+    hasMore,
+    hasMoreText
   }
 })

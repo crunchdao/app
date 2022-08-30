@@ -1,7 +1,9 @@
 <template>
   <div>
     <v-btn icon class="mx-1" :loading="loading" @click="drawer = true">
-      <v-icon>mdi-bell</v-icon>
+      <v-badge :value="hasMore" overlap bordered :content="hasMoreText">
+        <v-icon>mdi-bell</v-icon>
+      </v-badge>
     </v-btn>
     <v-navigation-drawer
       v-model="drawer"
@@ -70,15 +72,11 @@
 </template>
 
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  useContext,
-  watch,
-} from '@nuxtjs/composition-api'
+import { computed, defineComponent, watch } from '@nuxtjs/composition-api'
 import { useNotificationStore } from '~/store/notifications'
 import { handlers } from '@/utilities/notification'
 import { fixedComputed } from '~/composables/hack'
+import { storeToRefs } from 'pinia'
 
 export default defineComponent({
   setup() {
@@ -105,19 +103,17 @@ export default defineComponent({
       }
     })
 
+    const { loading, hasMore, hasMoreText } = storeToRefs(notificationStore)
+
     return {
       drawer,
       notifications,
       markAsRead: notificationStore.markAsRead.bind(notificationStore),
       fetch: notificationStore.fetch.bind(notificationStore),
-      loading: computed(() => notificationStore.loading),
+      loading,
+      hasMore,
+      hasMoreText,
     }
   },
 })
 </script>
-
-<style>
-.uncolored-bones > .v-skeleton-loader__bone {
-  background: unset !important;
-}
-</style>
