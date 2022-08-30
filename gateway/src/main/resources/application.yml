@@ -54,6 +54,10 @@ spring:
           uri: lb://achievement-service
           predicates:
             - Path=/v1/achievements, /v1/achievements/**
+        - id: notification-service-v1
+          uri: lb://notification-service
+          predicates:
+            - Path=/v1/notifications, /v1/notifications/**
         - id: registration-service-v1
           uri: lb://registration-service
           predicates:

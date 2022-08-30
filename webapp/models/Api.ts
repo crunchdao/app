@@ -19,6 +19,6 @@ export interface PageResponse<T = any> {
   pageSize: number
   totalElements: number
   totalPages: number
-  first: number
-  last: number
+  first: boolean
+  last: boolean
 }
