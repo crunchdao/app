@@ -65,13 +65,6 @@
       <v-card-subtitle v-else class="text-center">
         No new notification.
       </v-card-subtitle>
-
-      <template #append>
-        <v-divider />
-        <v-list-item>
-          <v-btn block to="/notifications" text> All Notifications </v-btn>
-        </v-list-item>
-      </template>
     </v-navigation-drawer>
   </div>
 </template>
