@@ -1,0 +1,15 @@
+spring:
+  config:
+    enabled: false
+  cloud:
+    consul:
+      enabled: false
+  sleuth:
+    enabled: false
+  zipkin:
+    enabled: false
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9800/realms/App
