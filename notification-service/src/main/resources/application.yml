@@ -1,0 +1,23 @@
+server:
+  port: ${PORT:8012}
+spring:
+  application:
+    name: notification-service
+  cloud:
+    consul:
+      enabled: false
+  data:
+    mongodb:
+      auto-index-creation: true
+app:
+  messaging:
+    exchange:
+      achievement: "achievement"
+    queue:
+      achievement:
+        event:
+          unlocked: "achievement.event.unlocked.${spring.application.name}"
+    routing-key:
+      achievement:
+        event:
+          unlocked: "achievement.event.unlocked"
