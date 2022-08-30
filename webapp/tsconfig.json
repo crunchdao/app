@@ -28,7 +28,8 @@
       "@nuxtjs/axios",
       "@nuxtjs/auth-next",
       "@types/node",
-      "vuetify-dialog/types"
+      "vuetify-dialog/types",
+      "@pinia/nuxt"
     ]
   },
   "exclude": [

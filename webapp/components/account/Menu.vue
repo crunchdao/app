@@ -1,21 +1,11 @@
 <template>
   <v-menu bottom offset-y>
     <template #activator="{ on, attrs }">
-      <v-list-item
-        class="flex-grow-0"
-        style="flex-basis: 0%"
-        v-bind="attrs"
-        v-on="on"
-      >
-        <v-list-item-avatar>
+      <v-btn icon class="mr-2" v-bind="attrs" v-on="on">
+        <v-avatar size="32">
           <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
-        </v-list-item-avatar>
-
-        <v-list-item-content class="pa-0">
-          <v-list-item-title> {{ username }} </v-list-item-title>
-          <v-list-item-subtitle> Admin </v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
+        </v-avatar>
+      </v-btn>
     </template>
     <v-list class="py-0">
       <v-list-item v-for="link in links" :key="link.to" :to="link.to">

@@ -18,7 +18,10 @@
     >
       <v-list-item-title> {{ link.title }} </v-list-item-title>
     </v-list-item>
-    <account-menu v-if="loggedIn" />
+    <template v-if="loggedIn">
+      <notification-drawer />
+      <account-menu />
+    </template>
     <template v-else>
       <auth-button-register class="mr-2" />
       <auth-button-login />
