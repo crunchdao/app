@@ -163,4 +163,12 @@ export default {
       target: 'http://localhost:8000/',
     },
   },
+
+  typescript: {
+    typeCheck: {
+      typescript: {
+        memoryLimit: 8096,
+      }
+    }
+  }
 }
