@@ -40,7 +40,7 @@ public class S3AvatarService implements AvatarService {
 	private static final ObjectCannedACL ACL = ObjectCannedACL.PUBLIC_READ;
 	private static final String CACHE_CONTROL = "must-revalidate";
 	private static final String CONTENT_TYPE = ContentType.PNG.getMimeType();
-	private static final String FILE_EXTENSION = "." + CONTENT_TYPE;
+	private static final String FILE_EXTENSION = "." + ContentType.PNG.getFileExtensions()[0];
 	
 	private final ImageConversionService imageConversionService;
 	private final S3Client s3client;
@@ -157,11 +157,11 @@ public class S3AvatarService implements AvatarService {
 			int index = ThreadLocalRandom.current().nextInt(objects.size());
 			S3Object object = objects.get(index);
 			
-			System.out.println(object.key());
 			if (object.key().endsWith(FILE_EXTENSION)) {
 				return Optional.of(object);
 			}
 			
+			/* prevent removing from an unmodifiable list */
 			if (!(objects instanceof ArrayList)) {
 				objects = new ArrayList<>(objects);
 			}
