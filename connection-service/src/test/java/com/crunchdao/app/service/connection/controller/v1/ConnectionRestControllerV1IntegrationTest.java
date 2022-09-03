@@ -85,8 +85,7 @@ class ConnectionRestControllerV1IntegrationTest {
 			
 			ConnectionDto connection = service.connect(userId, "discord", ConnectionIdentityTest.createRandom());
 			
-			var x = service.connect(userId, "github", ConnectionIdentityTest.createRandom());
-			System.out.println(x);
+			service.connect(userId, "github", ConnectionIdentityTest.createRandom());
 			ConnectionDto connection2 = service.update(userId, "github", new ConnectionUpdateForm().setIsPublic(false));
 			
 			mockMvc

@@ -42,9 +42,7 @@ public class AchievementEventConsumer {
 				.unlockedAt(achievementUser.getUnlockedAt())
 				.build())
 			.ifPresent((entity) -> {
-				System.out.println(entity);
-				var x = service.create(userId, Notification.Type.ACHIEVEMENT_UNLOCKED, entity.getAchievementId(), entity);
-				System.out.println(x);
+				service.create(userId, Notification.Type.ACHIEVEMENT_UNLOCKED, entity.getAchievementId(), entity);
 			});
 	}
 	
