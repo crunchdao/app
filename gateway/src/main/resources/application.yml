@@ -38,34 +38,41 @@ spring:
           exceptions:
           - java.net.ConnectException
       routes:
-        - id: api-key-service-v1
+        - id: api-key-service
           uri: lb://api-key-service
           predicates:
             - Path=/v1/api-keys/**
-        - id: user-service-v1
+          
+        - id: user-service
           uri: lb://user-service
           predicates:
             - Path=/v1/users/**
-        - id: connection-service-v1
+          
+        - id: connection-service
           uri: lb://connection-service
           predicates:
             - Path=/v1/connections/**
-        - id: game-service-v1
+          
+        - id: game-service
           uri: lb://achievement-service
           predicates:
             - Path=/v1/achievements/**,/v1/achievement-categories/**,/v1/achievement-users/**
-        - id: notification-service-v1
+          
+        - id: notification-service
           uri: lb://notification-service
           predicates:
             - Path=/v1/notifications/**
-        - id: registration-service-v1
+          
+        - id: registration-service
           uri: lb://registration-service
           predicates:
             - Path=/v1/registration/**
-        - id: avatar-service-v1
+          
+        - id: avatar-service
           uri: lb://avatar-service
           predicates:
             - Path=/v1/avatar/**
+          
         - id: graphql
           uri: lb://graphql
           predicates:
