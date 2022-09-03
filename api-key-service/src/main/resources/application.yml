@@ -17,5 +17,11 @@ api-key:
       description: List API-Keys.
     - name: api-key.write
       description: Create, update or delete API-Keys.
+    - name: avatar.write
+      description: Upload an avatar.
     - name: connection.write
       description: Connect, update or delete connections.
+    - name: notification.read
+      description: List notifications.
+    - name: notification.write
+      description: Mark notifications as read.
