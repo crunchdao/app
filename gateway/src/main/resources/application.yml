@@ -62,6 +62,10 @@ spring:
           uri: lb://registration-service
           predicates:
             - Path=/v1/registration,/v1/registration/**
+        - id: avatar-service-v1
+          uri: lb://avatar-service
+          predicates:
+            - Path=/v1/avatar,/v1/avatar/**
         - id: graphql
           uri: lb://graphql
           predicates:
