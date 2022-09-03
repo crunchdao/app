@@ -12,6 +12,7 @@ app:
       user: "user"
       connection: "connection"
       achievement: "achievement"
+      avatar: "avatar"
     queue:
       user:
         event:
@@ -19,6 +20,9 @@ app:
       connection:
         event:
           created: "connection.event.created.${spring.application.name}"
+      avatar:
+        event:
+          uploaded: "avatar.event.uploaded.${spring.application.name}"
     routing-key:
       user:
         event:
@@ -29,3 +33,6 @@ app:
       achievement:
         event:
           unlocked: "achievement.event.unlocked"
+      avatar:
+        event:
+          uploaded: "avatar.event.uploaded"

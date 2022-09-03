@@ -74,6 +74,35 @@ public class AMQPConfiguration {
 		
 	}
 	
+	@Configuration(proxyBeanMethods = false)
+	public static class AvatarAMQPConfiguration {
+		
+		@Bean
+		Exchange avatarExchange(MessagingConfigurationProperties properties) {
+			return ExchangeBuilder
+				.topicExchange(properties.getExchange().getAvatar())
+				.suppressDeclaration()
+				.build();
+		}
+		
+		@Bean
+		Queue avatarCreatedEventQueue(MessagingConfigurationProperties properties) {
+			return QueueBuilder
+				.durable(properties.getQueue().getAvatar().getEvent().getUploaded())
+				.build();
+		}
+		
+		@Bean
+		Binding avatarCreatedEventBinding(Queue avatarCreatedEventQueue, Exchange avatarExchange, MessagingConfigurationProperties properties) {
+			return BindingBuilder
+				.bind(avatarCreatedEventQueue)
+				.to(avatarExchange)
+				.with(properties.getRoutingKey().getAvatar().getEvent().getUploaded())
+				.noargs();
+		}
+		
+	}
+	
 	@Primary
 	@Bean
 	Jackson2JsonMessageConverter producerJackson2MessageConverter(ObjectMapper objectMapper) {

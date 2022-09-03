@@ -275,6 +275,14 @@ public class Achievements {
 		.category(AchievementCategories.SOCIAL)
 		.build();
 	
+	public static final Achievement NEW_LOOK = builder()
+		.id("cd250c52-c4fc-4ad9-9004-8f990ed9f1b3")
+		.name("New Look")
+		.description("Change your profile picture")
+		.max(1)
+		.category(AchievementCategories.MISCELLANEOUS)
+		.build();
+	
 	private static AchievementBuilder builder() {
 		return Achievement.builder()
 			.iconUrl(DEFAULT_IMAGE);

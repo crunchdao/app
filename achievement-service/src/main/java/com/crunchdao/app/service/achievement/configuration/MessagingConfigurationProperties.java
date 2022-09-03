@@ -23,6 +23,7 @@ public class MessagingConfigurationProperties {
 		private String user;
 		private String connection;
 		private String achievement;
+		private String avatar;
 		
 	}
 	
@@ -33,6 +34,7 @@ public class MessagingConfigurationProperties {
 		private User user;
 		private Connection connection;
 		private Achievement achievement;
+		private Avatar avatar;
 		
 		@Data
 		@Accessors(chain = true)
@@ -82,6 +84,22 @@ public class MessagingConfigurationProperties {
 			
 		}
 		
+		@Data
+		@Accessors(chain = true)
+		public static class Avatar {
+			
+			private Event event;
+			
+			@Data
+			@Accessors(chain = true)
+			public static class Event {
+				
+				private String uploaded;
+				
+			}
+			
+		}
+		
 	}
 	
 	@Data
@@ -90,6 +108,7 @@ public class MessagingConfigurationProperties {
 		
 		private User user;
 		private Connection connection;
+		private Avatar avatar;
 		
 		@Data
 		@Accessors(chain = true)
@@ -118,6 +137,22 @@ public class MessagingConfigurationProperties {
 			public static class Event {
 				
 				private String created;
+				
+			}
+			
+		}
+		
+		@Data
+		@Accessors(chain = true)
+		public static class Avatar {
+			
+			private Event event;
+			
+			@Data
+			@Accessors(chain = true)
+			public static class Event {
+				
+				private String uploaded;
 				
 			}
 			
