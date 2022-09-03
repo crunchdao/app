@@ -15,6 +15,7 @@ import com.crunchdao.app.service.avatar.exception.BucketException;
 import com.crunchdao.app.service.avatar.exception.RejectedFileContentException;
 import com.crunchdao.app.service.avatar.service.AvatarService;
 import com.crunchdao.app.service.avatar.service.ImageConversionService;
+import com.crunchdao.app.service.avatar.service.RabbitMQSender;
 import com.j256.simplemagic.ContentInfo;
 import com.j256.simplemagic.ContentInfoUtil;
 import com.j256.simplemagic.ContentType;
@@ -46,10 +47,13 @@ public class S3AvatarService implements AvatarService {
 	private final S3Client s3client;
 	private final ContentInfoUtil contentInfoUtil;
 	private final AvatarConfigurationProperties properties;
+	private final RabbitMQSender rabbitMQSender;
 	
 	@Override
 	public void upload(InputStream inputStream, UUID userId) {
 		convertAndUpload(inputStream, userId);
+		
+		rabbitMQSender.sendUploaded(userId);
 	}
 	
 	@Override

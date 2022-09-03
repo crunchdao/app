@@ -21,6 +21,7 @@ public class MessagingConfigurationProperties {
 	public static class Exchange {
 		
 		private String user;
+		private String avatar;
 		
 	}
 	
@@ -29,6 +30,7 @@ public class MessagingConfigurationProperties {
 	public static class RoutingKey {
 		
 		private User user;
+		private Avatar avatar;
 		
 		@Data
 		@Accessors(chain = true)
@@ -42,6 +44,22 @@ public class MessagingConfigurationProperties {
 				
 				private String created;
 				private String deleted;
+				
+			}
+			
+		}
+		
+		@Data
+		@Accessors(chain = true)
+		public static class Avatar {
+			
+			private Event event;
+			
+			@Data
+			@Accessors(chain = true)
+			public static class Event {
+				
+				private String uploaded;
 				
 			}
 			

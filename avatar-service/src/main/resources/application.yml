@@ -21,6 +21,7 @@ app:
   messaging:
     exchange:
       user: "user"
+      avatar: "avatar"
     queue:
       user:
         event:
@@ -31,3 +32,6 @@ app:
         event:
           created: "user.event.created"
           deleted: "user.event.deleted"
+      avatar:
+        event:
+          uploaded: "avatar.event.uploaded"
