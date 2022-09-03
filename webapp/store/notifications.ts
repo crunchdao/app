@@ -61,6 +61,8 @@ export const useNotificationStore = defineStore('notification', () => {
 
   if (process.client) {
     setInterval(fetch, 30_000)
+
+    fetch();
   }
 
   return {
