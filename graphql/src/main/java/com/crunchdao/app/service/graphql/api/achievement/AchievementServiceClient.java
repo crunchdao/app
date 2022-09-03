@@ -16,13 +16,13 @@ public interface AchievementServiceClient {
 	@GetMapping("/v1/achievements/{id}")
 	AchievementDto showAchievement(@PathVariable UUID id);
 	
-	@GetMapping("/v1/achievements/categories")
+	@GetMapping("/v1/achievement-categories")
 	List<AchievementCategoryDto> listAchievementCategories();
 	
-	@GetMapping("/v1/achievements/categories/{id}")
+	@GetMapping("/v1/achievement-categories/{id}")
 	AchievementCategoryDto showAchievementCategory(@PathVariable UUID id);
 	
-	@GetMapping("/v1/achievements/users/{userId}")
+	@GetMapping("/v1/achievement-users/{userId}")
 	List<AchievementUserDto> showAchievementUser(@PathVariable UUID userId);
 	
 }

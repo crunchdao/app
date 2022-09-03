@@ -26,7 +26,7 @@ public class AchievementCategoryRestControllerV1 {
 	
 	public static final String ID_VARIABLE = "{id}";
 	
-	public static final String BASE_ENDPOINT = "/v1/achievements/categories";
+	public static final String BASE_ENDPOINT = "/v1/achievement-categories";
 	public static final String ID_ENDPOINT = BASE_ENDPOINT + "/" + ID_VARIABLE;
 	
 	private final AchievementCategoryRepository repository;

@@ -53,7 +53,7 @@ spring:
         - id: game-service-v1
           uri: lb://achievement-service
           predicates:
-            - Path=/v1/achievements/**
+            - Path=/v1/achievements/**,/v1/achievement-categories/**,/v1/achievement-users/**
         - id: notification-service-v1
           uri: lb://notification-service
           predicates:

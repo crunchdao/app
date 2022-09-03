@@ -25,7 +25,7 @@ public class AchievementUserRestControllerV1 {
 	
 	public static final String USER_ID_VARIABLE = "{userId}";
 	
-	public static final String BASE_ENDPOINT = "/v1/achievements/users";
+	public static final String BASE_ENDPOINT = "/v1/achievement-users";
 	public static final String ID_ENDPOINT = BASE_ENDPOINT + "/" + USER_ID_VARIABLE;
 	
 	private final AchievementUserService service;
