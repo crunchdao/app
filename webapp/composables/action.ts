@@ -7,11 +7,12 @@ import defu from "defu"
 import { extractMessage } from '~/utilities/error'
 
 export interface Options {
-  notifyError?: boolean
+  notifyError?: boolean,
+  errorMessagePhrase?: string
 }
 
-export function createPendingAction(
-  callback: () => Promise<void>,
+export function createPendingAction<Args extends any[]>(
+  callback: (...args: [...Args]) => void | Promise<void>,
   options?: Options
 ) {
   const { $dialog } = useContext()
@@ -21,17 +22,24 @@ export function createPendingAction(
   })
 
   const loading = ref(false)
-  const execute = async () => {
+  const execute = async (...args: [...Args]) => {
     try {
       loading.value = true
 
-      await callback()
+      await callback(...args)
 
       return true
     } catch (error: Error | any) {
       console.log(error)
       if (options!.notifyError) {
-        $dialog.notify.error(extractMessage(error))
+        let message = extractMessage(error)
+
+        const { errorMessagePhrase } = options!
+        if (errorMessagePhrase) {
+          message = `${errorMessagePhrase}: ${message}`
+        }
+        
+        $dialog.notify.error(message)
       }
 
       return false

@@ -2,9 +2,7 @@
   <v-menu bottom offset-y>
     <template #activator="{ on, attrs }">
       <v-btn icon class="mr-2" v-bind="attrs" v-on="on">
-        <v-avatar size="32">
-          <img :src="avatarUrl" alt="John" />
-        </v-avatar>
+        <avatar :user-id="userId" size="32" />
       </v-btn>
     </template>
     <v-list class="py-0">
@@ -47,9 +45,9 @@ export default defineComponent({
     const { $auth } = useContext()
 
     const username = fixedComputed(() => $auth.user?.username)
-    const avatarUrl = fixedComputed(() => `/api/v1/avatar/${$auth.user?.id}`)
+    const userId = fixedComputed(() => $auth.user?.id)
 
-    return { username, avatarUrl, links }
+    return { username, userId, links }
   },
 })
 </script>
