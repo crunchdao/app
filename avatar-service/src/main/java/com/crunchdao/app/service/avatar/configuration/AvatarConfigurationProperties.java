@@ -17,6 +17,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
@@ -38,6 +39,9 @@ public class AvatarConfigurationProperties {
 	private String bucket;
 	
 	@NotBlank
+	private String templateDirectoryPrefix;
+	
+	@NotBlank
 	private String keyFormat;
 	
 	@NotEmpty
@@ -45,6 +49,9 @@ public class AvatarConfigurationProperties {
 	
 	@NotNull
 	private ContentType extension = ContentType.PNG;
+
+	@NotNull
+	private Resource fallback;
 	
 	@PostConstruct
 	public void postConstructor() {

@@ -1,5 +1,6 @@
 package com.crunchdao.app.service.avatar.controller.v1;
 
+import java.io.InputStream;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
@@ -48,7 +49,9 @@ public class AvatarRestControllerV1 {
 	@SneakyThrows
 	public void upload(@RequestPart("picture") MultipartFile file, Authentication authentication) {
 		if (authentication instanceof BaseUserAuthenticationToken token) {
-			avatarService.upload(file.getInputStream(), token.getUserId());
+			try (InputStream inputStream = file.getInputStream()) {
+				avatarService.upload(inputStream, token.getUserId());
+			}
 		} else {
 			throw new ForbiddenException();
 		}
