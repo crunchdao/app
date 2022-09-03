@@ -17,6 +17,7 @@ app:
       user: "user"
       connection: "connection"
       achievement: "achievement"
+      avatar: "avatar"
     queue:
       user:
         event:
@@ -24,6 +25,9 @@ app:
       connection:
         event:
           created: "connection.event.created.app"
+      avatar:
+        event:
+          uploaded: "avatar.event.uploaded.app"
     routing-key:
       user:
         event:
@@ -34,3 +38,6 @@ app:
       achievement:
         event:
           unlocked: "achievement.event.unlocked"
+      avatar:
+        event:
+          uploaded: "avatar.event.uploaded"
