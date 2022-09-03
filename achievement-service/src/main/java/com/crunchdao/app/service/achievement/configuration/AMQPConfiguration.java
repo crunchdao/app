@@ -16,22 +16,30 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Configuration(proxyBeanMethods = false)
 public class AMQPConfiguration {
 	
-	@Bean
-	Exchange exchange(MessagingConfigurationProperties properties) {
-		return ExchangeBuilder
-			.topicExchange(properties.getExchange().getAchievement())
-			.build();
-	}
-	
 	@Configuration(proxyBeanMethods = false)
 	public static class UserAMQPConfiguration {
 		
 		@Bean
-		Binding userCreatedEventBinding(Queue incrementCommandQueue, Exchange exchange, MessagingConfigurationProperties properties) {
+		Exchange userExchange(MessagingConfigurationProperties properties) {
+			return ExchangeBuilder
+				.topicExchange(properties.getExchange().getUser())
+				.suppressDeclaration()
+				.build();
+		}
+		
+		@Bean
+		Queue userCreatedEventQueue(MessagingConfigurationProperties properties) {
+			return QueueBuilder
+				.durable(properties.getQueue().getUser().getEvent().getCreated())
+				.build();
+		}
+		
+		@Bean
+		Binding userCreatedEventBinding(Queue userCreatedEventQueue, Exchange userExchange, MessagingConfigurationProperties properties) {
 			return BindingBuilder
-				.bind(incrementCommandQueue)
-				.to(exchange)
-				.with(properties.getRoutingKey().getAchievement().getCommand().getIncrement())
+				.bind(userCreatedEventQueue)
+				.to(userExchange)
+				.with(properties.getRoutingKey().getUser().getEvent().getCreated())
 				.noargs();
 		}
 		
@@ -41,10 +49,27 @@ public class AMQPConfiguration {
 	public static class ConnectionAMQPConfiguration {
 		
 		@Bean
-		Queue incrementCommandQueue(MessagingConfigurationProperties properties) {
-			return QueueBuilder
-				.durable(properties.getQueue().getAchievement().getCommand().getIncrement())
+		Exchange connectionExchange(MessagingConfigurationProperties properties) {
+			return ExchangeBuilder
+				.topicExchange(properties.getExchange().getConnection())
+				.suppressDeclaration()
 				.build();
+		}
+		
+		@Bean
+		Queue connectionCreatedEventQueue(MessagingConfigurationProperties properties) {
+			return QueueBuilder
+				.durable(properties.getQueue().getConnection().getEvent().getCreated())
+				.build();
+		}
+		
+		@Bean
+		Binding connectionCreatedEventBinding(Queue connectionCreatedEventQueue, Exchange connectionExchange, MessagingConfigurationProperties properties) {
+			return BindingBuilder
+				.bind(connectionCreatedEventQueue)
+				.to(connectionExchange)
+				.with(properties.getRoutingKey().getConnection().getEvent().getCreated())
+				.noargs();
 		}
 		
 	}

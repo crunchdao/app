@@ -14,11 +14,16 @@ spring:
 app:
   messaging:
     exchange:
+      user: "user"
+      connection: "connection"
       achievement: "achievement"
     queue:
-      achievement:
-        command:
-          increment: "achievement.command.increment.app"
+      user:
+        event:
+          created: "user.event.created.app"
+      connection:
+        event:
+          created: "connection.event.created.app"
     routing-key:
       user:
         event:
@@ -29,5 +34,3 @@ app:
       achievement:
         event:
           unlocked: "achievement.event.unlocked"
-        command:
-          increment: "achievement.command.increment"

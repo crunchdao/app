@@ -20,6 +20,8 @@ public class MessagingConfigurationProperties {
 	@Accessors(chain = true)
 	public static class Exchange {
 		
+		private String user;
+		private String connection;
 		private String achievement;
 		
 	}
@@ -28,28 +30,53 @@ public class MessagingConfigurationProperties {
 	@Accessors(chain = true)
 	public static class RoutingKey {
 		
+		private User user;
+		private Connection connection;
 		private Achievement achievement;
+		
+		@Data
+		@Accessors(chain = true)
+		public static class User {
+			
+			private Event event;
+			
+			@Data
+			@Accessors(chain = true)
+			public static class Event {
+				
+				private String created;
+				
+			}
+			
+		}
+		
+		@Data
+		@Accessors(chain = true)
+		public static class Connection {
+			
+			private Event event;
+			
+			@Data
+			@Accessors(chain = true)
+			public static class Event {
+				
+				private String created;
+				
+			}
+			
+		}
 		
 		@Data
 		@Accessors(chain = true)
 		public static class Achievement {
 			
 			private Event event;
-			private Command command;
 			
 			@Data
 			@Accessors(chain = true)
 			public static class Event {
 				
 				private String unlocked;
-				
-			}
-			
-			@Data
-			@Accessors(chain = true)
-			public static class Command {
-				
-				private String increment;
 				
 			}
 			
@@ -61,19 +88,36 @@ public class MessagingConfigurationProperties {
 	@Accessors(chain = true)
 	public static class Queue {
 		
-		private Achievement achievement;
+		private User user;
+		private Connection connection;
 		
 		@Data
 		@Accessors(chain = true)
-		public static class Achievement {
+		public static class User {
 			
-			private Command command;
+			private Event event;
 			
 			@Data
 			@Accessors(chain = true)
-			public static class Command {
+			public static class Event {
 				
-				private String increment;
+				private String created;
+				
+			}
+			
+		}
+		
+		@Data
+		@Accessors(chain = true)
+		public static class Connection {
+			
+			private Event event;
+			
+			@Data
+			@Accessors(chain = true)
+			public static class Event {
+				
+				private String created;
 				
 			}
 			

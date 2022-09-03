@@ -1,4 +1,4 @@
-package com.crunchdao.app.service.game.consumer;
+package com.crunchdao.app.service.achievement.consumer;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -6,8 +6,8 @@ import java.util.UUID;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
-import com.crunchdao.app.service.game.configuration.AchievementIdsConfigurationProperties;
-import com.crunchdao.app.service.game.service.RabbitMQSender;
+import com.crunchdao.app.service.achievement.data.Achievements;
+import com.crunchdao.app.service.achievement.service.AchievementUserService;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
@@ -19,8 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class UserEventConsumer {
 	
-	private final RabbitMQSender rabbitMQSender;
-	private final AchievementIdsConfigurationProperties achievementIds;
+	private final AchievementUserService service;
 	
 	@RabbitListener(queues = "${app.messaging.queue.user.event.created}")
 	public void onUserCreated(UserDto user) {
@@ -30,11 +29,7 @@ public class UserEventConsumer {
 			return;
 		}
 		
-		rabbitMQSender.sendAchievementIncrement(RabbitMQSender.IncrementCommand.builder()
-			.achievementId(achievementIds.getANewCruncherIsBorn())
-			.userId(user.getId())
-			.at(user.getCreatedAt())
-			.build());
+		service.increment(Achievements.A_NEW_CRUNCHER_IS_BORN, user.getId(), user.getCreatedAt());
 	}
 	
 	@Data

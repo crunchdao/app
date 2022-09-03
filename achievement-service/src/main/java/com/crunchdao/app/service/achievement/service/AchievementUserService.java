@@ -33,6 +33,11 @@ public class AchievementUserService {
 	}
 	
 	// TODO synchronized will break in a microservice environnement
+	public AchievementUser increment(Achievement achievement, UUID userId, LocalDateTime at) {
+		return increment(achievement, userId, 1l, at);
+	}
+	
+	// TODO synchronized will break in a microservice environnement
 	public synchronized AchievementUser increment(Achievement achievement, UUID userId, long amount, LocalDateTime at) {
 		AchievementUser achievementUser = getProgress(achievement, userId);
 		

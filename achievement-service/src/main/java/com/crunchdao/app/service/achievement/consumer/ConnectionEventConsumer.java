@@ -1,4 +1,4 @@
-package com.crunchdao.app.service.game.consumer;
+package com.crunchdao.app.service.achievement.consumer;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -6,8 +6,9 @@ import java.util.UUID;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
-import com.crunchdao.app.service.game.configuration.AchievementIdsConfigurationProperties;
-import com.crunchdao.app.service.game.service.RabbitMQSender;
+import com.crunchdao.app.service.achievement.data.Achievements;
+import com.crunchdao.app.service.achievement.entity.Achievement;
+import com.crunchdao.app.service.achievement.service.AchievementUserService;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
@@ -19,8 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class ConnectionEventConsumer {
 	
-	private final RabbitMQSender rabbitMQSender;
-	private final AchievementIdsConfigurationProperties achievementIds;
+	private final AchievementUserService service;
 	
 	@RabbitListener(queues = "${app.messaging.queue.connection.event.created}")
 	public void onConnectionCreated(ConnectionDto connection) {
@@ -30,29 +30,31 @@ public class ConnectionEventConsumer {
 			return;
 		}
 		
-		rabbitMQSender.sendAchievementIncrement(RabbitMQSender.IncrementCommand.builder()
-			.achievementId(getAchievementId(connection.getType()))
-			.userId(connection.getUserId())
-			.at(connection.getCreatedAt())
-			.build());
+		Achievement achievement = getAchievement(connection.getType());
+		if (achievement == null) {
+			return;
+		}
+		
+		service.increment(achievement, connection.getUserId(), connection.getCreatedAt());
 	}
 	
-	public UUID getAchievementId(String type) {
+	public Achievement getAchievement(String type) {
 		switch (type) {
 			case "DISCORD": {
-				return achievementIds.getConnectDiscord();
+				return Achievements.CONNECT_DISCORD;
 			}
 			
 			case "TWITTER": {
-				return achievementIds.getConnectTwitter();
+				return Achievements.CONNECT_TWITTER;
 			}
 			
 			case "GITHUB": {
-				return achievementIds.getConnectGithub();
+				return Achievements.CONNECT_GITHUB;
 			}
 			
 			default: {
-				throw new IllegalArgumentException("unknown type: " + type);
+				log.info("No achievement for type: {}", type);
+				return null;
 			}
 		}
 	}
