@@ -1,0 +1,39 @@
+spring:
+  config:
+    enabled: false
+  sleuth:
+    enabled: false
+  zipkin:
+    enabled: false
+  cloud:
+    consul:
+      enabled: false
+    aws:
+      credentials:
+        access-key: "-"
+        secret-key: "-"
+      s3:
+        region: eu-west-1
+app:
+  avatar:
+    bucket: datacrunch-com-public
+    template-directory-prefix: "app/avatar/templates"
+    key-format: "app/avatar/users/{userId}.png"
+    fallback: "classpath:fallback.png"
+  messaging:
+    exchange:
+      user: "user"
+      avatar: "avatar"
+    queue:
+      user:
+        event:
+          created: "user.event.created.app"
+          deleted: "user.event.deleted.app"
+    routing-key:
+      user:
+        event:
+          created: "user.event.created"
+          deleted: "user.event.deleted"
+      avatar:
+        event:
+          uploaded: "avatar.event.uploaded"

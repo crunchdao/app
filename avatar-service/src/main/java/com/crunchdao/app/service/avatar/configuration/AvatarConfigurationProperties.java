@@ -24,10 +24,12 @@ import org.springframework.validation.annotation.Validated;
 import com.j256.simplemagic.ContentType;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Data
+@Accessors(chain = true)
 @Validated
 @Component
 @ConfigurationProperties("app.avatar")

@@ -37,11 +37,11 @@ import software.amazon.awssdk.utils.ImmutableMap;
 @Service
 public class S3AvatarService implements AvatarService {
 	
-	private static final String S3_FORMAT = "https://%s.s3.amazonaws.com/%s";
-	private static final ObjectCannedACL ACL = ObjectCannedACL.PUBLIC_READ;
-	private static final String CACHE_CONTROL = "must-revalidate";
-	private static final String CONTENT_TYPE = ContentType.PNG.getMimeType();
-	private static final String FILE_EXTENSION = "." + ContentType.PNG.getFileExtensions()[0];
+	public static final String S3_FORMAT = "https://%s.s3.amazonaws.com/%s";
+	public static final ObjectCannedACL ACL = ObjectCannedACL.PUBLIC_READ;
+	public static final String CACHE_CONTROL = "must-revalidate";
+	public static final String CONTENT_TYPE = ContentType.PNG.getMimeType();
+	public static final String FILE_EXTENSION = "." + ContentType.PNG.getFileExtensions()[0];
 	
 	private final ImageConversionService imageConversionService;
 	private final S3Client s3client;
@@ -87,19 +87,6 @@ public class S3AvatarService implements AvatarService {
 		return S3_FORMAT.formatted(properties.getBucket(), properties.formatKey(userId));
 	}
 	
-	@SneakyThrows
-	public void ensureFileContentType(byte[] bytes) {
-		ContentInfo contentInfo = contentInfoUtil.findMatch(bytes);
-		if (contentInfo == null) {
-			throw new RejectedFileContentException(null);
-		}
-		
-		ContentType contentType = contentInfo.getContentType();
-		if (!properties.getAcceptedContentTypes().contains(contentType)) {
-			throw new RejectedFileContentException(contentType);
-		}
-	}
-	
 	public Optional<S3Object> pickRandom() {
 		List<S3Object> objects = s3client.listObjects(ListObjectsRequest.builder()
 			.bucket(properties.getBucket())
@@ -122,6 +109,19 @@ public class S3AvatarService implements AvatarService {
 		putObject(userId, body);
 	}
 	
+	@SneakyThrows
+	public void ensureFileContentType(byte[] bytes) {
+		ContentInfo contentInfo = contentInfoUtil.findMatch(bytes);
+		if (contentInfo == null) {
+			throw new RejectedFileContentException(null);
+		}
+		
+		ContentType contentType = contentInfo.getContentType();
+		if (!properties.getAcceptedContentTypes().contains(contentType)) {
+			throw new RejectedFileContentException(contentType);
+		}
+	}
+	
 	public void putObject(UUID userId, RequestBody body) {
 		try {
 			s3client.putObject(PutObjectRequest.builder()
@@ -130,9 +130,7 @@ public class S3AvatarService implements AvatarService {
 				.acl(ACL)
 				.cacheControl(CACHE_CONTROL)
 				.contentType(CONTENT_TYPE)
-				.metadata(ImmutableMap.<String, String>builder()
-					.put("user-id", userId.toString())
-					.build())
+				.metadata(toMetadata(userId))
 				.build(), body);
 		} catch (Exception exception) {
 			throw new BucketException(exception);

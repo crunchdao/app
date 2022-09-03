@@ -3,7 +3,6 @@ package com.crunchdao.app.service.avatar.service.impl;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
@@ -26,7 +25,7 @@ public class JavaxImageConversionService implements ImageConversionService {
 			}
 			
 			return output.getBuffer();
-		} catch (IOException exception) {
+		} catch (Exception exception) {
 			throw new ImageConversionException(exception);
 		}
 	}
