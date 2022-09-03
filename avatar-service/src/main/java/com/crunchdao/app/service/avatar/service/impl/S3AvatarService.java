@@ -1,6 +1,7 @@
 package com.crunchdao.app.service.avatar.service.impl;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -64,11 +65,16 @@ public class S3AvatarService implements AvatarService {
 		} else {
 			log.info("No template found, using fallback for userId={}", userId);
 			
-			try (InputStream inputStream = properties.getFallback().getInputStream()) {
-				convertAndUpload(inputStream, userId);
-			} catch (Exception exception) {
-				throw new BucketException(exception);
-			}
+			uploadFromFallback(userId);
+		}
+	}
+	
+	@Override
+	public void uploadFromFallback(UUID userId) {
+		try (InputStream inputStream = properties.getFallback().getInputStream()) {
+			convertAndUpload(inputStream, userId);
+		} catch (Exception exception) {
+			throw new BucketException(exception);
 		}
 	}
 	
@@ -99,7 +105,7 @@ public class S3AvatarService implements AvatarService {
 		
 		return pickRandom(objects);
 	}
-
+	
 	@SneakyThrows
 	public void convertAndUpload(InputStream inputStream, UUID userId) {
 		byte[] bytes = inputStream.readAllBytes();
@@ -151,8 +157,13 @@ public class S3AvatarService implements AvatarService {
 			int index = ThreadLocalRandom.current().nextInt(objects.size());
 			S3Object object = objects.get(index);
 			
+			System.out.println(object.key());
 			if (object.key().endsWith(FILE_EXTENSION)) {
 				return Optional.of(object);
+			}
+			
+			if (!(objects instanceof ArrayList)) {
+				objects = new ArrayList<>(objects);
 			}
 			
 			objects.remove(index);

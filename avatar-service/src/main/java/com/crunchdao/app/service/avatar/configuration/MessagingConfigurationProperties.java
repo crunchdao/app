@@ -41,6 +41,7 @@ public class MessagingConfigurationProperties {
 			public static class Event {
 				
 				private String created;
+				private String deleted;
 				
 			}
 			
@@ -65,6 +66,7 @@ public class MessagingConfigurationProperties {
 			public static class Event {
 				
 				private String created;
+				private String deleted;
 				
 			}
 			

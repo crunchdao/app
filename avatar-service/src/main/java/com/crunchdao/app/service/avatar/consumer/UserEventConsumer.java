@@ -27,6 +27,13 @@ public class UserEventConsumer {
 		service.uploadFromTemplate(user.getId());
 	}
 	
+	@RabbitListener(queues = "${app.messaging.queue.user.event.deleted}")
+	public void onUserDeleted(UUID userId) {
+		log.info("UserEventConsumer.onUserDeleted({})", userId);
+		
+		service.uploadFromFallback(userId);
+	}
+	
 	@Data
 	@Accessors(chain = true)
 	@JsonIgnoreProperties(ignoreUnknown = true)

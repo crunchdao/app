@@ -35,11 +35,27 @@ public class AMQPConfiguration {
 		}
 		
 		@Bean
+		Queue userDeletedEventQueue(MessagingConfigurationProperties properties) {
+			return QueueBuilder
+				.durable(properties.getQueue().getUser().getEvent().getDeleted())
+				.build();
+		}
+		
+		@Bean
 		Binding userCreatedEventBinding(Queue userCreatedEventQueue, Exchange userExchange, MessagingConfigurationProperties properties) {
 			return BindingBuilder
 				.bind(userCreatedEventQueue)
 				.to(userExchange)
 				.with(properties.getRoutingKey().getUser().getEvent().getCreated())
+				.noargs();
+		}
+		
+		@Bean
+		Binding userDeletedEventBinding(Queue userDeletedEventQueue, Exchange userExchange, MessagingConfigurationProperties properties) {
+			return BindingBuilder
+				.bind(userDeletedEventQueue)
+				.to(userExchange)
+				.with(properties.getRoutingKey().getUser().getEvent().getDeleted())
 				.noargs();
 		}
 		

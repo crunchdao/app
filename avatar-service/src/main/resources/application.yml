@@ -25,7 +25,9 @@ app:
       user:
         event:
           created: "user.event.created.${spring.application.name}"
+          deleted: "user.event.deleted.${spring.application.name}"
     routing-key:
       user:
         event:
           created: "user.event.created"
+          deleted: "user.event.deleted"
