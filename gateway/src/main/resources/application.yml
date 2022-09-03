@@ -41,31 +41,31 @@ spring:
         - id: api-key-service-v1
           uri: lb://api-key-service
           predicates:
-            - Path=/v1/api-keys, /v1/api-keys/**
+            - Path=/v1/api-keys/**
         - id: user-service-v1
           uri: lb://user-service
           predicates:
-            - Path=/v1/users, /v1/users/**
+            - Path=/v1/users/**
         - id: connection-service-v1
           uri: lb://connection-service
           predicates:
-            - Path=/v1/connections, /v1/connections/**
+            - Path=/v1/connections/**
         - id: game-service-v1
           uri: lb://achievement-service
           predicates:
-            - Path=/v1/achievements, /v1/achievements/**
+            - Path=/v1/achievements/**
         - id: notification-service-v1
           uri: lb://notification-service
           predicates:
-            - Path=/v1/notifications, /v1/notifications/**
+            - Path=/v1/notifications/**
         - id: registration-service-v1
           uri: lb://registration-service
           predicates:
-            - Path=/v1/registration,/v1/registration/**
+            - Path=/v1/registration/**
         - id: avatar-service-v1
           uri: lb://avatar-service
           predicates:
-            - Path=/v1/avatar,/v1/avatar/**
+            - Path=/v1/avatar/**
         - id: graphql
           uri: lb://graphql
           predicates:
