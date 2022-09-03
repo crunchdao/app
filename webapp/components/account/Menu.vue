@@ -3,7 +3,7 @@
     <template #activator="{ on, attrs }">
       <v-btn icon class="mr-2" v-bind="attrs" v-on="on">
         <v-avatar size="32">
-          <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
+          <img :src="avatarUrl" alt="John" />
         </v-avatar>
       </v-btn>
     </template>
@@ -27,6 +27,7 @@
 
 <script lang="ts">
 import { defineComponent, useContext } from '@nuxtjs/composition-api'
+import { fixedComputed } from '~/composables/hack'
 
 const links = [
   {
@@ -45,9 +46,10 @@ export default defineComponent({
   setup() {
     const { $auth } = useContext()
 
-    const username = $auth.user?.username
+    const username = fixedComputed(() => $auth.user?.username)
+    const avatarUrl = fixedComputed(() => `/api/v1/avatar/${$auth.user?.id}`)
 
-    return { username, links }
+    return { username, avatarUrl, links }
   },
 })
 </script>
