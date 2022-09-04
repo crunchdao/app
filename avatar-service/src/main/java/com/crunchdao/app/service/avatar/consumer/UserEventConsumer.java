@@ -18,16 +18,19 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class UserEventConsumer {
 	
+	public static final String ON_USER_CREATED = "on-user-created";
+	public static final String ON_USER_DELETED = "on-user-deleted";
+	
 	private final AvatarService service;
 	
-	@RabbitListener(queues = "${app.messaging.queue.user.event.created}")
+	@RabbitListener(id = ON_USER_CREATED, queues = "${app.messaging.queue.user.event.created}")
 	public void onUserCreated(UserDto user) {
 		log.info("UserEventConsumer.onUserCreated({})", user);
 		
 		service.uploadFromTemplate(user.getId());
 	}
 	
-	@RabbitListener(queues = "${app.messaging.queue.user.event.deleted}")
+	@RabbitListener(id = ON_USER_DELETED, queues = "${app.messaging.queue.user.event.deleted}")
 	public void onUserDeleted(UUID userId) {
 		log.info("UserEventConsumer.onUserDeleted({})", userId);
 		

@@ -16,7 +16,7 @@ import com.crunchdao.app.service.avatar.exception.ImageConversionException;
 import com.j256.simplemagic.ContentInfoUtil;
 import com.j256.simplemagic.ContentType;
 
-class JavaxImageConversionServiceTest {
+public class JavaxImageConversionServiceTest {
 	
 	ContentInfoUtil contentInfoUtil;
 	JavaxImageConversionService service;
