@@ -9,12 +9,6 @@ spring:
   data:
     mongodb:
       auto-index-creation: true
-  rabbitmq:
-    host: rabbitmq
-    port: 5672
-    username: guest
-    password: guest
-    virtual-host: /
 app:
   messaging:
     exchange:
