@@ -1,5 +1,9 @@
 import colors from 'vuetify/es5/util/colors'
 
+const SSR_BASE_URL = process.env.SSR_BASE_URL || "http://localhost:8000/"
+const KEYCLOAK_BASE_URL = process.env.KEYCLOAK_BASE_URL || "http://localhost:9800/"
+const KEYCLOAK_REALM = process.env.KEYCLOAK_REALM || "app"
+
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -36,7 +40,7 @@ export default {
 
   privateRuntimeConfig: {
     axios: {
-      baseURL: process.env.SSR_BASE_URL || "http://localhost:8000/"
+      baseURL: SSR_BASE_URL
     }
   },
 
@@ -123,8 +127,7 @@ export default {
         scheme: "~/schemes/custom.js",
         enabled: true,
         endpoints: {
-          // TODO Change
-          configuration: 'http://localhost:9800/realms/App/.well-known/openid-configuration',
+          configuration: `${KEYCLOAK_BASE_URL}/realms/${KEYCLOAK_REALM}/.well-known/openid-configuration`,
           userInfo: '/v1/users/@self'
         },
         token: {
@@ -159,7 +162,7 @@ export default {
     '/api/': {
       changeOrigin: false,
       pathRewrite: { '^/api/': '/' },
-      target: 'http://localhost:8000/',
+      target: SSR_BASE_URL,
     },
   },
 
