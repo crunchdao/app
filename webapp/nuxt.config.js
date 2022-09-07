@@ -36,8 +36,7 @@ export default {
 
   privateRuntimeConfig: {
     axios: {
-      // TODO Change
-      baseURL: "http://localhost:8000/"
+      baseURL: process.env.SSR_BASE_URL || "http://localhost:8000/"
     }
   },
 
