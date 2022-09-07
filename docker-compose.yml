@@ -1,0 +1,225 @@
+version: "3.9"
+volumes:
+  mysql_data:
+      driver: local
+  mongo_data:
+      driver: local
+  rabbitmq_data:
+      driver: local
+  consul_data:
+      driver: local
+services:
+  mysql:
+    image: mysql:8
+    restart: unless-stopped
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    restart: unless-stopped
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq/
+  keycloak:
+    build: keycloak/themes
+    image: keycloak
+    restart: unless-stopped
+    ports:
+      - 9800:9800
+    environment:
+      KC_DB: mysql
+      KC_DB_URL: jdbc:mysql://mysql:3306/keycloak?createDatabaseIfNotExist=true
+      KC_DB_USERNAME: root
+      KC_DB_PASSWORD: password
+      KC_HTTP_PORT: 9800
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    depends_on:
+      - mysql
+  phpmyadmin:
+    image: phpmyadmin
+    restart: unless-stopped
+    ports:
+      - 5050:80
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: password
+  mongo:
+    image: mongo:5.0
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=password
+  zipkin:
+    image: openzipkin/zipkin
+    restart: unless-stopped
+    ports:
+      - 9411:9411
+  consul:
+    image: consul
+    restart: unless-stopped
+    ports:
+      - 8500:8500
+    volumes:
+      - consul_data:/consul/data
+    environment:
+      - CONSUL_BIND_INTERFACE=eth0
+    command: [ "agent", "-server", "-ui", "-node=server-1", "-bootstrap-expect=1", "-client=0.0.0.0" ]
+  achievement-service:
+    image: crunchdao/achievement-service
+    restart: unless-stopped
+    expose:
+      - 80
+    environment:
+      - PORT=80
+      - CONSUL_HOST=consul
+      - SPRING_PROFILES_ACTIVE=consul
+    depends_on:
+      - consul
+      - mongo
+  api-key-service:
+    image: crunchdao/api-key-service
+    restart: unless-stopped
+    expose:
+      - 80
+    environment:
+      - PORT=80
+      - CONSUL_HOST=consul
+      - SPRING_PROFILES_ACTIVE=consul
+    depends_on:
+      - consul
+      - mongo
+  auth-service:
+    image: crunchdao/auth-service
+    restart: unless-stopped
+    expose:
+      - 80
+    environment:
+      - PORT=80
+      - CONSUL_HOST=consul
+      - SPRING_PROFILES_ACTIVE=consul
+    depends_on:
+      - consul
+      - keycloak
+      - api-key-service
+  avatar-service:
+    image: crunchdao/avatar-service
+    restart: unless-stopped
+    expose:
+      - 80
+    environment:
+      - PORT=80
+      - CONSUL_HOST=consul
+      - SPRING_PROFILES_ACTIVE=consul
+    depends_on:
+      - consul
+  connection-service:
+    image: crunchdao/connection-service
+    restart: unless-stopped
+    expose:
+      - 80
+    environment:
+      - PORT=80
+      - CONSUL_HOST=consul
+      - SPRING_PROFILES_ACTIVE=consul
+    depends_on:
+      - consul
+      - mysql
+  gateway:
+    image: crunchdao/gateway
+    restart: unless-stopped
+    ports:
+      - 8000:80
+    environment:
+      - PORT=80
+      - CONSUL_HOST=consul
+      - SPRING_PROFILES_ACTIVE=consul
+    depends_on:
+      - consul
+  graphql:
+    image: crunchdao/graphql
+    restart: unless-stopped
+    expose:
+      - 80
+    environment:
+      - PORT=80
+      - CONSUL_HOST=consul
+      - SPRING_PROFILES_ACTIVE=consul
+    depends_on:
+      - consul
+  keycloak-service:
+    image: crunchdao/keycloak-service
+    restart: unless-stopped
+    expose:
+      - 80
+    environment:
+      - PORT=80
+      - CONSUL_HOST=consul
+      - SPRING_PROFILES_ACTIVE=consul
+    depends_on:
+      - consul
+      - keycloak
+  notification-service:
+    image: crunchdao/notification-service
+    restart: unless-stopped
+    expose:
+      - 80
+    environment:
+      - PORT=80
+      - CONSUL_HOST=consul
+      - SPRING_PROFILES_ACTIVE=consul
+    depends_on:
+      - consul
+      - mongo
+  registration-service:
+    image: crunchdao/registration-service
+    restart: unless-stopped
+    expose:
+      - 80
+    environment:
+      - PORT=80
+      - CONSUL_HOST=consul
+      - SPRING_PROFILES_ACTIVE=consul
+    depends_on:
+      - consul
+      - keycloak-service
+  segment-analytics-service:
+    image: crunchdao/segment-analytics-service
+    restart: unless-stopped
+    expose:
+      - 80
+    environment:
+      - PORT=80
+      - CONSUL_HOST=consul
+      - SPRING_PROFILES_ACTIVE=consul
+    depends_on:
+      - consul
+  user-service:
+    image: crunchdao/user-service
+    restart: unless-stopped
+    expose:
+      - 80
+    environment:
+      - PORT=80
+      - CONSUL_HOST=consul
+      - SPRING_PROFILES_ACTIVE=consul
+    depends_on:
+      - consul
+      - mongo
+  webapp:
+    build: webapp
+    image: crunchdao/webapp
+    restart: unless-stopped
+    ports:
+      - 8001:80
+    environment:
+      - NUXT_PORT=80
+      - SSR_BASE_URL=http://gateway
