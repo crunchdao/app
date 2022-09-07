@@ -40,6 +40,7 @@
 		<module>achievement-service</module>
 		<module>api-key-service</module>
 		<module>auth-service</module>
+		<module>avatar-service</module>
 		<module>connection-service</module>
 		<module>keycloak-service</module>
 		<module>notification-service</module>
