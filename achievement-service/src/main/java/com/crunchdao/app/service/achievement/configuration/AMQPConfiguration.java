@@ -16,6 +16,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Configuration(proxyBeanMethods = false)
 public class AMQPConfiguration {
 	
+	@Bean
+	Exchange exchange(MessagingConfigurationProperties properties) {
+		return ExchangeBuilder
+			.topicExchange(properties.getExchange().getAchievement())
+			.build();
+	}
+	
 	@Configuration(proxyBeanMethods = false)
 	public static class UserAMQPConfiguration {
 		
