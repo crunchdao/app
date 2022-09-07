@@ -32,6 +32,13 @@ public class KeycloakException extends RuntimeException {
 		this.body = body;
 	}
 	
+	public KeycloakException(Throwable cause, HttpStatus status, String body) {
+		super(cause);
+		
+		this.status = status;
+		this.body = body;
+	}
+	
 	public static KeycloakException unauthorized() {
 		return new KeycloakException(UNAUTHORIZED_MESSAGE);
 	}

@@ -1,8 +1,8 @@
 keycloak:
-  realm: App
+  realm: app
   server-url: http://localhost:9800/
   client-id: backend
-  client-secret: DzoGN4Jt6JFil7D3ZcyhlscvqinaLJN2
+  client-secret: 9GaWzFnxHOtbZnMQj2dLdNpIYSMW3sud
 #debug: true
 #logger:
 #  level:

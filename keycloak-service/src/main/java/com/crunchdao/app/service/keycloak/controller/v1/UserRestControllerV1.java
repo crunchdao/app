@@ -150,7 +150,7 @@ public class UserRestControllerV1 {
 				HttpStatus status = HttpStatus.valueOf(response.getStatus());
 				String body = response.readEntity(String.class);
 				
-				throw new KeycloakException(status, body);
+				throw new KeycloakException(exception, status, body);
 			}
 			
 			throw exception;
