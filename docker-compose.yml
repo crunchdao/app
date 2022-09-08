@@ -1,19 +1,10 @@
 version: "3.9"
-volumes:
-  mysql_data:
-      driver: local
-  mongo_data:
-      driver: local
-  rabbitmq_data:
-      driver: local
-  consul_data:
-      driver: local
 services:
   mysql:
     image: mysql:8
     restart: unless-stopped
     volumes:
-      - mysql_data:/var/lib/mysql
+      - ./deployment/data/mysql:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: password
   rabbitmq:
@@ -23,7 +14,7 @@ services:
       - 5672:5672
       - 15672:15672
     volumes:
-      - rabbitmq_data:/var/lib/rabbitmq/
+      - ./deployment/data/rabbitmq:/var/lib/rabbitmq/
   keycloak:
     build: keycloak/themes
     image: keycloak
@@ -54,7 +45,7 @@ services:
     ports:
       - 27017:27017
     volumes:
-      - mongo_data:/data/db
+      - ./deployment/data/mongo:/data/db
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=password
@@ -69,7 +60,7 @@ services:
     ports:
       - 8500:8500
     volumes:
-      - consul_data:/consul/data
+      - ./deployment/data/consul:/consul/data
     environment:
       - CONSUL_BIND_INTERFACE=eth0
     command: [ "agent", "-server", "-ui", "-node=server-1", "-bootstrap-expect=1", "-client=0.0.0.0" ]
