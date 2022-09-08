@@ -7,6 +7,7 @@ spring:
     consul:
       enabled: false
 app:
+  base-url: http://localhost:3000
   messaging:
     exchange:
       user: "user"

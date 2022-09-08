@@ -36,6 +36,7 @@ github:
   client-id: "123"
   client-secret: "456"
 app:
+  base-url: http://localhost:3000
   messaging:
     exchange:
       user: "user"
