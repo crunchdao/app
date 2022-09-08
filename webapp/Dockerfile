@@ -10,6 +10,16 @@ COPY package.json package-lock.json /usr/src/nuxt-app/
 RUN npm install
 
 COPY . /usr/src/nuxt-app/
+
+ARG SSR_BASE_URL=""
+ENV SSR_BASE_URL=$SSR_BASE_URL
+
+ARG KEYCLOAK_BASE_URL=""
+ENV KEYCLOAK_BASE_URL=$KEYCLOAK_BASE_URL
+
+ARG KEYCLOAK_REALM=""
+ENV KEYCLOAK_REALM=$KEYCLOAK_REALM
+
 RUN npm run build
 
 EXPOSE 5000
