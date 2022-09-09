@@ -13,6 +13,8 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
+    environment:
+      RABBITMQ_NODENAME: rabbit@localhost
     volumes:
       - ./deployment/data/rabbitmq:/var/lib/rabbitmq/
   keycloak:
