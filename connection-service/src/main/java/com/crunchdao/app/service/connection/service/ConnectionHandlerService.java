@@ -27,7 +27,7 @@ public class ConnectionHandlerService {
 	private final Map<String, ConnectionHandler> handlers;
 	private final Map<String, String> redirectionUrls;
 	
-	public ConnectionHandlerService(List<ConnectionHandler> handlers, @Value("app.base-url") String base) {
+	public ConnectionHandlerService(List<ConnectionHandler> handlers, @Value("${app.base-url}") String base) {
 		this.handlers = buildHandlersMap(handlers);
 		this.redirectionUrls = buildRedirectionUrlsMap(handlers, base);
 		
