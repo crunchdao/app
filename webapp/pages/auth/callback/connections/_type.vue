@@ -47,7 +47,10 @@ export default defineComponent({
     const connection = ref<Connection>()
 
     const redirect = () => {
-      router.replace('/settings/connections')
+      router.replace({
+        path: '/account/settings',
+        hash: 'connections',
+      })
     }
 
     onBeforeMount(() => {

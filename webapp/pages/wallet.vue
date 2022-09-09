@@ -1,19 +1,13 @@
 <template>
-  <div />
+  <p>soon!</p>
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
-  layout: 'loading',
   head: {
-    title: 'Settings',
+    title: 'Wallet',
   },
-  mounted() {
-    this.$router.replace({
-      path: "/settings/profile"
-    })
-  }
 })
 </script>

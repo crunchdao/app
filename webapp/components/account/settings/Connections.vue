@@ -1,12 +1,15 @@
 <template>
-  <div>
-    <settings-title title="Connections">
-      <connection-button-disconnect-all @disconnect="fetch" />
-    </settings-title>
+  <v-card id="connections">
+    <card-title>
+      Social Media Connections
+      <template #action>
+        <connection-button-disconnect-all @disconnect="fetch" />
+      </template>
+    </card-title>
     <v-card-subtitle>
-      Connect accounts to your CrunchDAO account.
+      Connect your social media accounts to achieve the "Associate" level
+      requirement
     </v-card-subtitle>
-    <v-card outlined class="mb-4">
       <v-card-actions v-if="availableHandlers.length">
         <connection-button-connect
           v-for="type in availableHandlers"
@@ -17,8 +20,6 @@
       <v-card-subtitle v-else class="text-center">
         All connection linked.
       </v-card-subtitle>
-    </v-card>
-    <v-card outlined>
       <v-skeleton-loader
         v-if="fetchState.pending"
         type="list-item-avatar-two-line@3"
@@ -35,8 +36,7 @@
       <v-card-subtitle v-else class="text-center">
         No connection found.
       </v-card-subtitle>
-    </v-card>
-  </div>
+  </v-card>
 </template>
 
 <script lang="ts">
@@ -50,7 +50,6 @@ import { fixedComputed } from '@/composables/hack'
 import { Connection } from '@/models'
 
 export default defineComponent({
-  layout: 'settings',
   head: {
     title: 'Connections',
   },

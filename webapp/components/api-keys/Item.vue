@@ -46,7 +46,7 @@ export default defineComponent({
       emit('delete')
     }
 
-    const to = fixedComputed(() => `/settings/api-keys/${apiKey!.id}`)
+    const to = fixedComputed(() => `/account/api-keys/${apiKey!.id}`)
     const scopeCount = fixedComputed(() => {
       const { scopes } = apiKey!
 

@@ -34,7 +34,6 @@ import {
 import { Scope } from '~/models'
 
 export default defineComponent({
-  layout: 'settings',
   props: {
     errorMessages: {
       type: [String, Array] as PropType<string | Array<string>>,

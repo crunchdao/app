@@ -36,7 +36,6 @@ import { Connection } from '@/models'
 import copyToClipboard from 'copy-to-clipboard'
 
 export default defineComponent({
-  layout: 'settings',
   props: {
     connection: {
       type: Object as PropType<Connection>,

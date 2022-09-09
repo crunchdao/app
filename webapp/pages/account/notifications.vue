@@ -1,16 +1,15 @@
 <template>
-  <div>
-    <settings-account-delete />
-  </div>
+  <v-card>
+    <card-title >Notifications</card-title>
+  </v-card>
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
-  layout: 'settings',
   head: {
-    title: 'Account Settings',
+    title: 'Notifications',
   },
 })
 </script>

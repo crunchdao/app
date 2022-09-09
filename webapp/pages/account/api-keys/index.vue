@@ -1,35 +1,33 @@
 <template>
-  <div>
-    <v-card-title>
+  <v-card>
+    <card-title>
       API Keys
-      <v-spacer />
-      <v-btn class="mr-2" text outlined to="/settings/api-keys/create">
-        <v-icon left>mdi-plus</v-icon>
-        Add API-Key
-      </v-btn>
-      <api-keys-button-revoke-all @delete="fetch" />
-    </v-card-title>
-    <v-divider />
+      <template #action>
+        <v-btn class="mr-2" text outlined to="/account/api-keys/create">
+          <v-icon left>mdi-plus</v-icon>
+          Add API-Key
+        </v-btn>
+        <api-keys-button-revoke-all @delete="fetch" />
+      </template>
+    </card-title>
     <v-card-subtitle>
       API Key you have generated that can be used to access the CrunchDAO API.
     </v-card-subtitle>
-    <v-card outlined>
-      <v-skeleton-loader
-        v-if="fetchState.pending"
-        type="list-item-avatar-two-line@3"
+    <v-skeleton-loader
+      v-if="fetchState.pending"
+      type="list-item-avatar-two-line@3"
+    />
+    <template v-else-if="apiKeys.length">
+      <api-keys-item
+        v-for="apiKey in apiKeys"
+        :key="apiKey.id"
+        :api-key="apiKey"
+        @delete="fetch"
       />
-      <template v-else-if="apiKeys.length">
-        <api-keys-item
-          v-for="apiKey in apiKeys"
-          :key="apiKey.id"
-          :api-key="apiKey"
-          @delete="fetch"
-        />
-      </template>
-      <v-card-subtitle v-else class="text-center">
-        No API Key found.
-      </v-card-subtitle>
-    </v-card>
+    </template>
+    <v-card-subtitle v-else class="text-center">
+      No API Key found.
+    </v-card-subtitle>
     <v-pagination
       v-if="totalPages"
       v-model="page"
@@ -38,7 +36,7 @@
       :disabled="fetchState.pending"
       class="mt-2"
     />
-  </div>
+  </v-card>
 </template>
 
 <script lang="ts">
@@ -57,7 +55,6 @@ import { fixedComputed } from '@/composables/hack'
 import { ApiKey, PageResponse } from '@/models'
 
 export default defineComponent({
-  layout: 'settings',
   setup() {
     const { $axios } = useContext()
     const router = useRouter()
