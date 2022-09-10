@@ -10,3 +10,10 @@ export interface Connection {
   updatedAt: LocalDateTime;
   public: boolean;
 }
+
+export interface ConnectionHandler {
+  type: string;
+  name: string;
+  color: string;
+  iconUrl: string | null;
+}

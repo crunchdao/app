@@ -1,11 +1,11 @@
 <template>
-  <v-list-item :href="connection.profileUrl" target="_blank" @click="onClick">
+  <v-list-item v-if="connection" :href="connection.profileUrl" target="_blank" @click="onClick">
     <v-list-item-avatar tile>
-      <v-img :src="icon" max-height="32" max-width="32" />
+      <connection-icon :type="handler.type" />
     </v-list-item-avatar>
     <v-list-item-content>
       <v-list-item-title>
-        {{ connection.type }}
+        {{ handler.name }}
         <v-chip v-if="connection.public" x-small color="success">public</v-chip>
         <v-chip v-else x-small>private</v-chip>
       </v-list-item-title>
@@ -27,28 +27,47 @@
       />
     </v-list-item-action>
   </v-list-item>
+  <v-list-item v-else link>
+    <v-list-item-avatar tile>
+      <connection-icon :type="handler.type" />
+    </v-list-item-avatar>
+    <v-list-item-content>
+      <v-list-item-title>
+        {{ handler.name }}
+      </v-list-item-title>
+    </v-list-item-content>
+    <v-list-item-action>
+      <connection-button-connect
+        :handler="handler"
+        @connect="onConnect"
+      />
+    </v-list-item-action>
+  </v-list-item>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, useContext } from '@nuxtjs/composition-api'
-import { fixedComputed } from '@/composables/hack'
-import { Connection } from '@/models'
+import { defineComponent, PropType, toRefs, useContext } from '@nuxtjs/composition-api'
+import { Connection, ConnectionHandler } from '@/models'
 import copyToClipboard from 'copy-to-clipboard'
 
 export default defineComponent({
   props: {
     connection: {
-      type: Object as PropType<Connection>,
+      type: Object as PropType<Connection | null>,
+    },
+    handler: {
+      type: Object as PropType<ConnectionHandler>,
       required: true,
     },
   },
   emits: {
     update: (_connection: Connection) => true,
     disconnect: (_connection: Connection) => true,
+    connect: (_connection: Connection) => true,
   },
   setup(props, { emit }) {
     const { $dialog } = useContext()
-    const { connection } = props
+    const { connection } = toRefs(props)
 
     const onUpdate = (connection: Connection) => {
       emit('update', connection)
@@ -58,22 +77,22 @@ export default defineComponent({
       emit('disconnect', connection)
     }
 
-    const icon = fixedComputed(() =>
-      require(`@/assets/connection/${connection.type.toLowerCase()}.svg`)
-    )
+    const onConnect = (connection: Connection) => {
+      emit('connect', connection)
+    }
 
     const onClick = () => {
-      if (!connection.profileUrl) {
-        copyToClipboard(connection.handle)
+      if (connection.value && !connection.value.profileUrl) {
+        copyToClipboard(connection.value.handle)
         $dialog.notify.success('Copied!')
       }
     }
 
     return {
       connection,
-      icon,
       onUpdate,
       onDisconnect,
+      onConnect,
       onClick,
     }
   },

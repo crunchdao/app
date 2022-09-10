@@ -8,52 +8,43 @@
     </card-title>
     <v-card-subtitle>
       Connect your social media accounts to achieve the "Associate" level
-      requirement
+      requirement.
     </v-card-subtitle>
-      <v-card-actions v-if="availableHandlers.length">
-        <connection-button-connect
-          v-for="type in availableHandlers"
-          :key="type"
-          :type="type"
-        />
-      </v-card-actions>
-      <v-card-subtitle v-else class="text-center">
-        All connection linked.
-      </v-card-subtitle>
-      <v-skeleton-loader
-        v-if="fetchState.pending"
-        type="list-item-avatar-two-line@3"
+    <v-skeleton-loader
+      v-if="fetchState.pending"
+      type="list-item-avatar-two-line@3"
+    />
+    <template v-else>
+      <connection-item
+        v-for="pair in pairs"
+        :key="pair.handler.type"
+        :connection="pair.connection"
+        :handler="pair.handler"
+        @update="onUpdate"
+        @disconnect="fetch"
+        @connect="fetch"
       />
-      <template v-else-if="connections.length">
-        <connection-item
-          v-for="connection in connections"
-          :key="connection.type"
-          :connection="connection"
-          @update="onUpdate"
-          @disconnect="fetch"
-        />
-      </template>
-      <v-card-subtitle v-else class="text-center">
-        No connection found.
-      </v-card-subtitle>
+    </template>
   </v-card>
 </template>
 
 <script lang="ts">
 import {
+  computed,
   defineComponent,
   ref,
   useContext,
   useFetch,
 } from '@nuxtjs/composition-api'
-import { fixedComputed } from '@/composables/hack'
-import { Connection } from '@/models'
+import { Connection, ConnectionHandler } from '@/models'
+import groupBy from 'lodash.groupby'
+import { fixedComputed } from '~/composables/hack'
 
 export default defineComponent({
   setup() {
     const { $axios } = useContext()
 
-    const handlers = ref<Array<string>>([])
+    const handlers = ref<Array<ConnectionHandler>>([])
     const connections = ref<Array<Connection>>([])
 
     const { fetch, fetchState } = useFetch(async () => {
@@ -61,10 +52,13 @@ export default defineComponent({
       connections.value = await $axios.$get('/v1/connections')
     })
 
-    const availableHandlers = fixedComputed(() => {
-      const connected = connections.value.map(({ type }) => type)
+    const pairs = fixedComputed(() => {
+      const byType = groupBy(connections.value, ({ type }) => type)
 
-      return handlers.value.filter((type) => !connected.includes(type)).sort()
+      return handlers.value.map((handler) => ({
+        handler,
+        connection: byType[handler.type]?.[0] || null,
+      }))
     })
 
     const onUpdate = (connection: Connection) => {
@@ -78,7 +72,7 @@ export default defineComponent({
     }
 
     return {
-      availableHandlers,
+      pairs,
       connections,
       fetch,
       fetchState,
