@@ -1,0 +1,8 @@
+server:
+  port: ${PORT:8014}
+spring:
+  application:
+    name: follow-service
+  cloud:
+    consul:
+      enabled: false
