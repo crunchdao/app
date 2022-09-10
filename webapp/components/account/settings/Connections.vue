@@ -50,9 +50,6 @@ import { fixedComputed } from '@/composables/hack'
 import { Connection } from '@/models'
 
 export default defineComponent({
-  head: {
-    title: 'Connections',
-  },
   setup() {
     const { $axios } = useContext()
 
