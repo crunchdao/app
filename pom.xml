@@ -19,7 +19,7 @@
 		<version>latest</version>
 
 		<java.version>17</java.version>
-		<spring-cloud.version>2021.0.3</spring-cloud.version>
+		<spring-cloud.version>2021.0.4</spring-cloud.version>
 		<spring-aws.version>3.0.0-M1</spring-aws.version>
 		<testcontainers.version>1.17.3</testcontainers.version>
 
