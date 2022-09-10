@@ -1,5 +1,5 @@
 <template>
-  <v-card id="connections">
+  <v-card>
     <card-title>
       Social Media Connections
       <template #action>
@@ -38,7 +38,6 @@ import {
 } from '@nuxtjs/composition-api'
 import { Connection, ConnectionHandler } from '@/models'
 import groupBy from 'lodash.groupby'
-import { fixedComputed } from '~/composables/hack'
 
 export default defineComponent({
   setup() {
@@ -52,8 +51,8 @@ export default defineComponent({
       connections.value = await $axios.$get('/v1/connections')
     })
 
-    const pairs = fixedComputed(() => {
-      const byType = groupBy(connections.value, ({ type }) => type)
+    const pairs = computed(() => {
+      const byType = groupBy(connections.value, ({ type }: Connection) => type)
 
       return handlers.value.map((handler) => ({
         handler,

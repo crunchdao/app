@@ -39,14 +39,13 @@
     <v-list-item-action>
       <connection-button-connect
         :handler="handler"
-        @connect="onConnect"
       />
     </v-list-item-action>
   </v-list-item>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, toRefs, useContext } from '@nuxtjs/composition-api'
+import { defineComponent, PropType, toRefs, unref, useContext, watchEffect } from '@nuxtjs/composition-api'
 import { Connection, ConnectionHandler } from '@/models'
 import copyToClipboard from 'copy-to-clipboard'
 
@@ -63,7 +62,6 @@ export default defineComponent({
   emits: {
     update: (_connection: Connection) => true,
     disconnect: (_connection: Connection) => true,
-    connect: (_connection: Connection) => true,
   },
   setup(props, { emit }) {
     const { $dialog } = useContext()
@@ -77,10 +75,6 @@ export default defineComponent({
       emit('disconnect', connection)
     }
 
-    const onConnect = (connection: Connection) => {
-      emit('connect', connection)
-    }
-
     const onClick = () => {
       if (connection.value && !connection.value.profileUrl) {
         copyToClipboard(connection.value.handle)
@@ -88,11 +82,14 @@ export default defineComponent({
       }
     }
 
+    watchEffect(() => {
+      console.log(unref(connection))
+    })
+
     return {
       connection,
       onUpdate,
       onDisconnect,
-      onConnect,
       onClick,
     }
   },
