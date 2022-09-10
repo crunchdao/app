@@ -73,6 +73,11 @@ spring:
           predicates:
             - Path=/v1/avatar/**
           
+        - id: follow-service
+          uri: lb://follow-service
+          predicates:
+            - Path=/v1/followers/**
+          
         - id: graphql
           uri: lb://graphql
           predicates:
