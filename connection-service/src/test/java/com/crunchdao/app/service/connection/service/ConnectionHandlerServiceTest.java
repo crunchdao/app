@@ -13,6 +13,7 @@ import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.crunchdao.app.service.connection.configuration.HandlerConfigurationProperties;
 import com.crunchdao.app.service.connection.exception.BadInputException;
 import com.crunchdao.app.service.connection.exception.UnknownHandlerException;
 import com.crunchdao.app.service.connection.handler.ConnectionHandler;
@@ -27,11 +28,13 @@ class ConnectionHandlerServiceTest {
 	static final ConnectionHandler HANDLER1 = new FakeConnectionHandler("hello", true);
 	static final ConnectionHandler HANDLER2 = new FakeConnectionHandler("world", false);
 	
+	HandlerConfigurationProperties properties;
 	ConnectionHandlerService connectionHandlerService;
 	
 	@BeforeEach
 	void setUp() {
-		this.connectionHandlerService = new ConnectionHandlerService(Arrays.asList(HANDLER1, HANDLER2), BASE);
+		this.properties = new HandlerConfigurationProperties();
+		this.connectionHandlerService = new ConnectionHandlerService(Arrays.asList(HANDLER1, HANDLER2), properties, BASE);
 	}
 	
 	@Test

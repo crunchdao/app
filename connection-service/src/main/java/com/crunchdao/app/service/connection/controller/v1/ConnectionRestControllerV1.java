@@ -24,6 +24,7 @@ import com.crunchdao.app.common.web.exception.ForbiddenException;
 import com.crunchdao.app.common.web.exception.OnlyUserException;
 import com.crunchdao.app.service.connection.dto.ConnectionDto;
 import com.crunchdao.app.service.connection.dto.ConnectionUpdateForm;
+import com.crunchdao.app.service.connection.dto.HandlerDescriptionDto;
 import com.crunchdao.app.service.connection.dto.RedirectDto;
 import com.crunchdao.app.service.connection.handler.ConnectionIdentity;
 import com.crunchdao.app.service.connection.permission.CanWrite;
@@ -87,7 +88,7 @@ public class ConnectionRestControllerV1 {
 	
 	@GetMapping(PATH_HANDLERS)
 	@Operation(summary = "List available handlers.")
-	public List<String> listHandlers() {
+	public List<HandlerDescriptionDto> listHandlers() {
 		return connectionHandlerService.getHandlerTypes();
 	}
 

@@ -1,6 +1,5 @@
 package com.crunchdao.app.service.connection.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -11,6 +10,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.crunchdao.app.service.connection.configuration.HandlerConfigurationProperties;
+import com.crunchdao.app.service.connection.dto.HandlerDescriptionDto;
 import com.crunchdao.app.service.connection.exception.UnknownHandlerException;
 import com.crunchdao.app.service.connection.handler.ConnectionHandler;
 import com.crunchdao.app.service.connection.handler.ConnectionIdentity;
@@ -26,10 +27,12 @@ public class ConnectionHandlerService {
 	
 	private final Map<String, ConnectionHandler> handlers;
 	private final Map<String, String> redirectionUrls;
+	private final HandlerConfigurationProperties properties;
 	
-	public ConnectionHandlerService(List<ConnectionHandler> handlers, @Value("${app.base-url}") String base) {
+	public ConnectionHandlerService(List<ConnectionHandler> handlers, HandlerConfigurationProperties properties, @Value("${app.base-url}") String base) {
 		this.handlers = buildHandlersMap(handlers);
 		this.redirectionUrls = buildRedirectionUrlsMap(handlers, base);
+		this.properties = properties;
 		
 		log.info("Using {} handler(s)", handlers.size());
 	}
@@ -62,8 +65,11 @@ public class ConnectionHandlerService {
 		return get(redirectionUrls, type);
 	}
 	
-	public List<String> getHandlerTypes() {
-		return new ArrayList<>(handlers.keySet());
+	public List<HandlerDescriptionDto> getHandlerTypes() {
+		return handlers.keySet()
+			.stream()
+			.map((key) -> new HandlerDescriptionDto(key, properties.getNames().getOrDefault(key, key)))
+			.toList();
 	}
 	
 	public static String buildRedirectionUrl(String type, String base) {

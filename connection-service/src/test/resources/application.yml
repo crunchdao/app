@@ -37,6 +37,12 @@ github:
   client-secret: "456"
 app:
   base-url: http://localhost:3000
+  connection:
+    handler:
+      names:
+        discord: "Discord"
+        twitter: "Twitter"
+        github: "GitHub"
   messaging:
     exchange:
       user: "user"
