@@ -45,7 +45,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, toRefs, unref, useContext, watchEffect } from '@nuxtjs/composition-api'
+import { defineComponent, PropType, toRefs, useContext } from '@nuxtjs/composition-api'
 import { Connection, ConnectionHandler } from '@/models'
 import copyToClipboard from 'copy-to-clipboard'
 
@@ -81,10 +81,6 @@ export default defineComponent({
         $dialog.notify.success('Copied!')
       }
     }
-
-    watchEffect(() => {
-      console.log(unref(connection))
-    })
 
     return {
       connection,

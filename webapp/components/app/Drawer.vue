@@ -109,6 +109,13 @@ export default defineComponent({
         exactPath: false,
         disabled: !loggedIn.value,
       },
+      {
+        title: 'Users',
+        icon: 'mdi-account',
+        to: '/users',
+        exactPath: false,
+        disabled: false,
+      },
     ])
 
     return {
