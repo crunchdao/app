@@ -3,4 +3,4 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:9800/realms/App
+          issuer-uri: http://localhost:9800/realms/app
