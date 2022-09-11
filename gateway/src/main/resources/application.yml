@@ -76,7 +76,7 @@ spring:
         - id: follow-service
           uri: lb://follow-service
           predicates:
-            - Path=/v1/followers/**
+            - Path=/v1/follow/**
           
         - id: graphql
           uri: lb://graphql

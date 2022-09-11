@@ -12,8 +12,14 @@ import lombok.experimental.Accessors;
 public class StatisticsDto {
 	
 	private final UUID userId;
+
+	@Schema(description = "Amount of people that follow the `userId`.")
 	private final long followers;
-	private final long following;
+	
+	@Schema(description = "Amount of people that the `userId` is currently following.")
+	private final long followings;
+	
+	@Schema(description = "Is the currently authenticated user following the `userId`?")
 	private final Boolean followed;
 	
 }

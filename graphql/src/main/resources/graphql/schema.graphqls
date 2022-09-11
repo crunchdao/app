@@ -14,7 +14,8 @@ type Query {
 	achievementCategory(id: UUID!): AchievementCategory
 	achievementUser(userId: UUID!): [AchievementUser]
 	followers(userId: UUID!, page: Int, size: Int, sort: String): FollowPageResponse
-	followersStatistics(userId: UUID!): FollowStatistics
+	followings(userId: UUID!, page: Int, size: Int, sort: String): FollowPageResponse
+	followStatistics(userId: UUID!): FollowStatistics
 }
 
 type ApiKeyPageResponse {
@@ -105,13 +106,11 @@ type FollowPageResponse {
 type Follow {
     userId: UUID!
     user: User!
-    peerId: UUID!
-    peer: User!
     createdAt: String
 }
 
 type FollowStatistics {
 	followers: Int!
-	following: Int!
+	followings: Int!
 	followed: Boolean
 }

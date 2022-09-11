@@ -27,15 +27,26 @@ class FollowTest {
 	}
 	
 	@Test
-	void toDto() {
+	void toFollowerDto() {
 		final var entity = new Follow()
 			.setId(UUID.randomUUID(), UUID.randomUUID())
 			.setCreatedAt(LocalDateTime.now());
 		
-		var dto = entity.toDto();
+		var dto = entity.toFollowerDto();
 		
 		assertEquals(entity.getId().getUserId(), dto.getUserId());
-		assertEquals(entity.getId().getPeerId(), dto.getPeerId());
+		assertEquals(entity.getCreatedAt(), dto.getCreatedAt());
+	}
+	
+	@Test
+	void toFollowingDto() {
+		final var entity = new Follow()
+			.setId(UUID.randomUUID(), UUID.randomUUID())
+			.setCreatedAt(LocalDateTime.now());
+		
+		var dto = entity.toFollowingDto();
+		
+		assertEquals(entity.getId().getPeerId(), dto.getUserId());
 		assertEquals(entity.getCreatedAt(), dto.getCreatedAt());
 	}
 	

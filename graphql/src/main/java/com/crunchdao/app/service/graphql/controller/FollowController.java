@@ -27,22 +27,22 @@ class FollowController {
 	
 	@QueryMapping
 	PageResponse<FollowDto> followers(@Argument UUID userId, @Arguments PageableDto pageable) {
-		return followServiceClient.list(userId, pageable);
+		return followServiceClient.listFollowers(userId, pageable);
 	}
 	
 	@QueryMapping
-	FollowStatisticsDto followersStatistics(@Argument UUID userId) {
+	PageResponse<FollowDto> followings(@Argument UUID userId, @Arguments PageableDto pageable) {
+		return followServiceClient.listFollowings(userId, pageable);
+	}
+	
+	@QueryMapping
+	FollowStatisticsDto followStatistics(@Argument UUID userId) {
 		return followServiceClient.showStatistics(userId);
 	}
 	
 	@SchemaMapping(typeName = "Follow")
 	UserDto user(FollowDto follow) {
 		return userServiceClient.show(follow.getUserId());
-	}
-	
-	@SchemaMapping(typeName = "Follow")
-	UserDto peer(FollowDto follow) {
-		return userServiceClient.show(follow.getPeerId());
 	}
 	
 }

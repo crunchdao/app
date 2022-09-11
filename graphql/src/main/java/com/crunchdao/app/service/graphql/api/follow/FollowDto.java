@@ -9,7 +9,6 @@ import lombok.Data;
 public class FollowDto {
 	
 	private UUID userId;
-	private UUID peerId;
 	private LocalDateTime createdAt;
 	
 }

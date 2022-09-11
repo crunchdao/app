@@ -46,10 +46,15 @@ public class Follow implements Persistable<Follow.CompositeId> {
 		return setId(id(userId, peerId));
 	}
 	
-	public FollowDto toDto() {
+	public FollowDto toFollowerDto() {
 		return new FollowDto()
 			.setUserId(id.getUserId())
-			.setPeerId(id.getPeerId())
+			.setCreatedAt(createdAt);
+	}
+	
+	public FollowDto toFollowingDto() {
+		return new FollowDto()
+			.setUserId(id.getPeerId())
 			.setCreatedAt(createdAt);
 	}
 	

@@ -13,10 +13,13 @@ import com.crunchdao.app.service.graphql.dto.PageableDto;
 @FeignClient("follow-service")
 public interface FollowServiceClient {
 	
-	@GetMapping("/v1/followers/{userId}")
-	PageResponse<FollowDto> list(@PathVariable UUID userId, @SpringQueryMap PageableDto pageable);
+	@GetMapping("/v1/follow/{userId}/followers")
+	PageResponse<FollowDto> listFollowers(@PathVariable UUID userId, @SpringQueryMap PageableDto pageable);
 	
-	@GetMapping("/v1/followers/{userId}/statistics")
+	@GetMapping("/v1/follow/{userId}/followings")
+	PageResponse<FollowDto> listFollowings(@PathVariable UUID userId, @SpringQueryMap PageableDto pageable);
+	
+	@GetMapping("/v1/follow/{userId}/statistics")
 	FollowStatisticsDto showStatistics(@PathVariable UUID userId);
 	
 }

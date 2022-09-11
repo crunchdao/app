@@ -40,18 +40,33 @@ class FollowServiceTest {
 	}
 	
 	@Test
-	void list() {
-		var peerId = UUID.randomUUID();
+	void listFollowers() {
+		var userId = UUID.randomUUID();
 		
 		for (int index = 0; index < 5; ++index) {
-			repository.save(new Follow().setId(UUID.randomUUID(), peerId));
+			repository.save(new Follow().setId(UUID.randomUUID(), userId));
 		}
 		
-		var page = service.list(peerId, PageRequest.of(0, 10));
+		var page = service.listFollowers(userId, PageRequest.of(0, 10));
 		
 		assertThat(page.getContent())
 			.hasSize(5)
-			.allMatch((follow) -> peerId.equals(follow.getPeerId()));
+			.allMatch((follow) -> !userId.equals(follow.getUserId()));
+	}
+	
+	@Test
+	void listFollowing() {
+		var peerId = UUID.randomUUID();
+		
+		for (int index = 0; index < 5; ++index) {
+			repository.save(new Follow().setId(peerId, UUID.randomUUID()));
+		}
+		
+		var page = service.listFollowing(peerId, PageRequest.of(0, 10));
+		
+		assertThat(page.getContent())
+			.hasSize(5)
+			.allMatch((follow) -> !peerId.equals(follow.getUserId()));
 	}
 	
 	@Test
@@ -61,8 +76,8 @@ class FollowServiceTest {
 		
 		var follow = service.follow(userId, peerId);
 		
-		assertEquals(userId, follow.getUserId());
-		assertEquals(peerId, follow.getPeerId());
+		assertEquals(userId, follow.getId().getUserId());
+		assertEquals(peerId, follow.getId().getPeerId());
 		assertNotNull(follow.getCreatedAt());
 		
 		assertEquals(1, repository.countByIdUserId(userId));
@@ -131,7 +146,7 @@ class FollowServiceTest {
 		
 		assertEquals(userId, statistics.getUserId());
 		assertEquals(2l, statistics.getFollowers());
-		assertEquals(3l, statistics.getFollowing());
+		assertEquals(3l, statistics.getFollowings());
 		assertNull(statistics.getFollowed());
 	}
 	
@@ -151,7 +166,7 @@ class FollowServiceTest {
 		
 		assertEquals(peerId, statistics.getUserId());
 		assertEquals(2l, statistics.getFollowers());
-		assertEquals(3l, statistics.getFollowing());
+		assertEquals(3l, statistics.getFollowings());
 		assertTrue(statistics.getFollowed());
 	}
 	
@@ -171,7 +186,7 @@ class FollowServiceTest {
 		
 		assertEquals(peerId, statistics.getUserId());
 		assertEquals(2l, statistics.getFollowers());
-		assertEquals(3l, statistics.getFollowing());
+		assertEquals(3l, statistics.getFollowings());
 		assertFalse(statistics.getFollowed());
 	}
 	

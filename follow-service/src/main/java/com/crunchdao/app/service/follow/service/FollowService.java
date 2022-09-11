@@ -27,20 +27,25 @@ public class FollowService {
 	
 	private final FollowRepository repository;
 	
-	public PageResponse<FollowDto> list(UUID peerId, Pageable pageable) {
+	public PageResponse<FollowDto> listFollowers(UUID peerId, Pageable pageable) {
 		final Page<Follow> page = repository.findAllByIdPeerId(peerId, pageable);
 		
-		return new PageResponse<>(page, Follow::toDto);
+		return new PageResponse<>(page, Follow::toFollowerDto);
 	}
 	
-	public FollowDto follow(UUID userId, UUID peerId) {
+	public PageResponse<FollowDto> listFollowing(UUID peerId, Pageable pageable) {
+		final Page<Follow> page = repository.findAllByIdUserId(peerId, pageable);
+		
+		return new PageResponse<>(page, Follow::toFollowingDto);
+	}
+	
+	public Follow follow(UUID userId, UUID peerId) {
 		if (Objects.equals(userId, peerId)) {
 			throw new FollowingYourselfException();
 		}
 		
 		return insert(new Follow()
-			.setId(userId, peerId))
-				.toDto();
+			.setId(userId, peerId));
 	}
 	
 	@Transactional
@@ -54,10 +59,10 @@ public class FollowService {
 	
 	public StatisticsDto getStatistics(UUID userId, UUID authenticatedUserId) {
 		long followers = repository.countByIdPeerId(userId);
-		long following = repository.countByIdUserId(userId);
+		long followings = repository.countByIdUserId(userId);
 		Boolean followed = isFollowing(authenticatedUserId, userId);
 		
-		return new StatisticsDto(userId, followers, following, followed);
+		return new StatisticsDto(userId, followers, followings, followed);
 	}
 	
 	public Boolean isFollowing(UUID userId, UUID peerId) {

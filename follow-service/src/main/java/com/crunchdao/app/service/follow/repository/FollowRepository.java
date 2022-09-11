@@ -9,12 +9,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.crunchdao.app.service.follow.entity.Follow;
 
 public interface FollowRepository extends JpaRepository<Follow, Follow.CompositeId> {
+
+	Page<Follow> findAllByIdUserId(UUID userId, Pageable pageable);
 	
 	Page<Follow> findAllByIdPeerId(UUID peerId, Pageable pageable);
 	
-	long countByIdPeerId(UUID peerId);
-	
 	long countByIdUserId(UUID userId);
+	
+	long countByIdPeerId(UUID peerId);
 	
 	long removeById(Follow.CompositeId id);
 	

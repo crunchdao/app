@@ -13,7 +13,6 @@ import lombok.experimental.Accessors;
 public class FollowDto {
 	
 	private UUID userId;
-	private UUID peerId;
 	private LocalDateTime createdAt;
 	
 }
