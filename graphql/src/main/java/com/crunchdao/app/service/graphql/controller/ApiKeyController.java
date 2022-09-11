@@ -26,7 +26,7 @@ class ApiKeyController {
     }
     
     @QueryMapping
-    ApiKeyDto apiKeyById(@Argument UUID id) {
+    ApiKeyDto apiKey(@Argument UUID id) {
     	return apiKeyServiceClient.show(id);
     }
     
