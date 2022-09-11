@@ -13,6 +13,8 @@ type Query {
 	achievementCategories: [AchievementCategory]
 	achievementCategory(id: UUID!): AchievementCategory
 	achievementUser(userId: UUID!): [AchievementUser]
+	followers(userId: UUID!, page: Int, size: Int, sort: String): FollowPageResponse
+	followersStatistics(userId: UUID!): FollowStatistics
 }
 
 type ApiKeyPageResponse {
@@ -88,4 +90,28 @@ type User {
     email: String
     createdAt: String!
     updatedAt: String!
+}
+
+type FollowPageResponse {
+	content: [Follow]
+	pageNumber: Int
+	pageSize: Int
+	totalElements: Int
+	totalPages: Int
+	first: Boolean
+	last: Boolean
+}
+
+type Follow {
+    userId: UUID!
+    user: User!
+    peerId: UUID!
+    peer: User!
+    createdAt: String
+}
+
+type FollowStatistics {
+	followers: Int!
+	following: Int!
+	followed: Boolean
 }

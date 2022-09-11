@@ -25,7 +25,7 @@ class UserController {
 	}
 	
 	@QueryMapping
-	UserDto userById(@Argument UUID id) {
+	UserDto user(@Argument UUID id) {
 		return userServiceClient.show(id);
 	}
 	
