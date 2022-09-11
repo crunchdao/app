@@ -131,6 +131,18 @@ services:
     depends_on:
       - consul
       - mysql
+  follow-service:
+    image: crunchdao/follow-service
+    restart: unless-stopped
+    expose:
+      - 80
+    environment:
+      - PORT=80
+      - CONSUL_HOST=consul
+      - SPRING_PROFILES_ACTIVE=consul
+    depends_on:
+      - consul
+      - mysql
   gateway:
     image: crunchdao/gateway
     restart: unless-stopped
