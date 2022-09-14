@@ -3,8 +3,8 @@ package com.crunchdao.app.common.security.handler;
 import org.springframework.http.HttpStatus;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import feign.FeignException;
@@ -20,12 +20,20 @@ public class FeignExceptionApiExceptionHandler implements ApiExceptionHandler {
 	
 	public FeignExceptionApiExceptionHandler(ObjectMapper objectMapper) {
 		this.objectMapper = objectMapper.copy();
-		this.objectMapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+		this.objectMapper.setVisibility(objectMapper.getSerializationConfig().getDefaultVisibilityChecker()
+            .withFieldVisibility(JsonAutoDetect.Visibility.ANY)
+            .withGetterVisibility(JsonAutoDetect.Visibility.ANY)
+            .withSetterVisibility(JsonAutoDetect.Visibility.NONE)
+            .withCreatorVisibility(JsonAutoDetect.Visibility.NONE));
 	}
 	
 	@Override
 	public boolean canHandle(Throwable exception) {
-		return exception instanceof FeignException;
+		if (exception instanceof FeignException feignException) {
+			return feignException.status() > 0;
+		}
+		
+		return false;
 	}
 	
 	@Override
@@ -50,6 +58,7 @@ public class FeignExceptionApiExceptionHandler implements ApiExceptionHandler {
 		return new ApiErrorResponse(status, DEFAULT_CODE, exception.getMessage());
 	}
 	
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class ApiErrorResponseWrapped extends ApiErrorResponse {
 		
 		public ApiErrorResponseWrapped(HttpStatus httpStatus, String code, String message) {
