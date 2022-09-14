@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 import java.util.UUID;
 
@@ -15,28 +17,39 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import com.crunchdao.app.service.follow.api.user.UserDto;
+import com.crunchdao.app.service.follow.api.user.UserServiceClient;
 import com.crunchdao.app.service.follow.entity.Follow;
 import com.crunchdao.app.service.follow.exception.AlreadyFollowingException;
 import com.crunchdao.app.service.follow.exception.FollowingYourselfException;
 import com.crunchdao.app.service.follow.exception.NotFollowingException;
+import com.crunchdao.app.service.follow.exception.UserNotFoundException;
 import com.crunchdao.app.service.follow.repository.FollowRepository;
+
+import feign.FeignException;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
+@AutoConfigureWireMock
 class FollowServiceTest {
 	
 	@SpyBean
 	FollowRepository repository;
 	
+	@MockBean
+	UserServiceClient userServiceClient;
+	
 	FollowService service;
 	
 	@BeforeEach
 	void setUp() {
-		service = new FollowService(repository);
+		service = new FollowService(repository, userServiceClient);
 	}
 	
 	@Test
@@ -74,6 +87,8 @@ class FollowServiceTest {
 		var userId = UUID.randomUUID();
 		var peerId = UUID.randomUUID();
 		
+		mockUserServiceClientShow();
+		
 		var follow = service.follow(userId, peerId);
 		
 		assertEquals(userId, follow.getId().getUserId());
@@ -94,9 +109,37 @@ class FollowServiceTest {
 	}
 	
 	@Test
+	void follow_unknownUser_null() {
+		var userId = UUID.randomUUID();
+		var peerId = UUID.randomUUID();
+		
+		when(userServiceClient.show(any()))
+			.thenReturn(null);
+		
+		assertThrows(UserNotFoundException.class, () -> {
+			service.follow(userId, peerId);
+		});
+	}
+	
+	@Test
+	void follow_unknownUser_catch() {
+		var userId = UUID.randomUUID();
+		var peerId = UUID.randomUUID();
+		
+		when(userServiceClient.show(any()))
+			.thenThrow(FeignException.NotFound.class);
+		
+		assertThrows(UserNotFoundException.class, () -> {
+			service.follow(userId, peerId);
+		});
+	}
+	
+	@Test
 	void follow_alreadyFollowing() {
 		var userId = UUID.randomUUID();
 		var peerId = UUID.randomUUID();
+		
+		mockUserServiceClientShow();
 		
 		service.follow(userId, peerId);
 		
@@ -111,6 +154,8 @@ class FollowServiceTest {
 	void unfollow() {
 		var userId = UUID.randomUUID();
 		var peerId = UUID.randomUUID();
+		
+		mockUserServiceClientShow();
 		
 		service.follow(userId, peerId);
 		service.unfollow(userId, peerId);
@@ -135,6 +180,8 @@ class FollowServiceTest {
 	void getStatistics() {
 		final var userId = UUID.randomUUID();
 		
+		mockUserServiceClientShow();
+		
 		service.follow(UUID.randomUUID(), userId);
 		service.follow(UUID.randomUUID(), userId);
 		
@@ -154,6 +201,8 @@ class FollowServiceTest {
 	void getStatistics_authenticatedAndFollowing() {
 		final var userId = UUID.randomUUID();
 		final var peerId = UUID.randomUUID();
+		
+		mockUserServiceClientShow();
 		
 		service.follow(userId, peerId);
 		service.follow(UUID.randomUUID(), peerId);
@@ -175,6 +224,8 @@ class FollowServiceTest {
 		final var userId = UUID.randomUUID();
 		final var peerId = UUID.randomUUID();
 		
+		mockUserServiceClientShow();
+		
 		service.follow(UUID.randomUUID(), peerId);
 		service.follow(UUID.randomUUID(), peerId);
 		
@@ -194,6 +245,8 @@ class FollowServiceTest {
 	void isFollowedBy_following() {
 		var userId = UUID.randomUUID();
 		var authenticatedUserId = UUID.randomUUID();
+		
+		mockUserServiceClientShow();
 		
 		service.follow(authenticatedUserId, userId);
 		
@@ -218,6 +271,12 @@ class FollowServiceTest {
 	@AfterEach
 	void cleanUp() {
 		repository.deleteAll();
+	}
+	
+	void mockUserServiceClientShow() {
+		when(userServiceClient.show(any()))
+			.thenAnswer((invocation) -> new UserDto()
+				.setId(invocation.getArgument(0, UUID.class)));
 	}
 	
 }

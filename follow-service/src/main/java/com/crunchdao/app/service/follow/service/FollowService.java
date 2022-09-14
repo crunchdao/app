@@ -21,6 +21,7 @@ import com.crunchdao.app.service.follow.exception.NotFollowingException;
 import com.crunchdao.app.service.follow.exception.UserNotFoundException;
 import com.crunchdao.app.service.follow.repository.FollowRepository;
 
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -56,7 +57,11 @@ public class FollowService {
 	}
 	
 	private boolean isUserValid(UUID id) {
-		return userServiceClient.show(id) != null;
+		try {
+			return userServiceClient.show(id) != null;
+		} catch (FeignException.NotFound ignored) {
+			return false;
+		}
 	}
 	
 	@Transactional

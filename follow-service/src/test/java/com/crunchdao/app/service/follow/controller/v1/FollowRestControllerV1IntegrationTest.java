@@ -17,21 +17,29 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.crunchdao.app.common.security.token.MockAuthenticationToken;
 import com.crunchdao.app.common.web.exception.OnlyUserException;
+import com.crunchdao.app.service.follow.api.user.UserServiceClientTest;
 import com.crunchdao.app.service.follow.exception.AlreadyFollowingException;
 import com.crunchdao.app.service.follow.exception.FollowingYourselfException;
 import com.crunchdao.app.service.follow.exception.NotFollowingException;
+import com.crunchdao.app.service.follow.exception.UserNotFoundException;
 import com.crunchdao.app.service.follow.repository.FollowRepository;
 import com.crunchdao.app.service.follow.service.FollowService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
+@AutoConfigureWireMock(port = 0)
 @AutoConfigureMockMvc
+@TestPropertySource(properties = {
+	"feign.client.config.user-service.url = http://localhost:${wiremock.server.port}"
+})
 class FollowRestControllerV1IntegrationTest {
 	
 	public static final String ACCESS_DENIED = "Access is denied";
@@ -66,6 +74,8 @@ class FollowRestControllerV1IntegrationTest {
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$").isNotEmpty());
 			
+			UserServiceClientTest.stubShow(peerId, true);
+			
 			service.follow(userId, peerId);
 			
 			mockMvc
@@ -90,6 +100,8 @@ class FollowRestControllerV1IntegrationTest {
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$").isNotEmpty());
 			
+			UserServiceClientTest.stubShow(peerId, true);
+			
 			service.follow(userId, peerId);
 			
 			mockMvc
@@ -108,12 +120,19 @@ class FollowRestControllerV1IntegrationTest {
 		void happy() throws Exception {
 			final var userId = UUID.randomUUID();
 			
+			UserServiceClientTest.stubShow(userId, true);
+			
 			service.follow(UUID.randomUUID(), userId);
 			service.follow(UUID.randomUUID(), userId);
 			
-			service.follow(userId, UUID.randomUUID());
-			service.follow(userId, UUID.randomUUID());
-			service.follow(userId, UUID.randomUUID());
+			for (int n = 0; n < 3; ++n) {
+				final var peerId = UUID.randomUUID();
+				
+				UserServiceClientTest.stubShow(peerId, true);
+				
+				service.follow(userId, peerId);
+				
+			}
 			
 			mockMvc
 				.perform(get(FollowRestControllerV1.STATISTICS_ENDPOINT, userId))
@@ -129,12 +148,18 @@ class FollowRestControllerV1IntegrationTest {
 			final var userId = UUID.randomUUID();
 			final var peerId = UUID.randomUUID();
 			
+			UserServiceClientTest.stubShow(peerId, true);
+			
 			service.follow(userId, peerId);
 			service.follow(UUID.randomUUID(), peerId);
 			
-			service.follow(peerId, UUID.randomUUID());
-			service.follow(peerId, UUID.randomUUID());
-			service.follow(peerId, UUID.randomUUID());
+			for (int n = 0; n < 3; ++n) {
+				final var uuid = UUID.randomUUID();
+				
+				UserServiceClientTest.stubShow(uuid, true);
+				
+				service.follow(peerId, uuid);
+			}
 			
 			mockMvc
 				.perform(get(FollowRestControllerV1.STATISTICS_ENDPOINT, peerId)
@@ -151,12 +176,18 @@ class FollowRestControllerV1IntegrationTest {
 			final var userId = UUID.randomUUID();
 			final var peerId = UUID.randomUUID();
 			
+			UserServiceClientTest.stubShow(peerId, true);
+			
 			service.follow(UUID.randomUUID(), peerId);
 			service.follow(UUID.randomUUID(), peerId);
 			
-			service.follow(peerId, UUID.randomUUID());
-			service.follow(peerId, UUID.randomUUID());
-			service.follow(peerId, UUID.randomUUID());
+			for (int n = 0; n < 3; ++n) {
+				final var uuid = UUID.randomUUID();
+				
+				UserServiceClientTest.stubShow(uuid, true);
+				
+				service.follow(peerId, uuid);
+			}
 			
 			mockMvc
 				.perform(get(FollowRestControllerV1.STATISTICS_ENDPOINT, peerId)
@@ -178,6 +209,8 @@ class FollowRestControllerV1IntegrationTest {
 			final var userId = UUID.randomUUID();
 			final var peerId = UUID.randomUUID();
 			
+			UserServiceClientTest.stubShow(peerId, true);
+			
 			mockMvc
 				.perform(put(FollowRestControllerV1.FOLLOWERS_ENDPOINT, peerId)
 					.with(MockAuthenticationToken.user(userId)))
@@ -193,6 +226,8 @@ class FollowRestControllerV1IntegrationTest {
 			final var userId = UUID.randomUUID();
 			final var peerId = UUID.randomUUID();
 			
+			UserServiceClientTest.stubShow(peerId, true);
+			
 			service.follow(userId, peerId);
 			
 			mockMvc
@@ -200,6 +235,20 @@ class FollowRestControllerV1IntegrationTest {
 					.with(MockAuthenticationToken.user(userId)))
 				.andExpect(status().isConflict())
 				.andExpect(jsonPath("$.message").value(AlreadyFollowingException.DEFAULT_MESSAGE));
+		}
+		
+		@Test
+		void userNotFound() throws Exception {
+			final var userId = UUID.randomUUID();
+			final var peerId = UUID.randomUUID();
+			
+			UserServiceClientTest.stubShow(peerId, false);
+			
+			mockMvc
+				.perform(put(FollowRestControllerV1.FOLLOWERS_ENDPOINT, peerId)
+					.with(MockAuthenticationToken.user(userId)))
+				.andExpect(status().isNotFound())
+				.andExpect(jsonPath("$.message").value(UserNotFoundException.DEFAULT_MESSAGE));
 		}
 		
 		@Test
@@ -243,6 +292,8 @@ class FollowRestControllerV1IntegrationTest {
 		void happy() throws Exception {
 			final var userId = UUID.randomUUID();
 			final var peerId = UUID.randomUUID();
+			
+			UserServiceClientTest.stubShow(peerId, true);
 			
 			service.follow(userId, peerId);
 			
