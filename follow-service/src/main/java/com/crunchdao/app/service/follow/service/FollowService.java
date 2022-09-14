@@ -11,12 +11,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.crunchdao.app.common.web.model.PageResponse;
+import com.crunchdao.app.service.follow.api.user.UserServiceClient;
 import com.crunchdao.app.service.follow.dto.FollowDto;
 import com.crunchdao.app.service.follow.dto.StatisticsDto;
 import com.crunchdao.app.service.follow.entity.Follow;
 import com.crunchdao.app.service.follow.exception.AlreadyFollowingException;
 import com.crunchdao.app.service.follow.exception.FollowingYourselfException;
 import com.crunchdao.app.service.follow.exception.NotFollowingException;
+import com.crunchdao.app.service.follow.exception.UserNotFoundException;
 import com.crunchdao.app.service.follow.repository.FollowRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class FollowService {
 	
 	private final FollowRepository repository;
+	private final UserServiceClient userServiceClient;
 	
 	public PageResponse<FollowDto> listFollowers(UUID peerId, Pageable pageable) {
 		final Page<Follow> page = repository.findAllByIdPeerId(peerId, pageable);
@@ -44,8 +47,16 @@ public class FollowService {
 			throw new FollowingYourselfException();
 		}
 		
+		if (!isUserValid(peerId)) {
+			throw new UserNotFoundException(peerId);
+		}
+		
 		return insert(new Follow()
 			.setId(userId, peerId));
+	}
+	
+	private boolean isUserValid(UUID id) {
+		return userServiceClient.show(id) != null;
 	}
 	
 	@Transactional
