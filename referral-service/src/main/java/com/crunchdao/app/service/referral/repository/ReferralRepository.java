@@ -10,9 +10,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.crunchdao.app.service.referral.entity.Referral;
 
 public interface ReferralRepository extends JpaRepository<Referral, UUID> {
-
+	
 	Page<Referral> findAllByReferrerId(UUID referrerId, Pageable pageable);
-
+	
 	List<Referral> findAllByUserIdAndValidatedFalse(UUID userId);
+	
+	void deleteAllByUserId(UUID userId);
+
+	void deleteAllByReferrerId(UUID userId);
 	
 }

@@ -57,5 +57,10 @@ public class ReferralService {
 			.map((referral) -> referral.markAsValidated(validatedAt))
 			.forEach(repository::save); /* TODO: Send event */
 	}
+
+	public void onUserDeleted(UUID userId) {
+		repository.deleteAllByUserId(userId);
+		repository.deleteAllByReferrerId(userId);
+	}
 	
 }

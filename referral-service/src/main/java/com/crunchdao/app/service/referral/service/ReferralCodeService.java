@@ -42,5 +42,9 @@ public class ReferralCodeService {
 		
 		return value;
 	}
+
+	public void onUserDeleted(UUID userId) {
+		repository.deleteById(userId);
+	}
 	
 }
