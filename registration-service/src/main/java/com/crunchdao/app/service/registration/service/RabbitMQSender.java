@@ -27,7 +27,7 @@ public class RabbitMQSender {
 	}
 	
 	public void sendResigned(UUID userId) {
-		String routingKey = properties.getRoutingKey().getRegistration().getEvent().getRegistered();
+		String routingKey = properties.getRoutingKey().getRegistration().getEvent().getResigned();
 		
 		rabbitTemplate.convertAndSend(getExchange(), routingKey, new ResignedUserDto(userId));
 	}
