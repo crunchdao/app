@@ -1,0 +1,30 @@
+spring:
+  config:
+    enabled: false
+  cloud:
+    consul:
+      enabled: false
+#  sleuth:
+#    enabled: false
+#  zipkin:
+#    enabled: false
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+  datasource:
+    url: jdbc:mysql://localhost:3306/${spring.application.name}?createDatabaseIfNotExist=true
+    username: root
+    password: password
+  jpa:
+    database: MYSQL
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+#    show-sql: true
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+        enable_lazy_load_no_trans: true

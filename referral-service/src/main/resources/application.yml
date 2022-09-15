@@ -1,0 +1,27 @@
+server:
+  port: ${PORT:8015}
+spring:
+  application:
+    name: referral-service
+  cloud:
+    consul:
+      enabled: false
+app:
+  messaging:
+    exchange:
+      registration: "registration"
+      referral: "referral"
+    routing-key:
+      registration:
+        event:
+          registered: "registration.event.registered"
+          resigned: "registration.event.resigned"
+      referral:
+        event:
+          created: "referral.event.created"
+          resigned: "referral.event.validated"
+    queue:
+      registration:
+        event:
+          registered: "registration.event.registered.${spring.application.name}"
+          resigned: "registration.event.resigned.${spring.application.name}"
