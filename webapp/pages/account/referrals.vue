@@ -1,42 +1,42 @@
 <template>
-  <v-container>
-    <v-card>
-      <card-title> Referrals </card-title>
-      <v-card-subtitle v-if="referralUrl">
-        Your referral link:
-        <a :href="referralUrl" target="_blank">{{ referralUrl }}</a>
-      </v-card-subtitle>
-      <v-skeleton-loader v-if="fetchState.pending" type="list-item-avatar@3" />
-      <template v-else-if="pageResponse && pageResponse.totalElements">
-        <v-list>
-          <v-list-item
-            v-for="referral in pageResponse.content"
-            :key="referral.user.id"
-            :to="toUser(referral.user)"
-          >
-            <v-list-item-avatar>
-              <avatar :user-id="referral.user.id" />
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <v-list-item-title>{{ referral.user.username }}</v-list-item-title>
-              <v-list-item-subtitle> Referred at <code>{{ new Date(referral.createdAt).toLocaleString() }}</code>, using the code <code>{{ referral.code }}</code> </v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>
-        <v-pagination
-          :value="pageResponse.pageNumber + 1"
-          :length="pageResponse.totalPages"
-          :total-visible="7"
-          :disabled="fetchState.pending"
-          class="mt-2"
-          @input="changePage"
-        />
-      </template>
-      <v-card-text v-else>
-        you didn't referred anyone
-      </v-card-text>
-    </v-card>
-  </v-container>
+  <v-card>
+    <card-title> Referrals </card-title>
+    <v-card-subtitle v-if="referralUrl">
+      Your referral link:
+      <a :href="referralUrl" target="_blank">{{ referralUrl }}</a>
+    </v-card-subtitle>
+    <v-skeleton-loader v-if="fetchState.pending" type="list-item-avatar@3" />
+    <template v-else-if="pageResponse && pageResponse.totalElements">
+      <v-list>
+        <v-list-item
+          v-for="referral in pageResponse.content"
+          :key="referral.user.id"
+          :to="toUser(referral.user)"
+        >
+          <v-list-item-avatar>
+            <avatar :user-id="referral.user.id" />
+          </v-list-item-avatar>
+          <v-list-item-content>
+            <v-list-item-title>{{ referral.user.username }}</v-list-item-title>
+            <v-list-item-subtitle>
+              Referred at
+              <code>{{ new Date(referral.createdAt).toLocaleString() }}</code
+              >, using the code <code>{{ referral.code }}</code>
+            </v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+      <v-pagination
+        :value="pageResponse.pageNumber + 1"
+        :length="pageResponse.totalPages"
+        :total-visible="7"
+        :disabled="fetchState.pending"
+        class="mt-2"
+        @input="changePage"
+      />
+    </template>
+    <v-card-text v-else> you didn't referred anyone </v-card-text>
+  </v-card>
 </template>
 
 <script lang="ts">
@@ -66,7 +66,7 @@ export default defineComponent({
 
     const pageResponse = ref<PageResponse<Referral>>()
     const referralCode = ref<string>()
-    
+
     const { fetch, fetchState } = useFetch(async () => {
       const response = await $axios.$post(`/graphql`, {
         query: `
@@ -98,7 +98,6 @@ export default defineComponent({
           page: page.value - 1,
         },
       })
-
 
       referralCode.value = response.data.myReferralCode?.value
       pageResponse.value = response.data.referrals
