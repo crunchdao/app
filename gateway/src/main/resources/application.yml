@@ -78,6 +78,11 @@ spring:
           predicates:
             - Path=/v1/follow/**
           
+        - id: referral-service
+          uri: lb://referral-service
+          predicates:
+            - Path=/v1/referrals/**,/v1/referral-codes/**
+          
         - id: graphql
           uri: lb://graphql
           predicates:
