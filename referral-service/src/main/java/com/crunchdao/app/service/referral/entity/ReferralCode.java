@@ -13,6 +13,8 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.envers.Audited;
 
+import com.crunchdao.app.service.referral.dto.ReferralCodeDto;
+
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -38,5 +40,11 @@ public class ReferralCode {
 	
 	@UpdateTimestamp
 	private LocalDateTime updatedAt;
+	
+	public ReferralCodeDto toDto() {
+		return new ReferralCodeDto()
+			.setUserId(userId)
+			.setValue(value);
+	}
 	
 }
