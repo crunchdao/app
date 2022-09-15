@@ -28,6 +28,10 @@ const links = [
     to: '/account/notifications',
   },
   {
+    title: 'Referrals',
+    to: '/account/referrals',
+  },
+  {
     title: 'API Keys',
     to: '/account/api-keys',
   },

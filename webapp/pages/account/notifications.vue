@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <card-title >Notifications</card-title>
+    <card-title>Notifications</card-title>
   </v-card>
 </template>
 
