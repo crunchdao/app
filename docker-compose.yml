@@ -189,6 +189,18 @@ services:
     depends_on:
       - consul
       - mongo
+  referral-service:
+    image: crunchdao/referral-service
+    restart: unless-stopped
+    expose:
+      - 80
+    environment:
+      - PORT=80
+      - CONSUL_HOST=consul
+      - SPRING_PROFILES_ACTIVE=consul
+    depends_on:
+      - consul
+      - mysql
   registration-service:
     image: crunchdao/registration-service
     restart: unless-stopped
