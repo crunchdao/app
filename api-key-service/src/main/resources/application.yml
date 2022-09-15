@@ -21,7 +21,11 @@ api-key:
       description: Upload an avatar.
     - name: connection.write
       description: Connect, update or delete connections.
+    - name: follow.write
+      description: Follow other peoples.
     - name: notification.read
       description: List notifications.
     - name: notification.write
       description: Mark notifications as read.
+    - name: referral.read
+      description: List referrals.
