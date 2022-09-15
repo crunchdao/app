@@ -16,6 +16,9 @@ type Query {
 	followers(userId: UUID!, page: Int, size: Int, sort: String): FollowPageResponse
 	followings(userId: UUID!, page: Int, size: Int, sort: String): FollowPageResponse
 	followStatistics(userId: UUID!): FollowStatistics
+	referrals(page: Int, size: Int, sort: String): ReferralPageResponse
+	referralCode(code: String!): ReferralCode
+	myReferralCode: ReferralCode
 }
 
 type ApiKeyPageResponse {
@@ -113,4 +116,29 @@ type FollowStatistics {
 	followers: Int!
 	followings: Int!
 	followed: Boolean
+}
+
+type ReferralPageResponse {
+	content: [Referral]
+	pageNumber: Int
+	pageSize: Int
+	totalElements: Int
+	totalPages: Int
+	first: Boolean
+	last: Boolean
+}
+
+type Referral {
+	userId: UUID!
+	user: User!
+	code: String!
+	validated: Boolean!
+	validatedAt: String
+	createdAt: String!
+}
+
+type ReferralCode {
+	userId: UUID!
+	user: User!
+	value: String!
 }
