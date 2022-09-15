@@ -1,5 +1,6 @@
 package com.crunchdao.app.service.referral.entity;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -7,7 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.envers.Audited;
 
 import lombok.Data;
@@ -29,5 +32,11 @@ public class ReferralCode {
 	
 	@Column(nullable = false)
 	private boolean enabled;
+	
+	@CreationTimestamp
+	private LocalDateTime createdAt;
+	
+	@UpdateTimestamp
+	private LocalDateTime updatedAt;
 	
 }
