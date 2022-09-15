@@ -98,12 +98,15 @@
 <script lang="ts">
 import VueRecaptcha from 'vue-recaptcha'
 import {
+  computed,
   defineComponent,
   reactive,
   ref,
   Ref,
   useContext,
+  useRoute,
   useRouter,
+  watch,
 } from '@nuxtjs/composition-api'
 import { ApiError, User } from '~/models'
 
@@ -117,8 +120,8 @@ export default defineComponent({
     const { $axios, $dialog } = useContext()
     const router = useRouter()
 
-    const user = ref() as Ref<User>
-    const captcha = ref(null) as Ref<any>
+    const user = ref<User>()
+    const captcha = ref<any>()
 
     const inputs = reactive({
       firstName: null as string | null,
@@ -128,7 +131,18 @@ export default defineComponent({
       password: null as string | null,
       confirmPassword: null as string | null,
       recaptchaResponse: null as string | null,
+      referralCode: null as string | null,
     })
+
+    const route = useRoute()
+    const referralCode = computed(() => route.value.query.referral)
+    watch(
+      referralCode,
+      (value) => {
+        inputs.referralCode = value as string
+      },
+      { immediate: true }
+    )
 
     const errorMessage = ref() as Ref<string | null>
     const validation = reactive({
@@ -147,7 +161,7 @@ export default defineComponent({
         router.replace({
           path: `/auth/login`,
           query: {
-            username: user.value.username,
+            username: user.value!.username,
           },
         })
       }, 2000)
