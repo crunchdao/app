@@ -16,6 +16,7 @@ import com.crunchdao.app.service.registration.api.keycloak.KeycloakUserDto;
 import com.crunchdao.app.service.registration.api.user.UserDto;
 import com.crunchdao.app.service.registration.api.user.UserServiceClient;
 import com.crunchdao.app.service.registration.model.RegisterForm;
+import com.crunchdao.app.service.registration.service.RabbitMQSender;
 import com.crunchdao.app.service.registration.service.RecaptchaService;
 
 import lombok.RequiredArgsConstructor;
@@ -33,31 +34,46 @@ public class RegisterRestControllerV1 {
 	private final RecaptchaService recaptchaService;
 	private final KeycloakServiceClient keycloakServiceClient;
 	private final UserServiceClient userServiceClient;
+	private final RabbitMQSender rabbitMQSender;
 	
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping
 	public UserDto create(@Validated @RequestBody RegisterForm body, HttpServletRequest request) {
 		recaptchaService.validate(body.getRecaptchaResponse(), request);
 		
-		KeycloakUserDto keycloakUser = keycloakServiceClient.create(new KeycloakUserDto()
+		var keycloakUser = keycloakServiceClient.create(new KeycloakUserDto()
 			.setUsername(body.getUsername())
 			.setEmail(body.getEmail())
 			.setPassword(body.getPassword()));
 		
+		UserDto user = null;
+		
 		try {
-			return userServiceClient.create(new UserDto()
+			user = userServiceClient.create(new UserDto()
 				.setId(keycloakUser.getId())
 				.setUsername(keycloakUser.getUsername())
 				.setFirstName(body.getFirstName())
 				.setLastName(body.getLastName())
 				.setEmail(keycloakUser.getEmail()));
+			
+			rabbitMQSender.sendRegistered(keycloakUser.getId(), body);
+			
+			return user;
 		} catch (Throwable exception) {
 			try {
 				keycloakServiceClient.delete(keycloakUser.getId());
 			} catch (Throwable exception2) {
 				log.error("Could not delete keycloak user", exception2);
 			}
-
+			
+			if (user != null) {
+				try {
+					userServiceClient.delete(keycloakUser.getId());
+				} catch (Throwable exception2) {
+					log.error("Could not delete user", exception2);
+				}
+			}
+			
 			// TODO Send an event
 			throw exception;
 		}

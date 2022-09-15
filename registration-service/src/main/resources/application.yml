@@ -6,3 +6,12 @@ spring:
   cloud:
     consul:
       enabled: false
+app:
+  messaging:
+    exchange:
+      registration: "registration"
+    routing-key:
+      registration:
+        event:
+          registered: "registration.event.registered"
+          resigned: "registration.event.resigned"
