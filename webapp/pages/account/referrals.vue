@@ -1,7 +1,10 @@
 <template>
   <v-card>
     <card-title> Referrals </card-title>
-    <v-card-subtitle v-if="referralUrl">
+    <v-card-subtitle v-if="fetchState.pending">
+      <v-skeleton-loader type="text" />
+    </v-card-subtitle>
+    <v-card-subtitle v-else-if="referralUrl">
       Your referral link:
       <a :href="referralUrl" target="_blank">{{ referralUrl }}</a>
     </v-card-subtitle>
