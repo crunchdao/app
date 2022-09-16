@@ -1,12 +1,12 @@
 <template>
   <v-container>
-    <v-card class="mb-4">
+    <v-toolbar class="mb-6">
       <v-tabs>
         <v-tab v-for="link in links" :key="link.to" :to="link.to">
           {{ link.title }}
         </v-tab>
       </v-tabs>
-    </v-card>
+    </v-toolbar>
     <nuxt-child />
   </v-container>
 </template>

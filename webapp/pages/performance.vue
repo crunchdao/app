@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-card class="mb-4">
+    <v-toolbar class="mb-6">
       <v-tabs>
         <v-tab to="/performance/profile"> Profile </v-tab>
         <v-tab :to="myModelTabUrl">
@@ -23,7 +23,7 @@
           />
         </v-tab>
       </v-tabs>
-    </v-card>
+    </v-toolbar>
     <nuxt-child @create="fetch" @update="fetch" />
   </v-container>
 </template>
