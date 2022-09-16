@@ -40,6 +40,7 @@ const links = [
 export default defineComponent({
   head: {
     title: 'Account',
+    titleTemplate: "%s - Account"
   },
   setup() {
     return {
