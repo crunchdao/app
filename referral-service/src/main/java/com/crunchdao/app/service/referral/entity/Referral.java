@@ -22,7 +22,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @Entity
 @Table(name = "referrals", indexes = {
-	@Index(columnList = "userId", unique = true),
 	@Index(columnList = "referrerId"),
 })
 public class Referral implements Persistable<UUID> {
