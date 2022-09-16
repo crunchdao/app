@@ -44,6 +44,7 @@
 		<module>connection-service</module>
 		<module>follow-service</module>
 		<module>keycloak-service</module>
+		<module>model-service</module>
 		<module>notification-service</module>
 		<module>referral-service</module>
 		<module>registration-service</module>
