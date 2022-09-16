@@ -17,6 +17,7 @@
 | [Gateway](gateway/) | Gateway | [8000](http://localhost:8000) | API gateway. |
 | [GraphQL](graphql/) | API | [8007](http://localhost:8007/graphiql?path=/graphql) | GraphQL endpoint. |
 | [Keycloak](keycloak-service/) | Service | [8004](http://localhost:8004/swagger-ui/index.html) | Abstract the Keycloak API. |
+| [Model](model-service/) | Service | [8016](http://localhost:8016/swagger-ui/index.html) | Store models. |
 | [Notification](notification-service/) | Service | [8012](http://localhost:8012/swagger-ui/index.html) | Store notifications. |
 | [Referral](referral-service/) | Service | [8015](http://localhost:8015/swagger-ui/index.html) | Store referrals. |
 | [Registration](registration-service/) | Service | [8005](http://localhost:8005/swagger-ui/index.html) | Handle user accounts. |
