@@ -6,13 +6,13 @@
         <v-tab :to="myModelTabUrl">
           My Models
           <v-select
-            v-model="selectedModel"
+            v-model="selectedModelId"
             dense
             hide-details
             solo
             :items="models"
+            item-value="id"
             item-text="name"
-            return-object
             height="48"
             style="width: 220px; height: 48px"
             class="ml-2"
@@ -24,7 +24,7 @@
         </v-tab>
       </v-tabs>
     </v-card>
-    <nuxt-child />
+    <nuxt-child @update="onUpdate" />
   </v-container>
 </template>
 
@@ -39,7 +39,7 @@ import {
 } from '@nuxtjs/composition-api'
 import { useAuth } from '~/composables/auth'
 import { fixedComputed } from '~/composables/hack'
-import { Model } from '~/models'
+import { Model, UUID } from '~/models'
 
 export default defineComponent({
   head: {
@@ -53,7 +53,7 @@ export default defineComponent({
 
     const models = ref<Array<Model>>([])
 
-    const { fetchState } = useFetch(async () => {
+    const { fetch, fetchState } = useFetch(async () => {
       models.value = await $axios.$get(`/v1/models`, {
         params: {
           userId: user.value?.id,
@@ -61,11 +61,11 @@ export default defineComponent({
       })
     })
 
-    const selectedModel = ref<Model | null>(null)
-    watch(selectedModel, (model) => {
-      if (model) {
+    const selectedModelId = ref<UUID>()
+    watch(selectedModelId, (id) => {
+      if (id) {
         router.push({
-          path: `/performance/models/${model.id}`,
+          path: `/performance/models/${id}`,
         })
       } else {
         router.push({
@@ -75,18 +75,23 @@ export default defineComponent({
     })
 
     const myModelTabUrl = fixedComputed(() => {
-      if (!selectedModel.value) {
+      if (!selectedModelId.value) {
         return `/performance/models`
       }
 
-      return `/performance/models/${selectedModel.value.id}`
+      return `/performance/models/${selectedModelId.value}`
     })
+
+    const onUpdate = (model: Model) => {
+      fetch()
+    }
 
     return {
       models,
       fetchState,
-      selectedModel,
+      selectedModelId,
       myModelTabUrl,
+      onUpdate,
     }
   },
 })

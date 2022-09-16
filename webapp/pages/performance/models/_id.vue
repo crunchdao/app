@@ -13,26 +13,29 @@
     </v-flex>
   </v-layout>
   <div v-else>
-    <nuxt-child :model="model" :model-id="modelId" />
+    <nuxt-child :model="model" :model-id="modelId" @update="onUpdate" />
   </div>
 </template>
 
 <script lang="ts">
 import {
   defineComponent,
+  ref,
   useContext,
   useFetch,
   useRoute,
-  useRouter,
+  watch,
 } from '@nuxtjs/composition-api'
-import Vue, { ref, watch } from 'vue'
 import { fixedComputed } from '~/composables/hack'
-import { Model, User, UUID } from '~/models'
+import { Model } from '~/models'
 import { extractMessage } from '~/utilities/error'
 
 export default defineComponent({
   head: {},
-  setup() {
+  emits: {
+    update: (_model: Model) => true
+  },
+  setup(_, { emit }) {
     const { $axios } = useContext()
 
     const route = useRoute()
@@ -51,12 +54,19 @@ export default defineComponent({
       fetch()
     })
 
+    const onUpdate = (model_: Model) => {
+      model.value = model_
+
+      emit("update", model_)
+    }
+
     return {
       modelId,
       model,
       fetch,
       fetchState,
       error,
+      onUpdate,
     }
   },
 })
