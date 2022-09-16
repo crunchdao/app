@@ -24,7 +24,7 @@
         </v-tab>
       </v-tabs>
     </v-card>
-    <nuxt-child @update="onUpdate" />
+    <nuxt-child @create="fetch" @update="fetch" />
   </v-container>
 </template>
 
@@ -34,6 +34,7 @@ import {
   ref,
   useContext,
   useFetch,
+  useRoute,
   useRouter,
   watch,
 } from '@nuxtjs/composition-api'
@@ -49,6 +50,7 @@ export default defineComponent({
   setup() {
     const { $axios } = useContext()
     const router = useRouter()
+    const route = useRoute()
     const { user } = useAuth()
 
     const models = ref<Array<Model>>([])
@@ -67,11 +69,16 @@ export default defineComponent({
         router.push({
           path: `/performance/models/${id}`,
         })
-      } else {
+      } else if (route.value.path.startsWith('/performance/models/')) {
         router.push({
           path: `/performance/models`,
         })
       }
+    })
+
+    const modelId = fixedComputed(() => route.value.params.id)
+    watch(modelId, (value) => {
+      selectedModelId.value = value
     })
 
     const myModelTabUrl = fixedComputed(() => {
@@ -82,16 +89,12 @@ export default defineComponent({
       return `/performance/models/${selectedModelId.value}`
     })
 
-    const onUpdate = (model: Model) => {
-      fetch()
-    }
-
     return {
       models,
+      fetch,
       fetchState,
       selectedModelId,
       myModelTabUrl,
-      onUpdate,
     }
   },
 })
