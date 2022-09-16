@@ -236,6 +236,18 @@ services:
     depends_on:
       - consul
       - mongo
+  model-service:
+    image: crunchdao/model-service
+    restart: unless-stopped
+    expose:
+      - 80
+    environment:
+      - PORT=80
+      - CONSUL_HOST=consul
+      - SPRING_PROFILES_ACTIVE=consul
+    depends_on:
+      - consul
+      - mysql
   webapp:
     build:
       context: webapp
