@@ -1,12 +1,12 @@
 <template>
   <v-container>
-    <v-toolbar class="mb-6">
-      <v-tabs>
-        <v-tab v-for="link in links" :key="link.to" :to="link.to">
-          {{ link.title }}
-        </v-tab>
-      </v-tabs>
-    </v-toolbar>
+      <v-toolbar rounded class="mb-6">
+        <v-tabs>
+          <v-tab v-for="link in links" :key="link.to" :to="link.to">
+            {{ link.title }}
+          </v-tab>
+        </v-tabs>
+      </v-toolbar>
     <nuxt-child />
   </v-container>
 </template>
@@ -40,7 +40,7 @@ const links = [
 export default defineComponent({
   head: {
     title: 'Account',
-    titleTemplate: "%s - Account"
+    titleTemplate: '%s - Account',
   },
   setup() {
     return {

@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-toolbar class="mb-6">
+    <v-toolbar rounded class="mb-6">
       <v-tabs>
         <v-tab to="/performance/profile"> Profile </v-tab>
         <v-tab :to="myModelTabUrl">
