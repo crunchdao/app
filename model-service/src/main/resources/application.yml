@@ -1,0 +1,11 @@
+server:
+  port: ${PORT:8016}
+spring:
+  application:
+    name: model-service
+  cloud:
+    consul:
+      enabled: false
+app:
+  model:
+    limit: 5
