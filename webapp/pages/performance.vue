@@ -30,13 +30,13 @@
 
 <script lang="ts">
 import {
+  computed,
   defineComponent,
   ref,
   useContext,
   useFetch,
   useRoute,
   useRouter,
-  watch,
 } from '@nuxtjs/composition-api'
 import { useAuth } from '~/composables/auth'
 import { fixedComputed } from '~/composables/hack'
@@ -63,22 +63,21 @@ export default defineComponent({
       })
     })
 
-    const selectedModelId = ref<UUID>()
-    watch(selectedModelId, (id) => {
-      if (id) {
-        router.push({
-          path: `/performance/models/${id}`,
-        })
-      } else if (route.value.path.startsWith('/performance/models/')) {
-        router.push({
-          path: `/performance/models`,
-        })
-      }
-    })
-
-    const modelId = fixedComputed(() => route.value.params.id)
-    watch(modelId, (value) => {
-      selectedModelId.value = value
+    const selectedModelId = computed<UUID>({
+      get() {
+        return route.value.params.id
+      },
+      set(id: UUID | undefined) {
+        if (id) {
+          router.push({
+            path: `/performance/models/${id}`,
+          })
+        } else if (route.value.path.startsWith('/performance/models/')) {
+          router.push({
+            path: `/performance/models`,
+          })
+        }
+      },
     })
 
     const myModelTabUrl = fixedComputed(() => {
