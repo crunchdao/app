@@ -11,30 +11,20 @@
       class="flex pa-3 pr-2"
     >
       <v-card class="d-flex flex-column fill-height" style="overflow: auto">
-        <app-logo class="flex-grow-0" />
+        <app-admin-logo class="flex-grow-0" />
         <div class="d-flex flex-column flex-grow-1">
           <v-flex
             class="
               d-flex
-              flex-column flex-grow-0
+              flex-row flex-grow-0
               align-center
               justify-center
               mt-4
               mb-2
             "
           >
-            <template v-if="loggedIn">
-              <avatar :user-id="user.id" size="80" />
-              <span class="text-h5">{{ user.username }}</span>
-              <small class="text--secondary text-uppercase">
-                Intern • 12 Followers
-              </small>
-            </template>
-            <template v-else>
-              <auth-button-login />
-              <small class="mt-3"> Don't have an account? </small>
-              <auth-button-register />
-            </template>
+            <avatar :user-id="user.id" />
+            <span class="text-h5 ml-2">{{ user.username }}</span>
           </v-flex>
 
           <v-divider />
@@ -47,7 +37,6 @@
                 :key="link.to"
                 :to="link.to"
                 :exact-path="link.exactPath"
-                :disabled="link.disabled"
               >
                 <v-list-item-icon>
                   <v-icon>{{ link.icon }}</v-icon>
@@ -64,7 +53,10 @@
         <v-divider />
 
         <v-flex class="d-flex flex-grow-0 ma-4 align-center">
-          <token-price />
+          <v-btn class="grow" outlined to="/">
+            <v-icon left>mdi-arrow-left</v-icon>
+            Back
+          </v-btn>
           <client-only>
             <notification-button-open-drawer />
           </client-only>
@@ -76,60 +68,21 @@
 </template>
 
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  ref,
-} from '@nuxtjs/composition-api'
+import { computed, defineComponent, ref } from '@nuxtjs/composition-api'
 import { useAuth } from '@/composables/auth'
-import { hasRole } from '@/composables/role'
 
 export default defineComponent({
   setup() {
     const { user, loggedIn } = useAuth()
 
-    const isAdmin = hasRole('admin')
-
-    const links = computed(() =>
-      [
-        {
-          title: 'Leaderboard',
-          icon: 'mdi-poll',
-          to: '/',
-          exactPath: true,
-          disabled: false,
-        },
-        {
-          title: 'Performance',
-          icon: 'mdi-home',
-          to: '/performance',
-          disabled: !loggedIn.value,
-        },
-        {
-          title: 'Wallet',
-          icon: 'mdi-wallet',
-          to: '/wallet',
-          disabled: !loggedIn.value,
-        },
-        {
-          title: 'Account',
-          icon: 'mdi-account',
-          to: '/account',
-          disabled: !loggedIn.value,
-        },
-        {
-          title: 'Users',
-          icon: 'mdi-account',
-          to: '/users',
-        },
-        {
-          title: 'Admin',
-          icon: 'mdi-shield',
-          to: '/admin',
-          admin: true,
-        },
-      ].filter(({ admin }) => (admin ? isAdmin.value : true))
-    )
+    const links = computed(() => [
+      {
+        title: 'Users',
+        icon: 'mdi-account',
+        to: '/admin/users',
+        exactPath: false,
+      },
+    ])
 
     const drawer = ref(true)
 
@@ -142,7 +95,6 @@ export default defineComponent({
       loggedIn,
       links,
       drawer,
-      isAdmin,
       openDrawer,
     }
   },
