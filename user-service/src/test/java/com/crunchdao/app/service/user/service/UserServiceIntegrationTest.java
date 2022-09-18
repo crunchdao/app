@@ -58,13 +58,13 @@ public class UserServiceIntegrationTest extends BaseMongoTest {
 	
 	@Test
 	void list() {
-		PageResponse<UserDto> page = service.list(PAGEABLE);
+		PageResponse<UserDto> page = service.list(null, PAGEABLE);
 		assertThat(page.getContent()).isEmpty();
 		
 		UserDto first = createRandomUser(service);
 		UserDto second = createRandomUser(service);
 		
-		page = service.list(PAGEABLE);
+		page = service.list(null, PAGEABLE);
 		assertThat(page.getContent())
 			.hasSize(2)
 			.map(UserDto::getId).contains(first.getId(), second.getId());

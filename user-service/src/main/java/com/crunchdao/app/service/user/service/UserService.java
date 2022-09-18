@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import com.crunchdao.app.common.web.model.PageResponse;
 import com.crunchdao.app.service.user.dto.UserDto;
@@ -33,10 +34,16 @@ public class UserService {
 		return repository.findById(id).map(User::toDto);
 	}
 	
-	public PageResponse<UserDto> list(Pageable pageable) {
-		Page<User> apiKeys = repository.findAll(pageable);
+	public PageResponse<UserDto> list(String username, Pageable pageable) {
+		Page<User> page;
 		
-		return new PageResponse<>(apiKeys, (user) -> user.toDto().stripSensitive());
+		if (StringUtils.hasText(username)) {
+			page = repository.findAllByUsernameLike(username, pageable);
+		} else {
+			page = repository.findAll(pageable);
+		}
+		
+		return new PageResponse<>(page, (user) -> user.toDto().stripSensitive());
 	}
 	
 	public UserDto create(UserWithIdDto body) {

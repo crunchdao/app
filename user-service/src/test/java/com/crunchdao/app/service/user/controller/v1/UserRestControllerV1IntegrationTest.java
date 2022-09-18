@@ -107,6 +107,37 @@ class UserRestControllerV1IntegrationTest {
 		}
 		
 		@Test
+		void happy_query() throws Exception {
+			final var user1 = service.create(new UserWithIdDto()
+				.setId(UUID.randomUUID())
+				.setUsername("a"));
+			
+			final var user2 = service.create(new UserWithIdDto()
+				.setId(UUID.randomUUID())
+				.setUsername("b"));
+			
+			mockMvc
+				.perform(get(UserRestControllerV1.BASE_ENDPOINT)
+					.param(UserRestControllerV1.PARAM_USERNAME, user1.getUsername())
+					.with(MockAuthenticationToken.service()))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.content").isNotEmpty())
+				.andExpect(jsonPath("$.content[0].id").value(user1.getId().toString()))
+				.andExpect(jsonPath("$.content[0].username").value(user1.getUsername()))
+				.andExpect(jsonPath("$.content[1].id").doesNotExist());
+			
+			mockMvc
+				.perform(get(UserRestControllerV1.BASE_ENDPOINT)
+					.param(UserRestControllerV1.PARAM_USERNAME, user2.getUsername())
+					.with(MockAuthenticationToken.service()))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.content").isNotEmpty())
+				.andExpect(jsonPath("$.content[0].id").value(user2.getId().toString()))
+				.andExpect(jsonPath("$.content[0].username").value(user2.getUsername()))
+				.andExpect(jsonPath("$.content[1].id").doesNotExist());
+		}
+		
+		@Test
 		void notAuthenticated() throws Exception {
 			mockMvc
 				.perform(get(UserRestControllerV1.BASE_ENDPOINT))

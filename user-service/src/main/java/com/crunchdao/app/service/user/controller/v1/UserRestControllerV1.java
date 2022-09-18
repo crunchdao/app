@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,6 +42,7 @@ public class UserRestControllerV1 {
 	
 	public static final String ID_VARIABLE = "{id}";
 	public static final String SELF_ID_VARIABLE = "@self";
+	public static final String PARAM_USERNAME = "username";
 	
 	public static final String BASE_ENDPOINT = "/v1/users";
 	public static final String ID_ENDPOINT = BASE_ENDPOINT + "/" + ID_VARIABLE;
@@ -51,8 +53,11 @@ public class UserRestControllerV1 {
 	@GetMapping
 	@OnlyAdminOrService
 	@Hidden
-	public PageResponse<UserDto> list(@ParameterObject Pageable pageable) {
-		return service.list(pageable);
+	public PageResponse<UserDto> list(
+		@RequestParam(required = false) String username,
+		@ParameterObject Pageable pageable
+	) {
+		return service.list(username, pageable);
 	}
 	
 	@ResponseStatus(HttpStatus.CREATED)
