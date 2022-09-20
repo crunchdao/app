@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.crunchdao.app.common.web.model.PageResponse;
+import com.crunchdao.app.service.round.dto.RoundDto;
 import com.crunchdao.app.service.round.entity.Round;
 import com.crunchdao.app.service.round.exception.ActiveRoundNotFoundException;
 import com.crunchdao.app.service.round.exception.RoundNotFoundException;
@@ -37,18 +38,23 @@ public class RoundRestControllerV1 {
 	private final RoundService service;
 	
 	@GetMapping
-	public PageResponse<Round> list(@ParameterObject Pageable pageable) {
-		return service.list(pageable);
+	public PageResponse<RoundDto> list(@ParameterObject Pageable pageable) {
+		return new PageResponse<>(service.list(pageable), Round::toDto);
 	}
 	
 	@GetMapping(ACTIVE_ID_VARIABLE)
-	public Round showActive() {
-		return service.findActive().orElseThrow(ActiveRoundNotFoundException::new);
+	public RoundDto showActive() {
+		return service
+			.findActive()
+			.map(Round::toDto)
+			.orElseThrow(ActiveRoundNotFoundException::new);
 	}
 	
 	@GetMapping(ID_VARIABLE)
-	public Round show(@PathVariable UUID id) {
-		return service.findById(id)
+	public RoundDto show(@PathVariable UUID id) {
+		return service
+			.findById(id)
+			.map(Round::toDto)
 			.orElseThrow(() -> new RoundNotFoundException(id));
 	}
 	

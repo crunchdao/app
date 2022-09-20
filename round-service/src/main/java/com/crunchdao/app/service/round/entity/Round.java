@@ -8,7 +8,11 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.crunchdao.app.service.round.dto.RoundDto;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.experimental.Accessors;
 
 @Document(collection = "rounds")
@@ -24,21 +28,39 @@ public class Round {
 	private long number;
 	
 	@Field
-	LocalDateTime start;
+	private LocalDateTime start;
 	
 	@Field
-	LocalDateTime end;
+	private LocalDateTime end;
 	
 	@Field
-	State state;
+	private State state;
 	
+	public RoundDto toDto() {
+		return new RoundDto()
+			.setId(id)
+			.setNumber(number)
+			.setStart(start)
+			.setEnd(end)
+			.setState(RoundDto.StateDescription.from(state));
+	}
+	
+	@AllArgsConstructor
+	@Getter
 	public enum State {
 		
 		CREATED,
-		STARTED,
-		CLOSING,
+		STARTED(true, true),
+		CLOSING(false, true),
 		CLOSED;
-	
+		
+		private final boolean canSubmit;
+		private final boolean canSelect;
+		
+		private State() {
+			this(false, false);
+		}
+		
 	}
 	
 }

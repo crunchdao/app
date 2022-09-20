@@ -4,10 +4,10 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.crunchdao.app.common.web.model.PageResponse;
 import com.crunchdao.app.service.round.entity.Round;
 import com.crunchdao.app.service.round.repository.RoundRepository;
 
@@ -19,8 +19,8 @@ public class RoundService {
 	
 	private final RoundRepository repository;
 	
-	public PageResponse<Round> list(Pageable pageable) {
-		return new PageResponse<>(repository.findAll(pageable));
+	public Page<Round> list(Pageable pageable) {
+		return repository.findAll(pageable);
 	}
 	
 	public Optional<Round> findActive() {
