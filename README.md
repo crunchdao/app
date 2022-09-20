@@ -21,7 +21,9 @@
 | [Notification](notification-service/) | Service | [8012](http://localhost:8012/swagger-ui/index.html) | Store notifications. |
 | [Referral](referral-service/) | Service | [8015](http://localhost:8015/swagger-ui/index.html) | Store referrals. |
 | [Registration](registration-service/) | Service | [8005](http://localhost:8005/swagger-ui/index.html) | Handle user accounts. |
+| [Round](round-service/) | Service | [8018](http://localhost:8018/swagger-ui/index.html) | Handle rounds. |
 | [Segment Analytics](segment-analytics-service/) | Service | [8008](http://localhost:8008/swagger-ui/index.html) | Segment.io publisher. |
+| [Submission](submission-service/) | Service | [8019](http://localhost:8019/swagger-ui/index.html) | Handle submissions. |
 | [User](user-service/) | Service | [8003](http://localhost:8003/swagger-ui/index.html) | Store users. |
 
 ## Libraries
