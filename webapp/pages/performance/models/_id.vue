@@ -13,7 +13,7 @@
     </v-flex>
   </v-layout>
   <div v-else>
-    <nuxt-child :model="model" :model-id="modelId" @update="onUpdate" />
+    <nuxt-child :model="model" :model-id="modelId" @update="onUpdate" @delete="onDelete" />
   </div>
 </template>
 
@@ -33,7 +33,8 @@ import { extractMessage } from '~/utilities/error'
 export default defineComponent({
   head: {},
   emits: {
-    update: (_model: Model) => true
+    update: (_model: Model) => true,
+    delete: (_model: Model) => true,
   },
   setup(_, { emit }) {
     const { $axios } = useContext()
@@ -60,6 +61,12 @@ export default defineComponent({
       emit("update", model_)
     }
 
+    const onDelete = (model_: Model) => {
+      model.value = undefined
+
+      emit("delete", model_)
+    }
+
     return {
       modelId,
       model,
@@ -67,6 +74,7 @@ export default defineComponent({
       fetchState,
       error,
       onUpdate,
+      onDelete,
     }
   },
 })

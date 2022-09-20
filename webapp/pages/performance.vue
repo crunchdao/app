@@ -24,7 +24,7 @@
         </v-tab>
       </v-tabs>
     </v-toolbar>
-    <nuxt-child @create="fetch" @update="fetch" />
+    <nuxt-child @create="fetch" @update="fetch" @delete="fetch" />
   </v-container>
 </template>
 
