@@ -15,6 +15,7 @@ export interface Options<T> extends AxiosRequestConfig {
   onFailure?: (error: Error | any) => Promise<void> | void
   onFinally?: (result: Ref<T | null>) => Promise<void> | void
   throw?: boolean
+  formData?: boolean
 }
 
 export function createPendingRequest<T extends { [key: string]: any }>(
@@ -77,8 +78,19 @@ export function createPendingRequest<T extends { [key: string]: any }>(
       resetValue()
       resetErrors()
 
+      let data: any = inputs
+      if (options.formData === true) {
+        const formData = new FormData()
+
+        for (const [key, value] of Object.entries(inputs)) {
+          formData.append(key, value)
+        }
+
+        data = formData
+      }
+
       value.value = await $axios.$request({
-        data: inputs,
+        data,
         ...options,
       })
 

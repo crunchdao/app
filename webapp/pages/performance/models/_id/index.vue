@@ -20,6 +20,22 @@
         </v-card-subtitle>
       </v-card>
     </v-col>
+    <v-col cols="12" sm="6">
+      <v-card>
+        <card-title style="white-space: pre"
+          >Download <small>the data</small></card-title
+        >
+        <v-card-text>
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repellat
+          explicabo unde, eveniet provident animi iusto tempora repudiandae
+          facilis, accusamus labore eum? Molestiae, ipsa! Dicta, nulla hic? Sint
+          cum odio fugiat?
+        </v-card-text>
+      </v-card>
+    </v-col>
+    <v-col cols="12" sm="6">
+      <model-card-upload :model="model" />
+    </v-col>
     <v-col cols="12">
       <v-card>
         <card-title> My Meta-Model Contribution </card-title>
