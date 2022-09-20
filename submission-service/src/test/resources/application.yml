@@ -1,11 +1,17 @@
 spring:
-  cloud:
-    consul:
-      enabled: false
   sleuth:
     enabled: false
   zipkin:
     enabled: false
+  cloud:
+    consul:
+      enabled: false
+    aws:
+      credentials:
+        access-key: "-"
+        secret-key: "-"
+      s3:
+        region: eu-west-1
 app:
   submission:
     bucket: x
