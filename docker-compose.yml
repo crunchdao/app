@@ -261,7 +261,7 @@ services:
       - consul
       - mongo
   submission-service:
-    image: crunchdao/round-service
+    image: crunchdao/submission-service
     restart: unless-stopped
     expose:
       - 80
