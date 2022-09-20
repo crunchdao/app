@@ -49,7 +49,9 @@
 		<module>notification-service</module>
 		<module>referral-service</module>
 		<module>registration-service</module>
+		<module>round-service</module>
 		<module>segment-analytics-service</module>
+		<module>submission-service</module>
 		<module>user-service</module>
 
 		<module>web-common</module>
