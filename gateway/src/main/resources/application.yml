@@ -88,6 +88,11 @@ spring:
           predicates:
             - Path=/v1/models/**
           
+        - id: round-service
+          uri: lb://round-service
+          predicates:
+            - Path=/v1/rounds/**
+          
         - id: graphql
           uri: lb://graphql
           predicates:

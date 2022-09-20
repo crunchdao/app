@@ -1,0 +1,11 @@
+server:
+  port: ${PORT:8018}
+spring:
+  application:
+    name: round-service
+  cloud:
+    consul:
+      enabled: false
+  data:
+    mongodb:
+      auto-index-creation: true
