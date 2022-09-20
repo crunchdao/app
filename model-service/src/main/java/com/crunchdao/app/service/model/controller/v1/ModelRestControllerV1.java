@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -100,6 +101,23 @@ public class ModelRestControllerV1 {
 		}
 		
 		throw new ForbiddenException();
+	}
+	
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@CanWrite
+	@DeleteMapping(ID_VARIABLE)
+	public void delete(
+		@PathVariable UUID id,
+		Authentication authentication
+	) {
+		var userId = BaseUserAuthenticationToken.extractUserId(authentication).orElseThrow(ForbiddenException::new);
+		var model = service.findById(id).orElseThrow(() -> new ModelNotFoundException(id));
+
+		if (!Objects.equals(model.getUserId(), userId)) {
+			throw new ForbiddenException();
+		}
+
+		service.delete(model);
 	}
 	
 	public static boolean canIncludeComments(Authentication authentication, UUID userId) {

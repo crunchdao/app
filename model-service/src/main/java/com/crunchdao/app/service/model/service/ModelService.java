@@ -64,6 +64,12 @@ public class ModelService {
 		return model;
 	}
 	
+	public void delete(Model model) {
+		repository.delete(model);
+		
+		// TODO Send event
+	}
+	
 	public boolean isUnderTheLimit(UUID userId) {
 		Long limit = properties.getLimit();
 		if (limit == null) {
