@@ -1,0 +1,12 @@
+spring:
+  cloud:
+    consul:
+      enabled: false
+  sleuth:
+    enabled: false
+  zipkin:
+    enabled: false
+app:
+  submission:
+    bucket: x
+    key-format: "models/{modelId}/submissions/{submissionId}/file/{filename}"

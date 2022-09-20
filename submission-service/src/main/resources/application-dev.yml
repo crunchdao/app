@@ -1,0 +1,16 @@
+spring:
+  cloud:
+    consul:
+      enabled: false
+  sleuth:
+    enabled: false
+  zipkin:
+    enabled: false
+  data:
+    mongodb:
+      host: localhost
+      uuid-representation: standard
+      authentication-database: admin
+      username: root
+      password: password
+      database: ${spring.application.name}

@@ -1,0 +1,24 @@
+server:
+  port: ${PORT:8019}
+spring:
+  application:
+    name: submission-service
+  cloud:
+    consul:
+      enabled: false
+    aws:
+      credentials:
+        access-key: ${AWS_ACCESS_KEY}
+        secret-key: ${AWS_SECRET_KEY}
+      s3:
+        region: eu-west-1
+  data:
+    mongodb:
+      auto-index-creation: true
+  servlet:
+    multipart:
+      max-file-size: 50MB
+app:
+  submission:
+    bucket: datacrunch-com
+    key-format: "develop/app/models/{modelId}/submissions/{submissionId}/file/{filename}"
