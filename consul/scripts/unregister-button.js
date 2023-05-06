@@ -29,7 +29,7 @@
       button.addEventListener('click', async () => {
           button.innerText = "deregistering..."
 
-          const regex = /services\/.+?\/instances\/.+?\/([\w-]+)/gm;
+          const regex = /services\/.+?\/instances\/.+?\/([\w:-]+)/gm;
           const url = window.location.href
           const matcher = regex.exec(url)
           const serviceId = matcher ? matcher[1] : null
